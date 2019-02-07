@@ -20,25 +20,21 @@ import shutil
 
 from setuptools.command.install import install
 
-from .utils import get_git_hook_directory, get_setup_directory
+from .utils import get_git_hook_directory_path, get_setup_directory_path
 
 
 def get_pre_commit_hook_path():
-    githookdir = get_git_hook_directory()
-    return os.path.join(githookdir, 'pre-commit')
+    git_hook_dir_path = get_git_hook_directory_path()
+    return git_hook_dir_path / 'pre-commit'
 
 
-def get_pre_commit_hook_py():
-    setupdir = get_setup_directory()
-    return os.path.join(setupdir, 'pre-commit.py')
-
-
-def is_pre_commit_hook_installed(pre_commit_hook):
-    return os.path.exists(pre_commit_hook)
+def get_pre_commit_hook_py_path():
+    setup_dir_path = get_setup_directory_path()
+    return setup_dir_path / 'pre-commit.py'
 
 
 def install_pre_commit_hook(pre_commit_hook_file, pre_commit_hook):
-    shutil.copy(pre_commit_hook_file, pre_commit_hook)
+    shutil.copy(str(pre_commit_hook_file), str(pre_commit_hook))
 
 
 class PostInstall(install):
@@ -49,9 +45,11 @@ class PostInstall(install):
 
     def post_install(self):
         pre_commit_hook = get_pre_commit_hook_path()
-        if is_pre_commit_hook_installed(pre_commit_hook):
+        if pre_commit_hook.exists():
             print('pre-commit hook already installed')
         else:
-            pre_commit_hook_py = get_pre_commit_hook_py()
+            pre_commit_hook_py = get_pre_commit_hook_py_path()
             install_pre_commit_hook(pre_commit_hook_py, pre_commit_hook)
-            print('pre-commit hook installed at {}'.format(pre_commit_hook))
+
+            print('pre-commit hook installed at {}'.format(
+                str(pre_commit_hook)))

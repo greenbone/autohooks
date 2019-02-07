@@ -18,8 +18,10 @@
 import os
 import subprocess
 
+from pathlib import Path
 
-def get_git_directory():
+
+def get_git_directory_path():
     path = os.environ['PWD']
     try:
         output = subprocess.check_output(
@@ -31,18 +33,19 @@ def get_git_directory():
         ))
         raise e
 
-    gitdir = output.decode().strip()
-    if not path in gitdir:
-        gitdir = os.path.join(path, gitdir)
+    git_dir = output.decode().strip()
+    if not path in git_dir:
+        git_dir_path = Path(path) / git_dir
+    else:
+        git_dir_path = Path(git_dir)
 
-    return os.path.abspath(gitdir)
-
-
-def get_git_hook_directory():
-    gitdir = get_git_directory()
-    return os.path.join(gitdir, 'hooks')
+    return git_dir_path.resolve()
 
 
-def get_setup_directory():
-    path = os.path.join(os.path.dirname(__file__), os.path.pardir)
-    return os.path.abspath(path)
+def get_git_hook_directory_path():
+    git_dir_path = get_git_directory_path()
+    return git_dir_path / 'hooks'
+
+
+def get_setup_directory_path():
+    return Path(__file__).resolve().parent.parent
