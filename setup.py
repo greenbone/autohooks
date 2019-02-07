@@ -23,7 +23,7 @@ from setuptools import setup, find_packages
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 from autohooks import get_version
-from autohooks.postinstall import PostInstall
+from autohooks.install import PostInstall
 
 
 with open('README.md', 'r') as f:
