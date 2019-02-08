@@ -21,19 +21,28 @@ import subprocess
 from pathlib import Path
 
 
+def exec_git(*args, ignore_errors=False):
+    try:
+        cmd_args = ['git']
+        cmd_args.extend(args)
+        output = subprocess.check_output(cmd_args)
+        return output.decode().strip()
+    except subprocess.CalledProcessError as e:
+        if ignore_errors:
+            return ''
+        raise e
+
+
 def get_git_directory_path():
     path = os.environ['PWD']
     try:
-        output = subprocess.check_output(
-            ['git', '-C', path, 'rev-parse', '--git-dir']
-        )
+        git_dir = exec_git('-C', path, 'rev-parse', '--git-dir')
     except subprocess.CalledProcessError as e:
         print(
             'could not determine .git directory. {}'.format(e.output.decode())
         )
         raise e
 
-    git_dir = output.decode().strip()
     if not path in git_dir:
         git_dir_path = Path(path) / git_dir
     else:
