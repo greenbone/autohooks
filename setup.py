@@ -40,6 +40,7 @@ setup(
     url='https://github.com/bjoernricks/autohooks',
     packages=find_packages(),
     package_data={'': ['template']},
+    include_package_data=True,
     python_requires='>=3.5',
     classifiers=[
         # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers

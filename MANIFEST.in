@@ -1,0 +1,3 @@
+include README.md LICENSE pyproject.toml setup.py Pipfile Pipfile.lock
+recursive-include tests *.py
+recursive-include autohooks template
