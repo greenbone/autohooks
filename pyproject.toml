@@ -1,0 +1,18 @@
+[tool.black]
+line-length = 80
+py36 = false
+skip-string-normalization = true
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.venv
+  | \.circleci
+  | \.github
+  | \.vscode
+  | _build
+  | build
+  | dist
+  | docs
+)/
+'''
