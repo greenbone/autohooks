@@ -28,9 +28,14 @@ class Config:
         return self._config is not None
 
 
-def load_config_from_pyproject_toml():
+def get_pyproject_toml_path():
     root = get_project_root_path()
-    pyproject_toml = root / 'pyproject.toml'
+    return root / 'pyproject.toml'
+
+
+def load_config_from_pyproject_toml(pyproject_toml=None):
+    if pyproject_toml is None:
+        pyproject_toml = get_pyproject_toml_path()
 
     if not pyproject_toml.exists():
         return Config()
