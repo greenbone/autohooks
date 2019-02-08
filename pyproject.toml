@@ -19,3 +19,6 @@ exclude = '''
   | docs
 )/
 '''
+
+[tool.autohooks]
+pre-commit = ['autohooks.precommit.black']
