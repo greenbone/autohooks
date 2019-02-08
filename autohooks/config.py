@@ -24,8 +24,17 @@ class Config:
     def __init__(self, config_dict=None):
         self._config = config_dict
 
-    def is_autohooks_enabled(self):
+    def has_config(self):
         return self._config is not None
+
+    def is_autohooks_enabled(self):
+        return self.has_config()
+
+    def get_pre_commit_script_names(self):
+        if self.has_config():
+            return self._config.get('pre-commit', [])
+
+        return []
 
 
 def load_config_from_pyproject_toml(pyproject_toml=None):
