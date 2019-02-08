@@ -17,7 +17,7 @@
 
 import toml
 
-from .utils import get_project_root_path
+from .utils import get_pyproject_toml_path
 
 
 class Config:
@@ -26,11 +26,6 @@ class Config:
 
     def is_autohooks_enabled(self):
         return self._config is not None
-
-
-def get_pyproject_toml_path():
-    root = get_project_root_path()
-    return root / 'pyproject.toml'
 
 
 def load_config_from_pyproject_toml(pyproject_toml=None):
