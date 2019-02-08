@@ -49,3 +49,22 @@ def get_autohooks_directory_path():
 def get_git_hook_directory_path():
     git_dir_path = get_git_directory_path()
     return git_dir_path / 'hooks'
+
+
+def is_project_root(path):
+    return (path / 'pyproject.toml').is_file() or (path / '.git').is_dir() or \
+        (path / 'setup.py').is_file() or (path / 'setup.cfg')
+
+
+def get_project_root_path():
+    path = Path(os.environ['PWD'])
+    path.resolve()
+
+    if is_project_root(path):
+        return path
+
+    for parent in path.parents:
+        if is_project_root(parent):
+            return parent
+
+    return path
