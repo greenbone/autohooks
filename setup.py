@@ -39,6 +39,9 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/greenbone/githooks',
     packages=find_packages(),
+    package_data={
+        '': ['template'],
+    },
     python_requires='>=3.5',
         classifiers=[
         # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers

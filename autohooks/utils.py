@@ -42,10 +42,10 @@ def get_git_directory_path():
     return git_dir_path.resolve()
 
 
+def get_autohooks_directory_path():
+    return Path(__file__).resolve().parent
+
+
 def get_git_hook_directory_path():
     git_dir_path = get_git_directory_path()
     return git_dir_path / 'hooks'
-
-
-def get_setup_directory_path():
-    return Path(__file__).resolve().parent.parent
