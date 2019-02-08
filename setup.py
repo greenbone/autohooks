@@ -37,7 +37,7 @@ setup(
     description='Library for managing git hooks',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/greenbone/githooks',
+    url='https://github.com/bjoernricks/autohooks',
     packages=find_packages(),
     package_data={
         '': ['template'],
