@@ -58,6 +58,9 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development :: Version Control :: Git',
     ],
+    install_requires=[
+        'toml',
+    ],
     cmdclass={
         "install": PostInstall,
     },
