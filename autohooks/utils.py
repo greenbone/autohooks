@@ -25,12 +25,12 @@ def get_git_directory_path():
     path = os.environ['PWD']
     try:
         output = subprocess.check_output(
-            ['git', '-C', path, 'rev-parse', '--git-dir'],
+            ['git', '-C', path, 'rev-parse', '--git-dir']
         )
     except subprocess.CalledProcessError as e:
-        print('could not determine .git directory. {}'.format(
-            e.output.decode()
-        ))
+        print(
+            'could not determine .git directory. {}'.format(e.output.decode())
+        )
         raise e
 
     git_dir = output.decode().strip()
@@ -52,8 +52,12 @@ def get_git_hook_directory_path():
 
 
 def is_project_root(path):
-    return (path / 'pyproject.toml').is_file() or (path / '.git').is_dir() or \
-        (path / 'setup.py').is_file() or (path / 'setup.cfg')
+    return (
+        (path / 'pyproject.toml').is_file()
+        or (path / '.git').is_dir()
+        or (path / 'setup.py').is_file()
+        or (path / 'setup.cfg')
+    )
 
 
 def get_project_root_path():

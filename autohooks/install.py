@@ -39,7 +39,6 @@ def install_pre_commit_hook(pre_commit_hook_file, pre_commit_hook):
 
 
 class PostInstall(install):
-
     def run(self):
         install.run(self)
         self.post_install()
@@ -57,5 +56,6 @@ class PostInstall(install):
             pre_commit_hook_template = get_pre_commit_hook_template_path()
             install_pre_commit_hook(pre_commit_hook_template, pre_commit_hook)
 
-            print('pre-commit hook installed at {}'.format(
-                str(pre_commit_hook)))
+            print(
+                'pre-commit hook installed at {}'.format(str(pre_commit_hook))
+            )

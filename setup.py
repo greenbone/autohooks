@@ -39,11 +39,9 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/bjoernricks/autohooks',
     packages=find_packages(),
-    package_data={
-        '': ['template'],
-    },
+    package_data={'': ['template']},
     python_requires='>=3.5',
-        classifiers=[
+    classifiers=[
         # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
@@ -58,10 +56,6 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development :: Version Control :: Git',
     ],
-    install_requires=[
-        'toml',
-    ],
-    cmdclass={
-        "install": PostInstall,
-    },
+    install_requires=['toml'],
+    cmdclass={"install": PostInstall},
 )

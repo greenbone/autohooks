@@ -21,7 +21,6 @@ from .utils import get_project_root_path
 
 
 class Config:
-
     def __init__(self, config_dict=None):
         self._config = config_dict
 
