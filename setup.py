@@ -59,4 +59,5 @@ setup(
     ],
     install_requires=['toml'],
     cmdclass={"install": PostInstall},
+    entry_points={'console_scripts': ['autohooks=autohooks.cli:main']},
 )
