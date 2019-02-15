@@ -17,6 +17,8 @@
 
 from autohooks.utils import exec_git
 
+__all__ = ['exec_git', 'get_staged_files', 'get_diff', 'stage_file']
+
 
 def get_staged_files(diff_filter='ACM'):
     files = exec_git(
