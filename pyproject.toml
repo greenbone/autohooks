@@ -21,4 +21,4 @@ exclude = '''
 '''
 
 [tool.autohooks]
-pre-commit = ['autohooks.precommit.black']
+pre-commit = ['autohooks.plugins.black']
