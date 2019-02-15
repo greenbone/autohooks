@@ -40,9 +40,9 @@ def run():
     out('Running black on {}'.format(', '.join(files)))
 
     for f in files:
-        before = get_diff()
+        before = get_diff(file=f)
         subprocess.check_call(['black', '-q', f])
-        after = get_diff()
+        after = get_diff(file=f)
         if before != after:
             stage_file(f)
 
