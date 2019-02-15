@@ -19,6 +19,7 @@ import os
 import shutil
 
 from setuptools.command.install import install
+from setuptools.command.develop import develop
 
 from .config import load_config_from_pyproject_toml
 from .utils import get_git_hook_directory_path, get_autohooks_directory_path
@@ -38,24 +39,21 @@ def install_pre_commit_hook(pre_commit_hook_file, pre_commit_hook):
     shutil.copy(str(pre_commit_hook_file), str(pre_commit_hook))
 
 
-class PostInstall(install):
-    def run(self):
-        install.run(self)
-        self.post_install()
-
-    def post_install(self):
-        config = load_config_from_pyproject_toml()
-
-        if not config.is_autohooks_enabled():
-            return
-
+class AutohooksInstall:
+    def install_git_hook(self):
         pre_commit_hook = get_pre_commit_hook_path()
-        if pre_commit_hook.exists():
-            print('pre-commit hook already installed')
-        else:
+        if not pre_commit_hook.exists():
             pre_commit_hook_template = get_pre_commit_hook_template_path()
             install_pre_commit_hook(pre_commit_hook_template, pre_commit_hook)
 
-            print(
-                'pre-commit hook installed at {}'.format(str(pre_commit_hook))
-            )
+
+class PostInstall(install, AutohooksInstall):
+    def run(self):
+        super().run()
+        self.install_git_hook()
+
+
+class PostDevelop(develop, AutohooksInstall):
+    def install_for_development(self):
+        super().install_for_development()
+        self.install_git_hook()
