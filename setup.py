@@ -23,7 +23,7 @@ from setuptools import setup, find_packages
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 from autohooks import get_version
-from autohooks.install import PostInstall
+from autohooks.install import PostInstall, PostDevelop
 
 
 with open('README.md', 'r') as f:
@@ -58,6 +58,6 @@ setup(
         'Topic :: Software Development :: Version Control :: Git',
     ],
     install_requires=['toml'],
-    cmdclass={"install": PostInstall},
+    cmdclass={"install": PostInstall, "develop": PostDevelop},
     entry_points={'console_scripts': ['autohooks=autohooks.cli:main']},
 )
