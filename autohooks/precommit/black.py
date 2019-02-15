@@ -17,12 +17,8 @@
 
 import subprocess
 
-from autohooks.api import (
-    get_staged_files,
-    is_python_file,
-    get_git_diff,
-    git_stage_file,
-)
+from autohooks.api import is_python_file, out
+from autohooks.api.git import get_staged_files, get_diff, stage_file
 
 
 def check_black_installed():
@@ -35,19 +31,19 @@ def check_black_installed():
 
 
 def run():
-    print('Running black pre-commit hook')
+    out('Running black pre-commit hook')
 
     check_black_installed()
 
     files = [f for f in get_staged_files() if is_python_file(f)]
 
-    print('Running black on {}'.format(','.join(files)))
+    out('Running black on {}'.format(', '.join(files)))
 
     for f in files:
-        before = get_git_diff()
+        before = get_diff()
         subprocess.check_call(['black', '-q', f])
-        after = get_git_diff()
+        after = get_diff()
         if before != after:
-            git_stage_file(f)
+            stage_file(f)
 
     return 0
