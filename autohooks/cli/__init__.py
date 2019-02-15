@@ -19,7 +19,7 @@ import argparse
 
 from autohooks import get_version
 
-from autohooks.cli.install import install_hooks
+from autohooks.cli.activate import install_hooks
 
 DESCRIPTION = 'autohooks - Manage git hooks'
 
@@ -33,14 +33,14 @@ def main():
     )
 
     subparsers = parser.add_subparsers(dest='command')
-    install_parser = subparsers.add_parser(
-        'install', help='Install the pre-commit hook.'
+    activate_parser = subparsers.add_parser(
+        'activate', help='Activate the pre-commit hook.'
     )
-    install_parser.add_argument(
+    activate_parser.add_argument(
         '-f',
         '--force',
         action='store_true',
-        help='Force installation of hook even if a hook already exists',
+        help='Force activation of hook even if a hook already exists',
     )
 
     args = parser.parse_args()
@@ -48,7 +48,7 @@ def main():
     if not args.command:
         parser.print_usage()
 
-    if args.command == 'install':
+    if args.command == 'activate':
         install_hooks(args)
 
 
