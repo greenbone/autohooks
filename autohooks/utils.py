@@ -65,7 +65,7 @@ def is_project_root(path):
         (path / 'pyproject.toml').is_file()
         or (path / '.git').is_dir()
         or (path / 'setup.py').is_file()
-        or (path / 'setup.cfg')
+        or (path / 'setup.cfg').is_file()
     )
 
 
