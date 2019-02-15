@@ -22,6 +22,8 @@ from autohooks.config import load_config_from_pyproject_toml
 
 
 def run():
+    print('autohooks => pre-commit')
+
     config = load_config_from_pyproject_toml()
     for name in config.get_pre_commit_script_names():
         try:
