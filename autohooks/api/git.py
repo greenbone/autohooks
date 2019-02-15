@@ -14,3 +14,24 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+from autohooks.utils import exec_git
+
+
+def get_staged_files(diff_filter='ACM'):
+    files = exec_git(
+        'diff',
+        '--staged',
+        '--name-only',
+        '--diff-filter={}'.format(diff_filter),
+        '--no-ext-diff',
+    )
+    return files.split('\n')
+
+
+def get_diff():
+    return exec_git('diff', '--no-ext-diff', '--no-color')
+
+
+def stage_file(filename):
+    exec_git('add', filename)

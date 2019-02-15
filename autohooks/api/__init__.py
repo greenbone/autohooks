@@ -14,3 +14,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import sys
+
+
+def out(message):
+    print(message)
+
+
+def error(message):
+    print(message, file=sys.stderr)
+
+
+def is_python_file(filename=''):
+    return filename.endswith('.py')
