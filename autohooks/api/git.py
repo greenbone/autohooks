@@ -31,8 +31,13 @@ def get_staged_files(diff_filter='ACM'):
     return files.split('\n')
 
 
-def get_diff():
-    return exec_git('diff', '--no-ext-diff', '--no-color')
+def get_diff(file=None):
+    args = ['diff', '--no-ext-diff', '--no-color']
+
+    if file is not None:
+        args.extend(['--', file])
+
+    return exec_git(*args)
 
 
 def stage_file(filename):
