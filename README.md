@@ -48,7 +48,7 @@ pipenv install --dev -e git+https://github.com/bjoernricks/autohooks#egg=autohoo
 
 If autohooks is installed from git or a source tarball the git hooks should be
 activated automatically. The activation can be verified by running e.g.
-`cat .git/hooks/pre-commit`.
+`authooks check`.
 
 Installing autohooks from a [wheel](https://www.python.org/dev/peps/pep-0427/)
 package will **NOT** activate the git commit hooks.
