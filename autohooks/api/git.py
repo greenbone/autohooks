@@ -15,9 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from enum import Enum
+from pathlib import Path
+
 from autohooks.utils import exec_git
 
-__all__ = ['exec_git', 'get_staged_files', 'get_diff', 'stage_file']
+__all__ = [
+    'exec_git',
+    'get_staged_files',
+    'get_diff',
+    'get_status',
+    'stage_file',
+]
 
 
 def get_staged_files(diff_filter='ACM'):
@@ -40,6 +49,47 @@ def get_diff(file=None):
         args.extend(['--', str(file)])
 
     return exec_git(*args)
+
+
+class Status(Enum):
+    UNMODIFIED = ' '
+    MODIFIED = 'M'
+    ADDED = 'A'
+    DELETED = 'D'
+    RENAMED = 'R'
+    COPIED = 'C'
+    UPDATED = 'U'
+    UNTRACKED = '?'
+    IGNORED = '!'
+
+
+class StatusEntry:
+    def __init__(self, statusString):
+        status = statusString[0:2]
+        filename = statusString[3:]
+
+        self.path = Path(filename)
+        self.index = Status(status[0])
+        self.workTree = Status(status[1])
+
+    def __str__(self):
+        return '{}{} {}'.format(
+            self.index.value, self.workTree.value, str(self.path)
+        )
+
+    def __repr__(self):
+        return '<StatusEntry {}>'.format(str(self))
+
+
+def get_status(file=None):
+    args = ['status', '--porcelain=v1', '-z']
+
+    if file is not None:
+        args.extend(['--', str(file)])
+
+    output = exec_git(*args)
+    output = output.split('\0')
+    return [StatusEntry(f) for f in output if f]
 
 
 def stage_file(filename):
