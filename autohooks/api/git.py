@@ -22,13 +22,15 @@ __all__ = ['exec_git', 'get_staged_files', 'get_diff', 'stage_file']
 
 def get_staged_files(diff_filter='ACM'):
     files = exec_git(
+        '-P',  # no pagination
         'diff',
         '--staged',
         '--name-only',
         '--diff-filter={}'.format(diff_filter),
         '--no-ext-diff',
+        '-z',  # \0 delimiter
     )
-    return files.split('\n')
+    return files.split('\0')
 
 
 def get_diff(file=None):
