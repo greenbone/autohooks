@@ -34,10 +34,10 @@ def get_staged_files(diff_filter='ACM'):
 
 
 def get_diff(file=None):
-    args = ['diff', '--no-ext-diff', '--no-color']
+    args = ['-P', 'diff', '--no-ext-diff', '--no-color']
 
     if file is not None:
-        args.extend(['--', file])
+        args.extend(['--', str(file)])
 
     return exec_git(*args)
 
