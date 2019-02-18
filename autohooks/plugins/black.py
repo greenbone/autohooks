@@ -26,7 +26,7 @@ def check_black_installed():
         import black
     except ImportError:
         raise Exception(
-            'Could not find black. Please add black to your python environment.'
+            'Could not find black. Please add black to your python environment'
         )
 
 

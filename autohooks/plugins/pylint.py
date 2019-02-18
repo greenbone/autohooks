@@ -27,7 +27,7 @@ def check_pylint_installed():
     except ImportError:
         raise Exception(
             'Could not find pylint. Please add pylint to your python '
-            'environment.'
+            'environment'
         )
 
 
