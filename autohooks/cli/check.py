@@ -31,7 +31,7 @@ def check_hooks():
     if pre_commit_hook.is_file():
         hook = pre_commit_hook.read_text()
         if hook == template:
-            print('authooks pre-commit hook is active.')
+            print('autohooks pre-commit hook is active.')
         else:
             print(
                 'autohooks pre-commit hook is not active. But a different '
@@ -42,6 +42,6 @@ def check_hooks():
 
     else:
         print(
-            'autohooks pre-commit hook not active. Please run \'authooks '
+            'autohooks pre-commit hook not active. Please run \'autohooks '
             'activate\'.'
         )
