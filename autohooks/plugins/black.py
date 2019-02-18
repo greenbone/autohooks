@@ -37,6 +37,10 @@ def run():
 
     files = [f for f in get_staged_files() if is_python_file(f)]
 
+    if len(files) == 0:
+        out('No staged files for black available')
+        return 0
+
     out('Running black on {}'.format(', '.join(files)))
 
     for f in files:
