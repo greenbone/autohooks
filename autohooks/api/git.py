@@ -82,7 +82,7 @@ class StatusEntry:
 
 
 def get_status(file=None):
-    args = ['status', '--porcelain=v1', '-z']
+    args = ['status', '--porcelain=v1', '-z', '--ignore-submodules']
 
     if file is not None:
         args.extend(['--', str(file)])
