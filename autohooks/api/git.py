@@ -31,7 +31,7 @@ __all__ = [
 
 def get_staged_files(diff_filter='ACM'):
     files = exec_git(
-        '-P',  # no pagination
+        '--no-pager',  # no pagination
         'diff',
         '--staged',
         '--name-only',
@@ -43,7 +43,7 @@ def get_staged_files(diff_filter='ACM'):
 
 
 def get_diff(file=None):
-    args = ['-P', 'diff', '--no-ext-diff', '--no-color']
+    args = ['--no-pager', 'diff', '--no-ext-diff', '--no-color']
 
     if file is not None:
         args.extend(['--', str(file)])
