@@ -64,21 +64,37 @@ class Status(Enum):
 
 
 class StatusEntry:
-    def __init__(self, statusString):
-        status = statusString[0:2]
-        filename = statusString[3:]
+    def __init__(self, status_string):
+        status = status_string[:2]
+        filename = status_string[3:]
 
-        self.path = Path(filename)
         self.index = Status(status[0])
-        self.workTree = Status(status[1])
+        self.work_tree = Status(status[1])
+
+        if self.index == Status.RENAMED:
+            new_filename, old_filename = filename.split('\0')
+            self.path = Path(new_filename)
+            self.old_path = Path(old_filename)
+        else:
+            self.path = Path(filename)
 
     def __str__(self):
         return '{}{} {}'.format(
-            self.index.value, self.workTree.value, str(self.path)
+            self.index.value, self.work_tree.value, str(self.path)
         )
 
     def __repr__(self):
         return '<StatusEntry {}>'.format(str(self))
+
+
+def parse_status(output):
+    output = output.rstrip('\0').split('\0')
+    while output:
+        line = output.pop(0)
+        if line[0] == Status.RENAMED.value:
+            yield '{}\0{}'.format(line, output.pop(0))
+        else:
+            yield line
 
 
 def get_status(file=None):
@@ -88,8 +104,7 @@ def get_status(file=None):
         args.extend(['--', str(file)])
 
     output = exec_git(*args)
-    output = output.split('\0')
-    return [StatusEntry(f) for f in output if f]
+    return [StatusEntry(f) for f in parse_status(output)]
 
 
 def stage_file(filename):
