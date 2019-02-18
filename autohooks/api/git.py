@@ -17,6 +17,7 @@
 
 from enum import Enum
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 from autohooks.utils import exec_git
 
@@ -108,4 +109,99 @@ def get_status(file=None):
 
 
 def stage_file(filename):
-    exec_git('add', filename)
+    stage_files([filename])
+
+
+def stage_files(filenames):
+    exec_git('add', *filenames)
+
+
+def write_tree():
+    return exec_git('write-tree').strip()
+
+
+def read_tree(ref_or_hashid):
+    exec_git('read-tree', ref_or_hashid)
+
+
+def checkout_index():
+    exec_git('checkout-index', '-a', '-f')
+
+
+def get_tree_diff(tree1, tree2):
+    return exec_git(
+        'diff-tree',
+        '--ignore-submodules',
+        '--binary',
+        '--no-color',
+        '--no-ext-diff',
+        'unified=0',
+        tree1,
+        tree2,
+    )
+
+
+def apply_diff(patch):
+    with NamedTemporaryFile(mode='w') as f:
+        f.write(patch)
+
+        exec_git(
+            'apply',
+            '-v',
+            '--whitespace=nowarn',
+            '--reject',
+            '--recount',
+            '--unidiff-zero',
+            f.name,
+        )
+
+
+class save_formatting:
+    def __init__(self, filenames):
+        self.filenames = filenames
+
+    def stash_unstaged_changes(self):
+        # save current staging area aka. index
+        self.index = write_tree()
+        # add changes from files to index
+        stage_files(self.filenames)
+        # save index as working tree
+        self.working_tree = write_tree()
+
+        # restore index without working tree changes
+        # working tree changes are "stashed" now
+        read_tree(self.index)
+        checkout_index()
+
+    def restore_working_tree(self):
+        # restore working tree
+        read_tree(self.working_tree)
+        # checkout working tree
+        checkout_index()
+
+    def __enter__(self):
+        self.stash_unstaged_changes()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_type is not None:
+            # an error has occurred
+            # restore working tree and index as it was before formatting
+            self.restore_working_tree()
+            read_tree(self.index)
+        else:
+            # save formatting changes
+            formatted_tree = write_tree()
+
+            self.restore_working_tree()
+
+            if formatted_tree == self.index:
+                # no formatting changes
+                # restore index
+                read_tree(self.index)
+            else:
+                # read formatted changes into index
+                read_tree(formatted_tree)
+                # create diff between index and formatted_tree
+                patch = get_tree_diff(self.index, formatted_tree)
+                # apply diff to working tree
+                apply_diff(patch)
