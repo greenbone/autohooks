@@ -13,8 +13,8 @@ exist. To name few: [husky](https://github.com/typicode/husky),
 [precise-commits](https://github.com/nrwl/precise-commits) or
 [pre-commit](https://github.com/pre-commit/pre-commit).
 
-But either they need another interpreter besides python like husky or they are
-too ambiguous like pre-commit. pre-commit is written in python but has support
+But either they need another interpreter besides python (like husky) or they are
+too ambiguous like (pre-commit). pre-commit is written in python but has support
 hooks written in all kind of languages. Also it maintains the dependencies by
 itself and doesn't install in the current environment.
 
@@ -33,11 +33,11 @@ For the installation of autohooks three steps are necessary:
 
 1. Install the autohooks package into your current environment
 2. Activate the [git hooks](https://git-scm.com/docs/githooks)
-3. Configure the to be run plugins
+3. Configure the plugins to be run
 
 ### Install autohooks python package
 
-For installing the autohooks python package using
+For installing the autohooks python package, using
 [pipenv](https://pipenv.readthedocs.io/en/latest/) is highly recommended.
 
 ```sh
@@ -46,9 +46,9 @@ pipenv install --dev -e git+https://github.com/bjoernricks/autohooks#egg=autohoo
 
 ### Activating the git hooks
 
-If autohooks is installed from git or a source tarball the git hooks should be
+If autohooks is installed from git or a source tarball, the git hooks should be
 activated automatically. The activation can be verified by running e.g.
-`authooks check`.
+`autohooks check`.
 
 Installing autohooks from a [wheel](https://www.python.org/dev/peps/pep-0427/)
 package will **NOT** activate the git commit hooks.
@@ -58,9 +58,9 @@ To manually activate the git hooks you can run
 pipenv run autohooks activate
 ```
 
-### Configure to be run plugins
+### Configure plugins to be run
 
-To actually run an action on git hooks autohooks plugins have to be configured.
+To actually run an action on git hooks, autohooks plugins have to be configured.
 Autohooks uses the *pyproject.toml* file specified in [PEP518](https://www.python.org/dev/peps/pep-0518/)
 for its configuration. Adding a *[tool.autohooks]* section allows to set python
 modules to be run on a specific git hook.
