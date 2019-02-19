@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import subprocess
 
 from enum import Enum
 from pathlib import Path
@@ -23,37 +24,26 @@ from autohooks.utils import exec_git
 
 __all__ = [
     'exec_git',
-    'get_staged_files',
-    'get_diff',
+    'get_staged_status',
     'get_status',
-    'stage_file',
+    'is_partially_staged_status',
+    'is_staged_status',
+    'safe_formatting',
+    'stage_files_from_status_list',
 ]
 
 
-def get_staged_files(diff_filter=None):
-    if diff_filter is None:
-        diff_filter = [Status.ADDED, Status.COPIED, Status.MODIFIED]
-
-    files = exec_git(
-        '--no-pager',  # no pagination
-        'diff',
-        '--staged',
-        '--name-only',
-        '--diff-filter={}'.format(''.join([s.value for s in diff_filter])),
-        '--no-ext-diff',
-        '--no-color',
-        '-z',  # \0 delimiter
-    )
-    return files.rstrip('\0').split('\0')
-
-
-def get_diff(file=None):
-    args = ['--no-pager', 'diff', '--no-ext-diff', '--no-color']
-
-    if file is not None:
-        args.extend(['--', str(file)])
-
-    return exec_git(*args)
+def _get_git_toplevel_path():
+    try:
+        git_dir = exec_git('rev-parse', '--show-toplevel').rstrip()
+    except subprocess.CalledProcessError as e:
+        print(
+            'could not determine toplevel directory. {}'.format(
+                e.output.decode()
+            )
+        )
+        raise e
+    return Path(git_dir).resolve()
 
 
 class Status(Enum):
@@ -69,12 +59,13 @@ class Status(Enum):
 
 
 class StatusEntry:
-    def __init__(self, status_string):
+    def __init__(self, status_string, root_path=None):
         status = status_string[:2]
         filename = status_string[3:]
 
         self.index = Status(status[0])
-        self.work_tree = Status(status[1])
+        self.working_tree = Status(status[1])
+        self.root_path = root_path
 
         if self.index == Status.RENAMED:
             new_filename, old_filename = filename.split('\0')
@@ -85,14 +76,19 @@ class StatusEntry:
 
     def __str__(self):
         return '{}{} {}'.format(
-            self.index.value, self.work_tree.value, str(self.path)
+            self.index.value, self.working_tree.value, str(self.path)
         )
 
     def __repr__(self):
         return '<StatusEntry {}>'.format(str(self))
 
+    def absolute_path(self):
+        if self.root_path:
+            return (self.root_path / self.path).resolve()
+        return self.path.resolve()
 
-def parse_status(output):
+
+def _parse_status(output):
     output = output.rstrip('\0')
     if not output:
         raise StopIteration()
@@ -104,6 +100,25 @@ def parse_status(output):
             yield '{}\0{}'.format(line, output.pop(0))
         else:
             yield line
+
+
+def is_staged_status(status):
+    return (
+        status.index != Status.UNMODIFIED
+        and status.index != Status.UNTRACKED
+        and status.index != Status.IGNORED
+    )
+
+
+def is_partially_staged_status(status):
+    return (
+        status.index != Status.UNMODIFIED
+        and status.index != Status.UNTRACKED
+        and status.index != Status.IGNORED
+        and status.working_tree != Status.UNMODIFIED
+        and status.working_tree != Status.UNTRACKED
+        and status.working_tree != Status.IGNORED
+    )
 
 
 def get_status(files=None):
@@ -120,44 +135,51 @@ def get_status(files=None):
         args.extend([str(f) for f in files])
 
     output = exec_git(*args)
-    return [StatusEntry(f) for f in parse_status(output)]
+    root_path = _get_git_toplevel_path()
+    return [StatusEntry(f, root_path) for f in _parse_status(output)]
 
 
-def stage_file(filename):
-    stage_files([filename])
+def get_staged_status(files=None):
+    status = get_status(files)
+    return [s for s in status if is_staged_status(s)]
 
 
-def stage_files(filenames):
+def stage_files_from_status_list(status_list):
+    filenames = [str(s.path) for s in status_list]
     exec_git('add', *filenames)
 
 
-def write_tree():
+def _write_tree():
     return exec_git('write-tree').strip()
 
 
-def read_tree(ref_or_hashid):
+def _read_tree(ref_or_hashid):
     exec_git('read-tree', ref_or_hashid)
 
 
-def checkout_index():
-    exec_git('checkout-index', '-a', '-f')
+def _checkout_from_index(status_list):
+    filenames = [str(s.path) for s in status_list]
+    exec_git('checkout-index', '-f', '--', *filenames)
 
 
-def get_tree_diff(tree1, tree2):
-    return exec_git(
-        'diff-tree',
-        '--ignore-submodules',
-        '--binary',
-        '--no-color',
-        '--no-ext-diff',
-        'unified=0',
-        tree1,
-        tree2,
+def _get_tree_diff(tree1, tree2):
+    return subprocess.check_output(
+        [
+            'git',
+            'diff-tree',
+            '--ignore-submodules',
+            '--binary',
+            '--no-color',
+            '--no-ext-diff',
+            '--unified=0',
+            tree1,
+            tree2,
+        ]
     )
 
 
-def apply_diff(patch):
-    with NamedTemporaryFile(mode='w') as f:
+def _apply_diff(patch):
+    with NamedTemporaryFile(mode='wb', buffering=0) as f:
         f.write(patch)
 
         exec_git(
@@ -171,52 +193,56 @@ def apply_diff(patch):
         )
 
 
-class save_formatting:
-    def __init__(self, filenames):
-        self.filenames = filenames
+class safe_formatting:
+    def __init__(self, status_list):
+        self.partially_staged = [
+            s for s in status_list if is_partially_staged_status(s)
+        ]
 
     def stash_unstaged_changes(self):
         # save current staging area aka. index
-        self.index = write_tree()
+        self.index = _write_tree()
         # add changes from files to index
-        stage_files(self.filenames)
+        stage_files_from_status_list(self.partially_staged)
         # save index as working tree
-        self.working_tree = write_tree()
+        self.working_tree = _write_tree()
 
         # restore index without working tree changes
         # working tree changes are "stashed" now
-        read_tree(self.index)
-        checkout_index()
+        _read_tree(self.index)
+        _checkout_from_index(self.partially_staged)
 
     def restore_working_tree(self):
         # restore working tree
-        read_tree(self.working_tree)
+        _read_tree(self.working_tree)
         # checkout working tree
-        checkout_index()
+        _checkout_from_index(self.partially_staged)
 
     def __enter__(self):
-        self.stash_unstaged_changes()
+        if self.partially_staged:
+            self.stash_unstaged_changes()
 
     def __exit__(self, exc_type, exc_value, traceback):
+        if not self.partially_staged:
+            return
+
         if exc_type is not None:
             # an error has occurred
             # restore working tree and index as it was before formatting
             self.restore_working_tree()
-            read_tree(self.index)
+            _read_tree(self.index)
         else:
             # save formatting changes
-            formatted_tree = write_tree()
+            formatted_tree = _write_tree()
 
             self.restore_working_tree()
 
-            if formatted_tree == self.index:
-                # no formatting changes
-                # restore index
-                read_tree(self.index)
-            else:
-                # read formatted changes into index
-                read_tree(formatted_tree)
+            # restore index
+            # formatted_tree will be the same as index if no changes are applied
+            _read_tree(formatted_tree)
+
+            if formatted_tree != self.index:
                 # create diff between index and formatted_tree
-                patch = get_tree_diff(self.index, formatted_tree)
+                patch = _get_tree_diff(self.index, formatted_tree)
                 # apply diff to working tree
-                apply_diff(patch)
+                _apply_diff(patch)
