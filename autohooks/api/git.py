@@ -93,7 +93,11 @@ class StatusEntry:
 
 
 def parse_status(output):
-    output = output.rstrip('\0').split('\0')
+    output = output.rstrip('\0')
+    if not output:
+        raise StopIteration()
+
+    output = output.split('\0')
     while output:
         line = output.pop(0)
         if line[0] == Status.RENAMED.value:
