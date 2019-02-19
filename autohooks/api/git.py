@@ -107,6 +107,7 @@ def is_staged_status(status):
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
         and status.index != Status.IGNORED
+        and status.index != Status.DELETED
     )
 
 
@@ -115,6 +116,7 @@ def is_partially_staged_status(status):
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
         and status.index != Status.IGNORED
+        and status.index != Status.DELETED
         and status.working_tree != Status.UNMODIFIED
         and status.working_tree != Status.UNTRACKED
         and status.working_tree != Status.IGNORED
