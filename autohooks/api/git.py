@@ -39,6 +39,7 @@ def get_staged_files(diff_filter='ACM'):
         '--name-only',
         '--diff-filter={}'.format(diff_filter),
         '--no-ext-diff',
+        '--no-color',
         '-z',  # \0 delimiter
     )
     return files.rstrip('\0').split('\0')
