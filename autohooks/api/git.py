@@ -162,6 +162,10 @@ def _checkout_from_index(status_list):
     exec_git('checkout-index', '-f', '--', *filenames)
 
 
+def _set_ref(name, hashid):
+    exec_git('update-ref', name, hashid)
+
+
 def _get_tree_diff(tree1, tree2):
     return subprocess.check_output(
         [
@@ -193,6 +197,10 @@ def _apply_diff(patch):
         )
 
 
+INDEX_REF = 'refs/autohooks/index'
+WORKING_REF = 'refs/autohooks/working'
+
+
 class stash_unstaged_changes:
     def __init__(self, status_list):
         self.partially_staged = [
@@ -202,10 +210,14 @@ class stash_unstaged_changes:
     def stash_changes(self):
         # save current staging area aka. index
         self.index = _write_tree()
+        # add ref to be able to restore index manually
+        _set_ref(INDEX_REF, self.index)
         # add changes from files to index
         stage_files_from_status_list(self.partially_staged)
         # save index as working tree
         self.working_tree = _write_tree()
+        # add ref to be able to restore working tee manually
+        _set_ref(WORKING_REF, self.working_tree)
 
         # restore index without working tree changes
         # working tree changes are "stashed" now
