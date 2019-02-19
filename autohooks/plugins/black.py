@@ -22,7 +22,7 @@ from autohooks.api.path import is_python_path
 from autohooks.api.git import (
     get_staged_status,
     stage_files_from_status_list,
-    safe_formatting,
+    stash_unstaged_changes,
 )
 
 
@@ -48,7 +48,7 @@ def run():
 
     out('Running black on {}'.format(', '.join([str(f.path) for f in files])))
 
-    with safe_formatting(files):
+    with stash_unstaged_changes(files):
         for f in files:
             subprocess.check_call(['black', '-q', str(f.absolute_path())])
 
