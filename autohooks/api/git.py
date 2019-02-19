@@ -106,7 +106,7 @@ def parse_status(output):
             yield line
 
 
-def get_status(file=None):
+def get_status(files=None):
     args = [
         'status',
         '--porcelain=v1',
@@ -115,8 +115,9 @@ def get_status(file=None):
         '--untracked-files=no',
     ]
 
-    if file is not None:
-        args.extend(['--', str(file)])
+    if files is not None:
+        args.append('--')
+        args.extend([str(f) for f in files])
 
     output = exec_git(*args)
     return [StatusEntry(f) for f in parse_status(output)]
