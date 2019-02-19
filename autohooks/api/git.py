@@ -28,8 +28,8 @@ __all__ = [
     'get_status',
     'is_partially_staged_status',
     'is_staged_status',
-    'safe_formatting',
     'stage_files_from_status_list',
+    'stash_unstaged_changes',
 ]
 
 
@@ -193,13 +193,13 @@ def _apply_diff(patch):
         )
 
 
-class safe_formatting:
+class stash_unstaged_changes:
     def __init__(self, status_list):
         self.partially_staged = [
             s for s in status_list if is_partially_staged_status(s)
         ]
 
-    def stash_unstaged_changes(self):
+    def stash_changes(self):
         # save current staging area aka. index
         self.index = _write_tree()
         # add changes from files to index
@@ -220,7 +220,7 @@ class safe_formatting:
 
     def __enter__(self):
         if self.partially_staged:
-            self.stash_unstaged_changes()
+            self.stash_changes()
 
     def __exit__(self, exc_type, exc_value, traceback):
         if not self.partially_staged:
