@@ -17,8 +17,13 @@
 
 import subprocess
 
-from autohooks.api import is_python_file, out
-from autohooks.api.git import get_staged_files, get_diff, stage_file
+from autohooks.api import out
+from autohooks.api.path import is_python_path
+from autohooks.api.git import (
+    get_staged_status,
+    stage_files_from_status_list,
+    safe_formatting,
+)
 
 
 def check_black_installed():
@@ -35,19 +40,18 @@ def run():
 
     check_black_installed()
 
-    files = [f for f in get_staged_files() if is_python_file(f)]
+    files = [f for f in get_staged_status() if is_python_path(f.path)]
 
     if len(files) == 0:
         out('No staged files for black available')
         return 0
 
-    out('Running black on {}'.format(', '.join(files)))
+    out('Running black on {}'.format(', '.join([str(f.path) for f in files])))
 
-    for f in files:
-        before = get_diff(file=f)
-        subprocess.check_call(['black', '-q', f])
-        after = get_diff(file=f)
-        if before != after:
-            stage_file(f)
+    with safe_formatting(files):
+        for f in files:
+            subprocess.check_call(['black', '-q', str(f.absolute_path())])
+
+        stage_files_from_status_list(files)
 
     return 0
