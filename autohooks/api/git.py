@@ -31,6 +31,7 @@ __all__ = [
 
 
 def get_staged_files(diff_filter='ACM'):
+
     files = exec_git(
         '--no-pager',  # no pagination
         'diff',
@@ -40,7 +41,7 @@ def get_staged_files(diff_filter='ACM'):
         '--no-ext-diff',
         '-z',  # \0 delimiter
     )
-    return files.split('\0')
+    return files.rstrip('\0').split('\0')
 
 
 def get_diff(file=None):
