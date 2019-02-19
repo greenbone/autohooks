@@ -30,14 +30,16 @@ __all__ = [
 ]
 
 
-def get_staged_files(diff_filter='ACM'):
+def get_staged_files(diff_filter=None):
+    if diff_filter is None:
+        diff_filter = [Status.ADDED, Status.COPIED, Status.MODIFIED]
 
     files = exec_git(
         '--no-pager',  # no pagination
         'diff',
         '--staged',
         '--name-only',
-        '--diff-filter={}'.format(diff_filter),
+        '--diff-filter={}'.format(''.join([s.value for s in diff_filter])),
         '--no-ext-diff',
         '--no-color',
         '-z',  # \0 delimiter
