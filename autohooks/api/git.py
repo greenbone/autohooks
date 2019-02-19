@@ -107,7 +107,13 @@ def parse_status(output):
 
 
 def get_status(file=None):
-    args = ['status', '--porcelain=v1', '-z', '--ignore-submodules']
+    args = [
+        'status',
+        '--porcelain=v1',
+        '-z',
+        '--ignore-submodules',
+        '--untracked-files=no',
+    ]
 
     if file is not None:
         args.extend(['--', str(file)])
