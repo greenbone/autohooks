@@ -17,8 +17,9 @@
 
 import subprocess
 
-from autohooks.api import is_python_file, out
-from autohooks.api.git import get_staged_files
+from autohooks.api import out
+from autohooks.api.path import is_python_path
+from autohooks.api.git import get_staged_status, stash_unstaged_changes
 
 
 def check_pylint_installed():
@@ -36,11 +37,10 @@ def run():
 
     check_pylint_installed()
 
-    files = [f for f in get_staged_files() if is_python_file(f)]
+    files = [f for f in get_staged_status() if is_python_path(f.path)]
 
-    for f in files:
-        returncode = subprocess.call(['pylint', f])
-        if returncode != 0:
-            return returncode
+    with stash_unstaged_changes(files):
+        args = ['pylint']
+        args.extend([str(f.absolute_path()) for f in files])
 
-    return 0
+        return subprocess.call(args)
