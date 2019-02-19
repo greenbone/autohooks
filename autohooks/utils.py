@@ -34,17 +34,17 @@ def exec_git(*args, ignore_errors=False):
 
 
 def get_git_directory_path():
-    path = os.environ['PWD']
+    pwd = os.environ['PWD']
     try:
-        git_dir = exec_git('-C', path, 'rev-parse', '--git-dir').rstrip()
+        git_dir = exec_git('-C', pwd, 'rev-parse', '--git-dir').rstrip()
     except subprocess.CalledProcessError as e:
         print(
             'could not determine .git directory. {}'.format(e.output.decode())
         )
         raise e
 
-    if not path in git_dir:
-        git_dir_path = Path(path) / git_dir
+    if pwd and not pwd in git_dir:
+        git_dir_path = Path(pwd) / git_dir
     else:
         git_dir_path = Path(git_dir)
 
