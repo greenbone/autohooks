@@ -2,6 +2,8 @@
 
 # Autohooks
 
+[![PyPI release](https://img.shields.io/pypi/v/autohooks.svg)](https://pypi.org/project/autohooks/)
+
 Library for managing and writing [git hooks](https://git-scm.com/docs/githooks)
 in Python
 
@@ -78,3 +80,21 @@ pre-commit = ["autohooks.plugins.black"]
 
 Currently available plugins can be found at
 https://github.com/bjoernricks/autohooks/tree/master/autohooks/plugins
+
+## Maintainer
+
+This project is maintained by [Greenbone Networks GmbH](https://www.greenbone.net/).
+
+## Contributing
+
+Your contributions are highly appreciated. Please
+[create a pull request](https://github.com/bjoernricks/autohooks/pulls)
+on GitHub. Bigger changes need to be discussed with the development team via the
+[issues section at GitHub](https://github.com/bjoernricks/autohooks/issues)
+first.
+
+## License
+
+Copyright (C) 2019 [Greenbone Networks GmbH](https://www.greenbone.net/)
+
+Licensed under the [GNU General Public License v3.0 or later](LICENSE).
