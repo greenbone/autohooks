@@ -17,6 +17,7 @@
 
 import os
 import shutil
+import subprocess
 
 from setuptools.command.install import install
 from setuptools.command.develop import develop
@@ -41,10 +42,15 @@ def install_pre_commit_hook(pre_commit_hook_file, pre_commit_hook):
 
 class AutohooksInstall:
     def install_git_hook(self):
-        pre_commit_hook = get_pre_commit_hook_path()
-        if not pre_commit_hook.exists():
-            pre_commit_hook_template = get_pre_commit_hook_template_path()
-            install_pre_commit_hook(pre_commit_hook_template, pre_commit_hook)
+        try:
+            pre_commit_hook = get_pre_commit_hook_path()
+            if not pre_commit_hook.exists():
+                pre_commit_hook_template = get_pre_commit_hook_template_path()
+                install_pre_commit_hook(
+                    pre_commit_hook_template, pre_commit_hook
+                )
+        except subprocess.CalledProcessError:
+            pass
 
 
 class PostInstall(install, AutohooksInstall):
