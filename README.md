@@ -7,7 +7,7 @@
 Library for managing and writing [git hooks](https://git-scm.com/docs/githooks)
 in Python
 
-## Why
+## Why?
 
 Several outstanding libraries for managing and executing git hooks already
 exist. To name few: [husky](https://github.com/typicode/husky),
@@ -16,7 +16,7 @@ exist. To name few: [husky](https://github.com/typicode/husky),
 [pre-commit](https://github.com/pre-commit/pre-commit).
 
 But either they need another interpreter besides python (like husky) or they are
-too ambiguous like (pre-commit). pre-commit is written in python but has support
+too ambiguous (like pre-commit). pre-commit is written in python but has support
 hooks written in all kind of languages. Also it maintains the dependencies by
 itself and doesn't install in the current environment.
 
