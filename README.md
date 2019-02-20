@@ -42,6 +42,14 @@ For the installation of autohooks three steps are necessary:
 For installing the autohooks python package, using
 [pipenv](https://pipenv.readthedocs.io/en/latest/) is highly recommended.
 
+To install autohooks as a development dependency run
+
+```sh
+pipenv install --dev autohooks
+```
+
+Alternatively autohooks can be installed directly from GitHub
+
 ```sh
 pipenv install --dev -e git+https://github.com/bjoernricks/autohooks#egg=autohooks
 ```
