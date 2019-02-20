@@ -18,7 +18,7 @@
 import os
 import sys
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
@@ -38,7 +38,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/bjoernricks/autohooks',
-    packages=find_packages(),
+    packages=find_namespace_packages(include=['autohooks', 'autohooks.*']),
     package_data={'': ['template']},
     include_package_data=True,
     python_requires='>=3.5',
