@@ -78,8 +78,7 @@ pre-commit = ["autohooks.plugins.black"]
 
 ## Plugins
 
-Currently available plugins can be found at
-https://github.com/bjoernricks/autohooks/tree/master/autohooks/plugins
+* Python code formatting via [black](https://github.com/bjoernricks/autohooks-plugin-black)
 
 ## Maintainer
 
