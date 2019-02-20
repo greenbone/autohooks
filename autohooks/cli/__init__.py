@@ -17,7 +17,7 @@
 
 import argparse
 
-from autohooks import get_version
+from autohooks.version import get_version
 
 from autohooks.cli.activate import install_hooks
 from autohooks.cli.check import check_hooks

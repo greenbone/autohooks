@@ -22,7 +22,7 @@ from setuptools import setup, find_packages
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-from autohooks import get_version
+from autohooks.version import get_version
 from autohooks.install import PostInstall, PostDevelop
 
 
