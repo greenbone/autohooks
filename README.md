@@ -88,6 +88,8 @@ pre-commit = ["autohooks.plugins.black"]
 
 * Python code formatting via [black](https://github.com/bjoernricks/autohooks-plugin-black)
 
+* Python code linting via [pylint](https://github.com/bjoernricks/autohooks-plugin-pylint)
+
 ## Maintainer
 
 This project is maintained by [Greenbone Networks GmbH](https://www.greenbone.net/).
