@@ -44,7 +44,7 @@ setup(
     python_requires='>=3.5',
     classifiers=[
         # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Environment :: Console',
         'Intended Audience :: Developers',
