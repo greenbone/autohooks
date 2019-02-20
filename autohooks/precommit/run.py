@@ -28,7 +28,7 @@ def run():
     for name in config.get_pre_commit_script_names():
         try:
             script = importlib.import_module(name)
-            retval = script.run()
+            retval = script.precommit()
 
             if retval:
                 return retval

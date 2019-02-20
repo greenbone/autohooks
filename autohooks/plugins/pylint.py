@@ -32,7 +32,7 @@ def check_pylint_installed():
         )
 
 
-def run():
+def precommit():
     out('Running pylint pre-commit hook')
 
     check_pylint_installed()

@@ -35,7 +35,7 @@ def check_black_installed():
         )
 
 
-def run():
+def precommit():
     out('Running black pre-commit hook')
 
     check_black_installed()
