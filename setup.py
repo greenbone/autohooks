@@ -15,18 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import sys
+
+from pathlib import Path
 
 from setuptools import setup, find_namespace_packages
 
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+__here__ = Path(__file__).parent.resolve()
+
+sys.path.insert(0, str(__here__))
 
 from autohooks.version import get_version
 from autohooks.install import PostInstall, PostDevelop
 
 
-with open('README.md', 'r') as f:
+with (__here__ / 'README.md').open('r') as f:
     long_description = f.read()
 
 setup(
