@@ -17,7 +17,6 @@
 
 import os
 import shutil
-import subprocess
 
 from setuptools.command.install import install
 from setuptools.command.develop import develop
@@ -52,7 +51,7 @@ class AutohooksInstall:
                 install_pre_commit_hook(
                     pre_commit_hook_template, pre_commit_hook
                 )
-        except subprocess.CalledProcessError:
+        except Exception:
             pass
 
 
