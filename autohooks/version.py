@@ -17,7 +17,7 @@
 
 from pkg_resources import safe_version
 
-VERSION = (1, 0, 2, 'alpha')
+VERSION = (1, 0, 2)
 
 
 def get_version():
