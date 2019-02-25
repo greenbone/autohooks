@@ -15,13 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import shutil
 
 from setuptools.command.install import install
 from setuptools.command.develop import develop
 
-from autohooks.config import load_config_from_pyproject_toml
 from autohooks.utils import (
     get_git_hook_directory_path,
     get_autohooks_directory_path,
