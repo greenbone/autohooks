@@ -22,8 +22,11 @@ import subprocess
 from setuptools.command.install import install
 from setuptools.command.develop import develop
 
-from .config import load_config_from_pyproject_toml
-from .utils import get_git_hook_directory_path, get_autohooks_directory_path
+from autohooks.config import load_config_from_pyproject_toml
+from autohooks.utils import (
+    get_git_hook_directory_path,
+    get_autohooks_directory_path,
+)
 
 
 def get_pre_commit_hook_path():
