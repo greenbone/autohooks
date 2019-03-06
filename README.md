@@ -23,7 +23,7 @@ itself and doesn't install in the current environment.
 ## Solution
 
 Autohooks is a pure python library that installs a minimal
-[executable git hook](https://github.com/bjoernricks/autohooks/blob/master/autohooks/precommit/template).
+[executable git hook](https://github.com/greeenbone/autohooks/blob/master/autohooks/precommit/template).
 If autohooks isn't installed in your current python path the hooks aren't
 executed. So autohooks is always opt-in by installing the package into your
 current development environment. It would be even possible to run different
@@ -51,7 +51,7 @@ pipenv install --dev autohooks
 Alternatively autohooks can be installed directly from GitHub
 
 ```sh
-pipenv install --dev -e git+https://github.com/bjoernricks/autohooks#egg=autohooks
+pipenv install --dev -e git+https://github.com/greenbone/autohooks#egg=autohooks
 ```
 
 ### Activating the git hooks
@@ -64,6 +64,7 @@ Installing autohooks from a [wheel](https://www.python.org/dev/peps/pep-0427/)
 package will **NOT** activate the git commit hooks.
 
 To manually activate the git hooks you can run
+
 ```sh
 pipenv run autohooks activate
 ```
@@ -76,6 +77,7 @@ for its configuration. Adding a *[tool.autohooks]* section allows to set python
 modules to be run on a specific git hook.
 
 Example *pyproject.toml*:
+
 ```toml
 [build-system]
 requires = ["setuptools", "wheel"]
@@ -86,9 +88,9 @@ pre-commit = ["autohooks.plugins.black"]
 
 ## Plugins
 
-* Python code formatting via [black](https://github.com/bjoernricks/autohooks-plugin-black)
+* Python code formatting via [black](https://github.com/greenbone/autohooks-plugin-black)
 
-* Python code linting via [pylint](https://github.com/bjoernricks/autohooks-plugin-pylint)
+* Python code linting via [pylint](https://github.com/greenbone/autohooks-plugin-pylint)
 
 ## Maintainer
 
@@ -97,9 +99,9 @@ This project is maintained by [Greenbone Networks GmbH](https://www.greenbone.ne
 ## Contributing
 
 Your contributions are highly appreciated. Please
-[create a pull request](https://github.com/bjoernricks/autohooks/pulls)
+[create a pull request](https://github.com/greenbone/autohooks/pulls)
 on GitHub. Bigger changes need to be discussed with the development team via the
-[issues section at GitHub](https://github.com/bjoernricks/autohooks/issues)
+[issues section at GitHub](https://github.com/greenbone/autohooks/issues)
 first.
 
 ## License

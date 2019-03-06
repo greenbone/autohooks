@@ -40,7 +40,7 @@ setup(
     description='Library for managing git hooks',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/bjoernricks/autohooks',
+    url='https://github.com/greenbone/autohooks',
     packages=find_namespace_packages(include=['autohooks', 'autohooks.*']),
     package_data={'': ['template']},
     include_package_data=True,
