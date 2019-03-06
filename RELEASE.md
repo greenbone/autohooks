@@ -20,7 +20,8 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
 * Open autohooks/version.py
   and increment the version number.
 
-* Create a source distribution
+* Create a source distribution only. Do **NOT** create a wheel by running
+  bdist_wheel.
 
   ```sh
   rm -rf dist build autohooks.egg-info
