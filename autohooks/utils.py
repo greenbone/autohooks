@@ -21,6 +21,14 @@ import subprocess
 from pathlib import Path
 
 
+class GitError(subprocess.CalledProcessError):
+    def __str__(self):
+        return "Git command '%s' returned non-zero exit status %d" % (
+            self.cmd,
+            self.returncode,
+        )
+
+
 def exec_git(*args, ignore_errors=False):
     try:
         cmd_args = ['git']
@@ -30,7 +38,7 @@ def exec_git(*args, ignore_errors=False):
     except subprocess.CalledProcessError as e:
         if ignore_errors:
             return ''
-        raise e
+        raise GitError(e.returncode, e.cmd, e.output, e.stderr)
 
 
 def get_git_directory_path():
