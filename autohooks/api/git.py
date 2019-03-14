@@ -20,7 +20,7 @@ from enum import Enum
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-from autohooks.utils import exec_git
+from autohooks.utils import exec_git, get_project_root_path, GitError
 
 __all__ = [
     'exec_git',
@@ -271,5 +271,16 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
             if formatted_tree != self.index:
                 # create diff between index and formatted_tree
                 patch = _get_tree_diff(self.index, formatted_tree)
-                # apply diff to working tree
-                _apply_diff(patch)
+                try:
+                    # apply diff to working tree
+                    _apply_diff(patch)
+                except GitError as e:
+                    print(
+                        'Found conflicts between plugin and local changes. '
+                        'Plugin changes will be ignored for conflicted hunks.',
+                        e,
+                    )
+
+                    rootpath = get_project_root_path()
+                    for path in rootpath.glob('*.rej'):
+                        path.unlink()
