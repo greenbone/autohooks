@@ -96,6 +96,47 @@ requires = ["setuptools", "wheel"]
 pre-commit = ["autohooks.plugins.black"]
 ```
 
+## Proposed Workflow
+
+Using [pipenv](https://pipenv.readthedocs.io/) allows to install all
+dependencies and tools with a specific version into a virtual easily removable
+python environment. Therefore it's best to maintain **autohooks** also via
+pipenv. Because it is not required to build or run your software, it should be
+[installed as a development dependency](#install-autohooks-python-package).
+Installing and [activating](#activating-the-git-hooks) autohooks doesn't
+run any check or formatting by itself actually. Therefore it is required to
+[choose and install a plugin](#configure-plugins-to-be-run).
+
+If all these tasks have been resolved the developers are able to install
+and activate autohooks with only one single command from you projects git
+repository:
+
+```sh
+pipenv install --dev
+```
+
+Because virtual environment are used for all dependencies including
+autohooks, the linting, formatting, etc. can on by done when running
+`git commit` within the virtual environment.
+
+```sh
+$ cd myproject
+$ pipenv install --dev
+$ pipenv shell
+(myproject)$ git commit
+```
+
+The advantage of this process is, if the user is not running `git commit` within
+the active virtual environment autohooks and its plugins are not executed.
+
+```sh
+$ cd myproject
+$ git commit
+```
+
+This allows the user to choose whether to execute the hooks or to ignore them by
+activating the virtual environment.
+
 ## Plugins
 
 * Python code formatting via [black](https://github.com/greenbone/autohooks-plugin-black)
