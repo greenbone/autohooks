@@ -29,6 +29,9 @@ executed. So autohooks is always opt-in by installing the package into your
 current development environment. It would be even possible to run different
 versions of autohooks by switching the environment.
 
+Autohooks doesn't interfere with your work. If autohooks can't be run or fails
+executing a plugin, an error is shown only and the git hook will proceed.
+
 ## Installation
 
 For the installation of autohooks three steps are necessary:
