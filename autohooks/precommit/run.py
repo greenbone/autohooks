@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import importlib
+import inspect
 import sys
 
 from autohooks.config import load_config_from_pyproject_toml
@@ -36,6 +37,15 @@ def run():
     for name in config.get_pre_commit_script_names():
         try:
             script = importlib.import_module(name)
+            if not hasattr(script, 'precommit') or not inspect.isfunction(
+                script.precommit  # pylint: disable=bad-continuation
+            ):
+                print(
+                    'No precommit function found in plugin {}'.format(name),
+                    file=sys.stderr,
+                )
+                return 0
+
             retval = script.precommit()
 
             if retval:
