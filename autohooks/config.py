@@ -44,6 +44,9 @@ class Config:
 
         return []
 
+    def get_config_dict(self):
+        return self._config.copy()
+
 
 def load_config_from_pyproject_toml(pyproject_toml=None):
     if pyproject_toml is None:

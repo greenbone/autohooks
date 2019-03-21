@@ -79,3 +79,15 @@ class ConfigTestCase(unittest.TestCase):
         self.assertTrue(config.is_autohooks_enabled())
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
+
+    def test_get_config_dict(self):
+        config_in = {'tool': {'autohooks': {}}, 'foo': 'bar'}
+        config = Config(config_in)
+
+        self.assertTrue(config.has_config())
+        self.assertTrue(config.has_autohooks_config())
+
+        config_out = config.get_config_dict()
+
+        self.assertIsNot(config_in, config_out)
+        self.assertEqual(config_out.get('foo'), 'bar')
