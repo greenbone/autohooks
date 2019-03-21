@@ -108,14 +108,14 @@ actually run any check or formatting by itself. Therefore, it is required to
 [choose and install a plugin](#configure-plugins-to-be-run).
 
 If all these tasks have been resolved, the developers are able to install
-and activate autohooks with only one single command from you projects git
+and activate autohooks with only one single command from your project's git
 repository:
 
 ```sh
 pipenv install --dev
 ```
 
-Because virtual environment are used for all dependencies including
+Because virtual environments are used for all dependencies including
 autohooks, the linting, formatting, etc. can on by done when running
 `git commit` within the virtual environment.
 
