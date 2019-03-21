@@ -41,6 +41,18 @@ class ConfigTestCase(unittest.TestCase):
             config.get_pre_commit_script_names(), ['foo', 'bar']
         )
 
+    def test_load_from_non_existing_toml_file(self):
+        config_path = Path('foo')
+        self.assertFalse(config_path.exists())
+
+        config = load_config_from_pyproject_toml(config_path)
+
+        self.assertFalse(config.has_config())
+        self.assertFalse(config.has_autohooks_config())
+        self.assertFalse(config.is_autohooks_enabled())
+
+        self.assertEqual(len(config.get_pre_commit_script_names()), 0)
+
     def test_empty_config(self):
         config = Config()
 
