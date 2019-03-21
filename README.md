@@ -74,10 +74,17 @@ pipenv run autohooks activate
 
 ### Configure plugins to be run
 
-To actually run an action on git hooks, autohooks plugins have to be configured.
-Autohooks uses the *pyproject.toml* file specified in [PEP518](https://www.python.org/dev/peps/pep-0518/)
-for its configuration. Adding a *[tool.autohooks]* section allows to set python
-modules to be run on a specific git hook.
+To actually run an action on git hooks, [autohooks plugins](#plugins) have to be
+installed and configured. To install e.g. python linting via pylint run
+
+```
+pipenv install --dev autohooks-plugin-pylint
+```
+
+Autohooks uses the *pyproject.toml* file specified in
+[PEP518](https://www.python.org/dev/peps/pep-0518/) for its configuration.
+Adding a *[tool.autohooks]* section allows to set python modules to be run on a
+specific git hook.
 
 Example *pyproject.toml*:
 
