@@ -91,7 +91,7 @@ class StatusEntry:
 def _parse_status(output):
     output = output.rstrip('\0')
     if not output:
-        raise StopIteration()
+        return
 
     output = output.split('\0')
     while output:
