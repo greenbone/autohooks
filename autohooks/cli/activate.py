@@ -20,6 +20,7 @@ import sys
 from autohooks.config import (
     load_config_from_pyproject_toml,
     get_pyproject_toml_path,
+    AUTOHOOKS_SECTION,
 )
 from autohooks.install import (
     install_pre_commit_hook,
@@ -42,7 +43,9 @@ def install_hooks(args):
         if not config.is_autohooks_enabled():
             print(
                 'Warning: autohooks is not enabled in your {} file. Please add '
-                'a tools.autohooks section.'.format(str(pyproject_toml)),
+                'a {} section. Run autohooks check for more details.'.format(
+                    str(pyproject_toml), AUTOHOOKS_SECTION
+                ),
                 file=sys.stderr,
             )
 
