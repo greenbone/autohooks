@@ -83,6 +83,11 @@ def get_project_root_path():
     return path
 
 
+def get_project_autohooks_plugins_path():
+    root = get_project_root_path()
+    return root / '.autohooks'
+
+
 def get_pyproject_toml_path():
     root = get_project_root_path()
     return root / 'pyproject.toml'
