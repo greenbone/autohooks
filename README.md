@@ -99,15 +99,15 @@ pre-commit = ["autohooks.plugins.black"]
 ## Proposed Workflow
 
 Using [pipenv](https://pipenv.readthedocs.io/) allows to install all
-dependencies and tools with a specific version into a virtual easily removable
-python environment. Therefore it's best to maintain **autohooks** also via
+dependencies and tools with a specific version into a virtual, easily removable
+Python environment. Therefore it's best to maintain **autohooks** also via
 pipenv. Because it is not required to build or run your software, it should be
 [installed as a development dependency](#install-autohooks-python-package).
 Installing and [activating](#activating-the-git-hooks) autohooks doesn't
-run any check or formatting by itself actually. Therefore it is required to
+actually run any check or formatting by itself. Therefore, it is required to
 [choose and install a plugin](#configure-plugins-to-be-run).
 
-If all these tasks have been resolved the developers are able to install
+If all these tasks have been resolved, the developers are able to install
 and activate autohooks with only one single command from you projects git
 repository:
 
@@ -127,7 +127,7 @@ $ pipenv shell
 ```
 
 The advantage of this process is, if the user is not running `git commit` within
-the active virtual environment autohooks and its plugins are not executed.
+the active virtual environment, autohooks and its plugins are not executed.
 
 ```sh
 $ cd myproject
