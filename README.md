@@ -116,7 +116,7 @@ pipenv install --dev
 ```
 
 Because virtual environments are used for all dependencies including
-autohooks, the linting, formatting, etc. can on by done when running
+autohooks, the linting, formatting, etc. can only by done when running
 `git commit` within the virtual environment.
 
 ```sh
@@ -134,8 +134,8 @@ $ cd myproject
 $ git commit
 ```
 
-This allows the user to choose whether to execute the hooks or to ignore them by
-activating the virtual environment.
+This allows the user to choose whether to execute the hooks by activating the
+virtual environment or to ignore them by deactivating it.
 
 ## Plugins
 
