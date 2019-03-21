@@ -46,7 +46,16 @@ def run():
                 )
                 return 0
 
-            retval = script.precommit()
+            signature = inspect.signature(script.precommit)
+
+            if signature.parameters:
+                retval = script.precommit(config=config)
+            else:
+                print(
+                    'precommit function without kwargs is deprecated.',
+                    file=sys.stderr,
+                )
+                retval = script.precommit()
 
             if retval:
                 return retval
