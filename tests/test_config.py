@@ -30,6 +30,7 @@ class ConfigTestCase(unittest.TestCase):
         config = load_config_from_pyproject_toml(config_path)
 
         self.assertTrue(config.has_config())
+        self.assertTrue(config.has_autohooks_config())
         self.assertTrue(config.is_autohooks_enabled())
 
         self.assertListEqual(

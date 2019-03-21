@@ -23,16 +23,24 @@ from autohooks.utils import get_pyproject_toml_path
 class Config:
     def __init__(self, config_dict=None):
         self._config = config_dict
+        self._autohooks_config = (
+            config_dict.get('tool', {}).get('autohooks')
+            if config_dict
+            else None
+        )
 
     def has_config(self):
         return self._config is not None
 
+    def has_autohooks_config(self):
+        return self._autohooks_config is not None
+
     def is_autohooks_enabled(self):
-        return self.has_config()
+        return self.has_autohooks_config()
 
     def get_pre_commit_script_names(self):
-        if self.has_config():
-            return self._config.get('pre-commit', [])
+        if self.has_autohooks_config():
+            return self._autohooks_config.get('pre-commit', [])
 
         return []
 
@@ -45,5 +53,4 @@ def load_config_from_pyproject_toml(pyproject_toml=None):
         return Config()
 
     config_dict = toml.load(str(pyproject_toml))
-    autohooks_config = config_dict.get('tool', {}).get('autohooks')
-    return Config(autohooks_config)
+    return Config(config_dict)
