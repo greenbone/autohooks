@@ -203,7 +203,7 @@ INDEX_REF = 'refs/autohooks/index'
 WORKING_REF = 'refs/autohooks/working'
 
 
-class stash_unstaged_changes:
+class stash_unstaged_changes:  # pylint: disable=invalid-name
     def __init__(self, status_list):
         self.partially_staged = [
             s for s in status_list if is_partially_staged_status(s)

@@ -39,7 +39,7 @@ def run():
                 'hook {}. {}. The hook will be ignored.'.format(name, e),
                 file=sys.stderr,
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             print(
                 'An error occurred while running pre-commit '
                 'hook {}. {}. The hook will be ignored.'.format(name, e),
