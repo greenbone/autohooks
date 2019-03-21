@@ -23,7 +23,7 @@ itself and doesn't install in the current environment.
 ## Solution
 
 Autohooks is a pure python library that installs a minimal
-[executable git hook](https://github.com/greeenbone/autohooks/blob/master/autohooks/precommit/template).
+[executable git hook](https://github.com/greenbone/autohooks/blob/master/autohooks/precommit/template).
 If autohooks isn't installed in your current python path the hooks aren't
 executed. So autohooks is always opt-in by installing the package into your
 current development environment. It would be even possible to run different
