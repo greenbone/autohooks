@@ -19,12 +19,16 @@ import unittest
 
 from pathlib import Path
 
-from autohooks.config import load_config_from_pyproject_toml
+from autohooks.config import Config, load_config_from_pyproject_toml
+
+
+def get_test_config_path(name):
+    return Path(__file__).parent / name
 
 
 class ConfigTestCase(unittest.TestCase):
     def test_load_from_toml_file(self):
-        config_path = Path(__file__).parent / 'pyproject.test1.toml'
+        config_path = get_test_config_path('pyproject.test1.toml')
         self.assertTrue(config_path.is_file())
 
         config = load_config_from_pyproject_toml(config_path)
@@ -36,3 +40,30 @@ class ConfigTestCase(unittest.TestCase):
         self.assertListEqual(
             config.get_pre_commit_script_names(), ['foo', 'bar']
         )
+
+    def test_empty_config(self):
+        config = Config()
+
+        self.assertFalse(config.has_config())
+        self.assertFalse(config.has_autohooks_config())
+        self.assertFalse(config.is_autohooks_enabled())
+
+        self.assertEqual(len(config.get_pre_commit_script_names()), 0)
+
+    def test_empty_config_dict(self):
+        config = Config({})
+
+        self.assertTrue(config.has_config())
+        self.assertFalse(config.has_autohooks_config())
+        self.assertFalse(config.is_autohooks_enabled())
+
+        self.assertEqual(len(config.get_pre_commit_script_names()), 0)
+
+    def test_missing_pre_commit(self):
+        config = Config({'tool': {'autohooks': {}}})
+
+        self.assertTrue(config.has_config())
+        self.assertTrue(config.has_autohooks_config())
+        self.assertTrue(config.is_autohooks_enabled())
+
+        self.assertEqual(len(config.get_pre_commit_script_names()), 0)
