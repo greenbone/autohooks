@@ -43,7 +43,7 @@ For the installation of autohooks three steps are necessary:
 ### Install autohooks python package
 
 For installing the autohooks python package, using
-[pipenv](https://pipenv.readthedocs.io/en/latest/) is highly recommended.
+[pipenv](https://pipenv.readthedocs.io/) is highly recommended.
 
 To install autohooks as a development dependency run
 
