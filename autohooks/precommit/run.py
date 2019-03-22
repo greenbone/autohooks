@@ -23,6 +23,19 @@ from autohooks.config import load_config_from_pyproject_toml
 from autohooks.utils import get_project_autohooks_plugins_path
 
 
+def load_plugin(name):
+    return importlib.import_module(name)
+
+
+def has_precommit_function(plugin):
+    return hasattr(plugin, 'precommit') and inspect.isfunction(plugin.precommit)
+
+
+def has_precommit_parameters(plugin):
+    signature = inspect.signature(plugin.precommit)
+    return True if signature.parameters else False
+
+
 def run():
     print('autohooks => pre-commit')
 
@@ -36,26 +49,22 @@ def run():
 
     for name in config.get_pre_commit_script_names():
         try:
-            script = importlib.import_module(name)
-            if not hasattr(script, 'precommit') or not inspect.isfunction(
-                script.precommit  # pylint: disable=bad-continuation
-            ):
+            plugin = load_plugin(name)
+            if not has_precommit_function(plugin):
                 print(
                     'No precommit function found in plugin {}'.format(name),
                     file=sys.stderr,
                 )
                 return 0
 
-            signature = inspect.signature(script.precommit)
-
-            if signature.parameters:
-                retval = script.precommit(config=config.get_config())
+            if has_precommit_parameters(plugin):
+                retval = plugin.precommit(config=config.get_config())
             else:
                 print(
                     'precommit function without kwargs is deprecated.',
                     file=sys.stderr,
                 )
-                retval = script.precommit()
+                retval = plugin.precommit()
 
             if retval:
                 return retval
