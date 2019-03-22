@@ -1,0 +1,7 @@
+[tool.autohooks]
+pre-commit = ['foo', 'bar']
+plugins.foo.bar = 'ipsum'
+plugins.foo.lorem = 'dolor'
+
+[tool.autohooks.plugins.bar]
+foo = 'bar'
