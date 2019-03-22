@@ -143,6 +143,68 @@ virtual environment or to ignore them by deactivating it.
 
 * Python code linting via [pylint](https://github.com/greenbone/autohooks-plugin-pylint)
 
+## How-to write a Plugin
+
+Plugins need to be available in the
+[Python import path](https://docs.python.org/3/reference/import.html). The
+easiest way to achieve this, is to upload a plugin to [PyPI](https://pypi.org/)
+and install it via [pip]() or [pipenv](http://pipenv.readthedocs.io/).
+
+Alternatively a plugin can also be put into a *.autohooks* directory at the root
+directory of the git repository where the hooks should be executed.
+
+A autohooks plugin is a Python module which provides a **precommit** function.
+The function must accept arbitrary keywords because the keywords are likely to
+change in future. Therefore using **\*\*kwargs** is highly recommended.
+Currently only a *config* keyword argument is passed to the precommit function.
+E.g.
+
+```python3
+def precommit(**kwargs):
+    config = kwargs.get('config')
+```
+
+The config can be used to receive settings from the *pyproject.toml* file. E.g.
+
+```toml
+[tool.autohooks.plugins.foo]
+bar = 2
+```
+
+can be received with
+
+```python3
+def precommit(**kwargs):
+    config = kwargs.get('config')
+    default_value = 1
+    setting = config.get('tool').get('autohooks').get('plugins').get('foo').get_value('bar', default_value)
+    return 0
+```
+
+Usually the standard call sequence for linting plugins is
+
+1. get list of staged files
+2. filter list of files for a specific file type
+3. stash unrelated changes
+4. apply checks on filtered list of files by calling some external tool
+5. raise exception if something did go wrong
+6. return 1 if check wasn't successful
+6. stage changes made by the tool
+7. unstash unrelated changes
+8. return 0
+
+And the standard call sequence for formatting plugins is
+
+1. get list of staged files
+2. filter list of files for a specific file type
+3. stash unrelated changes
+4. apply formatting on filtered list of files by calling some external tool
+5. raise exception if something did go wrong
+6. stage changes made by the tool
+7. unstash unrelated changes
+8. return 0
+
+
 ## Maintainer
 
 This project is maintained by [Greenbone Networks GmbH](https://www.greenbone.net/).
