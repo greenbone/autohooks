@@ -15,8 +15,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import fnmatch
+
 
 def is_python_path(path):
     if not path:
         return False
     return path.match('*.py')
+
+
+def match(path, pattern_list):
+    """
+    Check if a Path matches to one of the patterns
+
+    Internally fnmatch is used.
+    See https://docs.python.org/3/library/fnmatch.html for details.
+
+    Arguments:
+        path (Path): Path to check if it matches to one of the patterns
+        pattern_list (iterable): Iterable (e.g tuple or list) of patterns to
+            match against the path
+
+    Returns:
+        Boolean: True if path matches a pattern of the list
+    """
+    for pattern in pattern_list:
+        if fnmatch.fnmatch(str(path), pattern):
+            return True
+    return False
