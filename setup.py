@@ -25,12 +25,14 @@ __here__ = Path(__file__).parent.resolve()
 
 sys.path.insert(0, str(__here__))
 
+# pylint: disable=wrong-import-position
+
 from autohooks.version import get_version
 from autohooks.install import PostInstall, PostDevelop
 
 
 with (__here__ / 'README.md').open('r') as f:
-    long_description = f.read()
+    long_description = f.read()  # pylint: disable=invalid-name
 
 setup(
     name='autohooks',
@@ -48,7 +50,7 @@ setup(
     classifiers=[
         # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 4 - Beta',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',  # pylint: disable=line-too-long
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
