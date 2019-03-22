@@ -19,12 +19,20 @@ import importlib
 import sys
 
 from autohooks.config import load_config_from_pyproject_toml
+from autohooks.utils import get_project_autohooks_plugins_path
 
 
 def run():
     print('autohooks => pre-commit')
 
     config = load_config_from_pyproject_toml()
+
+    plugins = get_project_autohooks_plugins_path()
+    plugins_dir_name = str(plugins)
+
+    if plugins.is_dir():
+        sys.path.append(plugins_dir_name)
+
     for name in config.get_pre_commit_script_names():
         try:
             script = importlib.import_module(name)
@@ -45,4 +53,8 @@ def run():
                 'hook {}. {}. The hook will be ignored.'.format(name, e),
                 file=sys.stderr,
             )
+
+    if plugins_dir_name in sys.path:
+        sys.path.remove(plugins_dir_name)
+
     return 0
