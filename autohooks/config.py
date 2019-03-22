@@ -17,7 +17,7 @@
 
 import toml
 
-from .utils import get_pyproject_toml_path
+from autohooks.utils import get_pyproject_toml_path
 
 
 class Config:

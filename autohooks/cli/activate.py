@@ -17,8 +17,11 @@
 
 import sys
 
-from ..config import load_config_from_pyproject_toml, get_pyproject_toml_path
-from ..install import (
+from autohooks.config import (
+    load_config_from_pyproject_toml,
+    get_pyproject_toml_path,
+)
+from autohooks.install import (
     install_pre_commit_hook,
     get_pre_commit_hook_path,
     get_pre_commit_hook_template_path,

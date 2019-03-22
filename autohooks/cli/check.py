@@ -15,8 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ..install import (
-    install_pre_commit_hook,
+from autohooks.install import (
     get_pre_commit_hook_path,
     get_pre_commit_hook_template_path,
 )

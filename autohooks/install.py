@@ -49,7 +49,7 @@ class AutohooksInstall:
                 install_pre_commit_hook(
                     pre_commit_hook_template, pre_commit_hook
                 )
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             pass
 
 
