@@ -151,6 +151,19 @@ def stage_files_from_status_list(status_list):
     exec_git('add', *filenames)
 
 
+def get_diff(files=None):
+    args = [
+      '--no-pager',
+      'diff',
+    ]
+
+    if files is not None:
+        args.append('--')
+        args.extend([str(f.absolute_path()) for f in files])
+
+    return exec_git(*args)
+
+
 def _write_tree():
     return exec_git('write-tree').strip()
 
