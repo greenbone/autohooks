@@ -26,6 +26,12 @@ from autohooks.config import (
     AUTOHOOKS_SECTION,
 )
 
+from autohooks.precommit.run import (
+    load_plugin,
+    has_precommit_function,
+    has_precommit_parameters,
+)
+
 
 def check_hooks():
     pre_commit_hook = get_pre_commit_hook_path()
@@ -64,9 +70,34 @@ def check_hooks():
                 'autohooks is not enabled in your {} file. Please add '
                 'a {} section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
             )
-        elif not config.get_pre_commit_script_names():
-            print(
-                'No autohooks plugin is activated in {} for your pre commit '
-                'hook. Please add a "pre-commit = [plugin1, plugin2]" '
-                'setting.'.format(str(pyproject_toml))
-            )
+        else:
+            plugins = config.get_pre_commit_script_names()
+            if not plugins:
+                print(
+                    'No autohooks plugin is activated in {} for your pre '
+                    'commit hook. Please add a '
+                    '"pre-commit = [plugin1, plugin2]"'
+                    'setting.'.format(str(pyproject_toml))
+                )
+            else:
+                for name in plugins:
+                    try:
+                        plugin = load_plugin(name)
+                        if not has_precommit_function(plugin):
+                            print(
+                                'Plugin "{}" has not precommit function. The '
+                                'function is required to run the plugin as '
+                                'git pre commit hook.'.format(name)
+                            )
+                        elif not has_precommit_parameters(plugin):
+                            print(
+                                'Plugin "{}" uses a deprecated signature for '
+                                'its precommit function. It is missing the '
+                                '**kwargs parameter.'.format(name)
+                            )
+                    except ImportError as e:
+                        print(
+                            '"{}" is not a valid autohooks plugin. {}'.format(
+                                name, e
+                            )
+                        )
