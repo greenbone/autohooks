@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Changed git repository location to https://github.com/greenbone/autohooks
 * Extend config file handling [#7](https://github.com/greenbone/autohooks/pull/7)
-* **precommit** plugin functions should accept **kwargs now
+* **precommit** plugin functions should accept `**kwargs` now
   [#7](https://github.com/greenbone/autohooks/pull/7). This will be mandatory
   with a 2.0 release.
 * A Config class instance is passed as config keyword argument to the
