@@ -29,6 +29,9 @@ executed. So autohooks is always opt-in by installing the package into your
 current development environment. It would be even possible to run different
 versions of autohooks by switching the environment.
 
+Autohooks doesn't interfere with your work. If autohooks can't be run or fails
+executing a plugin, an error is shown only and the git hook will proceed.
+
 ## Installation
 
 For the installation of autohooks three steps are necessary:
@@ -40,7 +43,7 @@ For the installation of autohooks three steps are necessary:
 ### Install autohooks python package
 
 For installing the autohooks python package, using
-[pipenv](https://pipenv.readthedocs.io/en/latest/) is highly recommended.
+[pipenv](https://pipenv.readthedocs.io/) is highly recommended.
 
 To install autohooks as a development dependency run
 
@@ -71,10 +74,17 @@ pipenv run autohooks activate
 
 ### Configure plugins to be run
 
-To actually run an action on git hooks, autohooks plugins have to be configured.
-Autohooks uses the *pyproject.toml* file specified in [PEP518](https://www.python.org/dev/peps/pep-0518/)
-for its configuration. Adding a *[tool.autohooks]* section allows to set python
-modules to be run on a specific git hook.
+To actually run an action on git hooks, [autohooks plugins](#plugins) have to be
+installed and configured. To install e.g. python linting via pylint run
+
+```
+pipenv install --dev autohooks-plugin-pylint
+```
+
+Autohooks uses the *pyproject.toml* file specified in
+[PEP518](https://www.python.org/dev/peps/pep-0518/) for its configuration.
+Adding a *[tool.autohooks]* section allows to set python modules to be run on a
+specific git hook.
 
 Example *pyproject.toml*:
 
@@ -85,6 +95,47 @@ requires = ["setuptools", "wheel"]
 [tool.autohooks]
 pre-commit = ["autohooks.plugins.black"]
 ```
+
+## Proposed Workflow
+
+Using [pipenv](https://pipenv.readthedocs.io/) allows to install all
+dependencies and tools with a specific version into a virtual, easily removable
+Python environment. Therefore it's best to maintain **autohooks** also via
+pipenv. Because it is not required to build or run your software, it should be
+[installed as a development dependency](#install-autohooks-python-package).
+Installing and [activating](#activating-the-git-hooks) autohooks doesn't
+actually run any check or formatting by itself. Therefore, it is required to
+[choose and install a plugin](#configure-plugins-to-be-run).
+
+If all these tasks have been resolved, the developers are able to install
+and activate autohooks with only one single command from your project's git
+repository:
+
+```sh
+pipenv install --dev
+```
+
+Because virtual environments are used for all dependencies including
+autohooks, the linting, formatting, etc. can only by done when running
+`git commit` within the virtual environment.
+
+```sh
+$ cd myproject
+$ pipenv install --dev
+$ pipenv shell
+(myproject)$ git commit
+```
+
+The advantage of this process is, if the user is not running `git commit` within
+the active virtual environment, autohooks and its plugins are not executed.
+
+```sh
+$ cd myproject
+$ git commit
+```
+
+This allows the user to choose whether to execute the hooks by activating the
+virtual environment or to ignore them by deactivating it.
 
 ## Plugins
 
