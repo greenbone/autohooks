@@ -19,8 +19,24 @@ import importlib
 import inspect
 import sys
 
+from contextlib import contextmanager
+
 from autohooks.config import load_config_from_pyproject_toml
 from autohooks.utils import get_project_autohooks_plugins_path
+
+
+@contextmanager
+def autohooks_module_path():
+    plugins = get_project_autohooks_plugins_path()
+    plugins_dir_name = str(plugins)
+
+    if plugins.is_dir():
+        sys.path.append(plugins_dir_name)
+
+    yield
+
+    if plugins_dir_name in sys.path:
+        sys.path.remove(plugins_dir_name)
 
 
 def load_plugin(name):
