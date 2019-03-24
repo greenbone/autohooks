@@ -27,6 +27,7 @@ from autohooks.config import (
 )
 
 from autohooks.precommit.run import (
+    autohooks_module_path,
     load_plugin,
     has_precommit_function,
     has_precommit_parameters,
@@ -80,24 +81,26 @@ def check_hooks():
                     'setting.'.format(str(pyproject_toml))
                 )
             else:
-                for name in plugins:
-                    try:
-                        plugin = load_plugin(name)
-                        if not has_precommit_function(plugin):
+                with autohooks_module_path():
+                    for name in plugins:
+                        try:
+                            plugin = load_plugin(name)
+                            if not has_precommit_function(plugin):
+                                print(
+                                    'Plugin "{}" has no precommit function. '
+                                    'The function is required to run the '
+                                    'plugin as git pre commit hook.'.format(
+                                        name
+                                    )
+                                )
+                            elif not has_precommit_parameters(plugin):
+                                print(
+                                    'Plugin "{}" uses a deprecated signature '
+                                    'for its precommit function. It is missing '
+                                    'the **kwargs parameter.'.format(name)
+                                )
+                        except ImportError as e:
                             print(
-                                'Plugin "{}" has not precommit function. The '
-                                'function is required to run the plugin as '
-                                'git pre commit hook.'.format(name)
+                                '"{}" is not a valid autohooks '
+                                'plugin. {}'.format(name, e)
                             )
-                        elif not has_precommit_parameters(plugin):
-                            print(
-                                'Plugin "{}" uses a deprecated signature for '
-                                'its precommit function. It is missing the '
-                                '**kwargs parameter.'.format(name)
-                            )
-                    except ImportError as e:
-                        print(
-                            '"{}" is not a valid autohooks plugin. {}'.format(
-                                name, e
-                            )
-                        )

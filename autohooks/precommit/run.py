@@ -63,42 +63,40 @@ def run():
     if plugins.is_dir():
         sys.path.append(plugins_dir_name)
 
-    for name in config.get_pre_commit_script_names():
-        try:
-            plugin = load_plugin(name)
-            if not has_precommit_function(plugin):
+    with autohooks_module_path():
+        for name in config.get_pre_commit_script_names():
+            try:
+                plugin = load_plugin(name)
+                if not has_precommit_function(plugin):
+                    print(
+                        'No precommit function found in plugin {}'.format(name),
+                        file=sys.stderr,
+                    )
+                    return 0
+
+                if has_precommit_parameters(plugin):
+                    retval = plugin.precommit(config=config.get_config())
+                else:
+                    print(
+                        'precommit function without kwargs is deprecated.',
+                        file=sys.stderr,
+                    )
+                    retval = plugin.precommit()
+
+                if retval:
+                    return retval
+
+            except ImportError as e:
                 print(
-                    'No precommit function found in plugin {}'.format(name),
+                    'An error occurred while importing pre-commit '
+                    'hook {}. {}. The hook will be ignored.'.format(name, e),
                     file=sys.stderr,
                 )
-                return 0
-
-            if has_precommit_parameters(plugin):
-                retval = plugin.precommit(config=config.get_config())
-            else:
+            except Exception as e:  # pylint: disable=broad-except
                 print(
-                    'precommit function without kwargs is deprecated.',
+                    'An error occurred while running pre-commit '
+                    'hook {}. {}. The hook will be ignored.'.format(name, e),
                     file=sys.stderr,
                 )
-                retval = plugin.precommit()
-
-            if retval:
-                return retval
-
-        except ImportError as e:
-            print(
-                'An error occurred while importing pre-commit '
-                'hook {}. {}. The hook will be ignored.'.format(name, e),
-                file=sys.stderr,
-            )
-        except Exception as e:  # pylint: disable=broad-except
-            print(
-                'An error occurred while running pre-commit '
-                'hook {}. {}. The hook will be ignored.'.format(name, e),
-                file=sys.stderr,
-            )
-
-    if plugins_dir_name in sys.path:
-        sys.path.remove(plugins_dir_name)
 
     return 0
