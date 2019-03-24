@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * A Config class instance is passed as config keyword argument to the
   **precommit** plugin function. It can be used to receive plugin specific
   settings [#7](https://github.com/greenbone/autohooks/pull/7)
+* Show a warning if changes created by formatting plugins conflict with stashed
+  unstaged changes [#13](https://github.com/greenbone/autohooks/pull/13)
 
 ### Removed
 
