@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [#8](https://github.com/greenbone/autohooks/pull/8)
 * Added a plugin API for matching files against a list of patterns
   [#9](https://github.com/greenbone/autohooks/pull/9)
+* Added plugin API for status output: ok, warning, fail and error
+  [#14](https://github.com/greenbone/autohooks/pull/14)
 
 ### Changed
 
@@ -30,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   settings [#7](https://github.com/greenbone/autohooks/pull/7)
 * Improved check cli to verify settings and specified plugins
   [#12](https://github.com/greenbone/autohooks/pull/12)
+* Improved and colorized terminal output [#14](https://github.com/greenbone/autohooks/pull/14)
 
 ### Removed
 
