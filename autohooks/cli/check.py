@@ -20,6 +20,19 @@ from autohooks.install import (
     get_pre_commit_hook_template_path,
 )
 
+from autohooks.config import (
+    get_pyproject_toml_path,
+    load_config_from_pyproject_toml,
+    AUTOHOOKS_SECTION,
+)
+
+from autohooks.precommit.run import (
+    autohooks_module_path,
+    load_plugin,
+    has_precommit_function,
+    has_precommit_parameters,
+)
+
 
 def check_hooks():
     pre_commit_hook = get_pre_commit_hook_path()
@@ -44,3 +57,50 @@ def check_hooks():
             'autohooks pre-commit hook not active. Please run \'autohooks '
             'activate\'.'
         )
+
+    pyproject_toml = get_pyproject_toml_path()
+    if not pyproject_toml.exists():
+        print(
+            'Missing {} file. Please add a pyproject.toml file and include'
+            'a {} section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
+        )
+    else:
+        config = load_config_from_pyproject_toml(pyproject_toml)
+        if not config.is_autohooks_enabled():
+            print(
+                'autohooks is not enabled in your {} file. Please add '
+                'a {} section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
+            )
+        else:
+            plugins = config.get_pre_commit_script_names()
+            if not plugins:
+                print(
+                    'No autohooks plugin is activated in {} for your pre '
+                    'commit hook. Please add a '
+                    '"pre-commit = [plugin1, plugin2]"'
+                    'setting.'.format(str(pyproject_toml))
+                )
+            else:
+                with autohooks_module_path():
+                    for name in plugins:
+                        try:
+                            plugin = load_plugin(name)
+                            if not has_precommit_function(plugin):
+                                print(
+                                    'Plugin "{}" has no precommit function. '
+                                    'The function is required to run the '
+                                    'plugin as git pre commit hook.'.format(
+                                        name
+                                    )
+                                )
+                            elif not has_precommit_parameters(plugin):
+                                print(
+                                    'Plugin "{}" uses a deprecated signature '
+                                    'for its precommit function. It is missing '
+                                    'the **kwargs parameter.'.format(name)
+                                )
+                        except ImportError as e:
+                            print(
+                                '"{}" is not a valid autohooks '
+                                'plugin. {}'.format(name, e)
+                            )

@@ -19,6 +19,8 @@ import toml
 
 from autohooks.utils import get_pyproject_toml_path
 
+AUTOHOOKS_SECTION = 'tool.autohooks'
+
 
 class Config:
     def __init__(self, config_dict=None):
