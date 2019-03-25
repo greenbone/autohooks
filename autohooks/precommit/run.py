@@ -22,6 +22,7 @@ import sys
 from contextlib import contextmanager
 
 from autohooks.config import load_config_from_pyproject_toml
+from autohooks.terminal import error, warning
 from autohooks.utils import get_project_autohooks_plugins_path
 
 
@@ -68,18 +69,16 @@ def run():
             try:
                 plugin = load_plugin(name)
                 if not has_precommit_function(plugin):
-                    print(
+                    error(
                         'No precommit function found in plugin {}'.format(name),
-                        file=sys.stderr,
                     )
                     return 0
 
                 if has_precommit_parameters(plugin):
                     retval = plugin.precommit(config=config.get_config())
                 else:
-                    print(
+                    warning(
                         'precommit function without kwargs is deprecated.',
-                        file=sys.stderr,
                     )
                     retval = plugin.precommit()
 
@@ -87,16 +86,14 @@ def run():
                     return retval
 
             except ImportError as e:
-                print(
+                error(
                     'An error occurred while importing pre-commit '
                     'hook {}. {}. The hook will be ignored.'.format(name, e),
-                    file=sys.stderr,
                 )
             except Exception as e:  # pylint: disable=broad-except
-                print(
+                error(
                     'An error occurred while running pre-commit '
                     'hook {}. {}. The hook will be ignored.'.format(name, e),
-                    file=sys.stderr,
                 )
 
     return 0
