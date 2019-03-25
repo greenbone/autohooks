@@ -14,10 +14,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import curses
 
 from blessings import Terminal
 
-term = Terminal()  # pylint: disable=invalid-name
+try:
+    term = Terminal()  # pylint: disable=invalid-name
+except curses.error:
+    # handle issues with terminals and force not to style anything
+    # should not be necessary with blessings > 1.7 anymore
+    term = Terminal(force_styling=None)  # pylint: disable=invalid-name
 
 
 def ok(message):
