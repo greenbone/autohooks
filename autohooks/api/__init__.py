@@ -17,10 +17,8 @@
 
 import sys
 
+from autohooks.terminal import ok, fail, error, warning
+
 
 def out(message):
     print(message)
-
-
-def error(message):
-    print(message, file=sys.stderr)
