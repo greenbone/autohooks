@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 toml = "*"
+blessings = "*"
 
 [dev-packages]
 pylint = "*"

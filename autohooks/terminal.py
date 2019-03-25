@@ -14,11 +14,29 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import curses
 
-import sys
+from blessings import Terminal
 
-from autohooks.terminal import ok, fail, error, warning
+try:
+    term = Terminal()  # pylint: disable=invalid-name
+except curses.error:
+    # handle issues with terminals and force not to style anything
+    # should not be necessary with blessings > 1.7 anymore
+    term = Terminal(force_styling=None)  # pylint: disable=invalid-name
 
 
-def out(message):
-    print(message)
+def ok(message):
+    print(message, '[', term.green('ok'), ']')
+
+
+def fail(message):
+    print(message, '[', term.red('fail'), ']')
+
+
+def error(message):
+    print(message, '[', term.red('error'), ']')
+
+
+def warning(message):
+    print(message, '[', term.yellow('warning'), ']')

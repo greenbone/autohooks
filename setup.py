@@ -62,7 +62,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development :: Version Control :: Git',
     ],
-    install_requires=['toml'],
+    install_requires=['toml', 'blessings'],
     cmdclass={"install": PostInstall, "develop": PostDevelop},
     entry_points={'console_scripts': ['autohooks=autohooks.cli:main']},
 )
