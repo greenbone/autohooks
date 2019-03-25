@@ -177,11 +177,21 @@ can be received with
 def precommit(**kwargs):
     config = kwargs.get('config')
     default_value = 1
-    setting = config.get('tool').get('autohooks').get('plugins').get('foo').get_value('bar', default_value)
+    setting = config
+      .get('tool')
+      .get('autohooks')
+      .get('plugins')
+      .get('foo')
+      .get_value('bar', default_value)
     return 0
 ```
 
-Usually the standard call sequence for linting plugins is
+With autohooks it is possible to write all kind of plugins. Most common are
+plugins for linting and formatting.
+
+### Linting plugin
+
+Usually the standard call sequence for a linting plugin is
 
 1. get list of staged files
 2. filter list of files for a specific file type
@@ -193,7 +203,51 @@ Usually the standard call sequence for linting plugins is
 7. unstash unrelated changes
 8. return 0
 
-And the standard call sequence for formatting plugins is
+Example plugin:
+
+```python3
+import subprocess
+
+from autohooks.api import ok, fail
+from autohooks.api.git import get_staged_status, stash_unstaged_changes
+from autohooks.api.path import match
+
+DEFAULT_INCLUDE = ('*.ext')
+
+
+def get_include(config)
+    if not config:
+        return DEFAULT_INCLUDE
+
+    config = config.get('tool').get('autohooks').get('plugins').get('foo')
+    return config.get_value('include', DEFAULT_INCUDE)
+
+
+def precommit(**kwargs):
+    config = kwargs.get('config')
+    include = get_include(config)
+
+    files = [f for f in get_staged_status() if match(f.path, include)]
+
+    if not files:
+      # not files to lint
+      return 0
+
+    with stash_unstaged_changes(files):
+        const failed = False
+        for file in files:
+            status = subprocess.call(['foolinter', str(file)])
+            if status:
+                fail('Could not validate {}'.format(str(file)))
+                failed = True
+            else:
+                ok('Validated {}'.format(str(file)))
+
+        return 1 if failed else 0
+
+### Formatting plugin
+
+Usually the standard call sequence for a formatting plugin is
 
 1. get list of staged files
 2. filter list of files for a specific file type
@@ -204,6 +258,47 @@ And the standard call sequence for formatting plugins is
 7. unstash unrelated changes
 8. return 0
 
+Example plugin:
+```python3
+import subprocess
+
+from autohooks.api import ok, error
+from autohooks.api.git import (
+    get_staged_status,
+    stage_files_from_status_list,
+    stash_unstaged_changes,
+)
+from autohooks.api.path import match
+
+DEFAULT_INCLUDE = ('*.ext')
+
+
+def get_include(config)
+    if not config:
+        return DEFAULT_INCLUDE
+
+    config = config.get('tool').get('autohooks').get('plugins').get('bar')
+    return config.get_value('include', DEFAULT_INCUDE)
+
+
+def precommit(**kwargs):
+    config = kwargs.get('config')
+    include = get_include(config)
+
+    files = [f for f in get_staged_status() if match(f.path, include)]
+
+    if not files:
+      # not files to format
+      return 0
+
+    with stash_unstaged_changes(files):
+        for file in files:
+            # run formatter and raise exception if it fails
+            subprocess.run(['barformatter', str(file)], check=True)
+            ok('Formatted {}'.format(str(file)))
+
+        return 0
+```
 
 ## Maintainer
 
