@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Improved check cli to verify settings and specified plugins
   [#12](https://github.com/greenbone/autohooks/pull/12)
 * Improved and colorized terminal output [#14](https://github.com/greenbone/autohooks/pull/14)
+* Show a warning if changes created by formatting plugins conflict with stashed
+  unstaged changes [#13](https://github.com/greenbone/autohooks/pull/13)
 
 ### Removed
 
