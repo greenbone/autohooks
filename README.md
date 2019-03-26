@@ -150,10 +150,10 @@ Plugins need to be available in the
 easiest way to achieve this, is to upload a plugin to [PyPI](https://pypi.org/)
 and install it via [pip]() or [pipenv](http://pipenv.readthedocs.io/).
 
-Alternatively a plugin can also be put into a *.autohooks* directory at the root
+Alternatively, a plugin can also be put into a *.autohooks* directory at the root
 directory of the git repository where the hooks should be executed.
 
-A autohooks plugin is a Python module which provides a **precommit** function.
+An autohooks plugin is a Python module which provides a **precommit** function.
 The function must accept arbitrary keywords because the keywords are likely to
 change in future. Therefore using **\*\*kwargs** is highly recommended.
 Currently only a *config* keyword argument is passed to the precommit function.
@@ -186,7 +186,7 @@ def precommit(**kwargs):
     return 0
 ```
 
-With autohooks it is possible to write all kind of plugins. Most common are
+With autohooks it is possible to write all kinds of plugins. Most common are
 plugins for linting and formatting.
 
 ### Linting plugin
@@ -198,7 +198,7 @@ Usually the standard call sequence for a linting plugin is
 3. stash unrelated changes
 4. apply checks on filtered list of files by calling some external tool
 5. raise exception if something did go wrong
-6. return 1 if check wasn't successful
+6. return 1 if check was not successful
 6. stage changes made by the tool
 7. unstash unrelated changes
 8. return 0
