@@ -143,6 +143,163 @@ virtual environment or to ignore them by deactivating it.
 
 * Python code linting via [pylint](https://github.com/greenbone/autohooks-plugin-pylint)
 
+## How-to write a Plugin
+
+Plugins need to be available in the
+[Python import path](https://docs.python.org/3/reference/import.html). The
+easiest way to achieve this, is to upload a plugin to [PyPI](https://pypi.org/)
+and install it via [pip]() or [pipenv](http://pipenv.readthedocs.io/).
+
+Alternatively, a plugin can also be put into a *.autohooks* directory at the root
+directory of the git repository where the hooks should be executed.
+
+An autohooks plugin is a Python module which provides a **precommit** function.
+The function must accept arbitrary keywords because the keywords are likely to
+change in future. Therefore using **\*\*kwargs** is highly recommended.
+Currently only a *config* keyword argument is passed to the precommit function.
+E.g.
+
+```python3
+def precommit(**kwargs):
+    config = kwargs.get('config')
+```
+
+The config can be used to receive settings from the *pyproject.toml* file. E.g.
+
+```toml
+[tool.autohooks.plugins.foo]
+bar = 2
+```
+
+can be received with
+
+```python3
+def precommit(**kwargs):
+    config = kwargs.get('config')
+    default_value = 1
+    setting = config
+      .get('tool')
+      .get('autohooks')
+      .get('plugins')
+      .get('foo')
+      .get_value('bar', default_value)
+    return 0
+```
+
+With autohooks it is possible to write all kinds of plugins. Most common are
+plugins for linting and formatting.
+
+### Linting plugin
+
+Usually the standard call sequence for a linting plugin is
+
+1. get list of staged files
+2. filter list of files for a specific file type
+3. stash unrelated changes
+4. apply checks on filtered list of files by calling some external tool
+5. raise exception if something did go wrong
+6. return 1 if check was not successful
+6. stage changes made by the tool
+7. unstash unrelated changes
+8. return 0
+
+Example plugin:
+
+```python3
+import subprocess
+
+from autohooks.api import ok, fail
+from autohooks.api.git import get_staged_status, stash_unstaged_changes
+from autohooks.api.path import match
+
+DEFAULT_INCLUDE = ('*.ext')
+
+
+def get_include(config)
+    if not config:
+        return DEFAULT_INCLUDE
+
+    config = config.get('tool').get('autohooks').get('plugins').get('foo')
+    return config.get_value('include', DEFAULT_INCUDE)
+
+
+def precommit(**kwargs):
+    config = kwargs.get('config')
+    include = get_include(config)
+
+    files = [f for f in get_staged_status() if match(f.path, include)]
+
+    if not files:
+      # not files to lint
+      return 0
+
+    with stash_unstaged_changes(files):
+        const failed = False
+        for file in files:
+            status = subprocess.call(['foolinter', str(file)])
+            if status:
+                fail('Could not validate {}'.format(str(file)))
+                failed = True
+            else:
+                ok('Validated {}'.format(str(file)))
+
+        return 1 if failed else 0
+
+### Formatting plugin
+
+Usually the standard call sequence for a formatting plugin is
+
+1. get list of staged files
+2. filter list of files for a specific file type
+3. stash unrelated changes
+4. apply formatting on filtered list of files by calling some external tool
+5. raise exception if something did go wrong
+6. stage changes made by the tool
+7. unstash unrelated changes
+8. return 0
+
+Example plugin:
+```python3
+import subprocess
+
+from autohooks.api import ok, error
+from autohooks.api.git import (
+    get_staged_status,
+    stage_files_from_status_list,
+    stash_unstaged_changes,
+)
+from autohooks.api.path import match
+
+DEFAULT_INCLUDE = ('*.ext')
+
+
+def get_include(config)
+    if not config:
+        return DEFAULT_INCLUDE
+
+    config = config.get('tool').get('autohooks').get('plugins').get('bar')
+    return config.get_value('include', DEFAULT_INCUDE)
+
+
+def precommit(**kwargs):
+    config = kwargs.get('config')
+    include = get_include(config)
+
+    files = [f for f in get_staged_status() if match(f.path, include)]
+
+    if not files:
+      # not files to format
+      return 0
+
+    with stash_unstaged_changes(files):
+        for file in files:
+            # run formatter and raise exception if it fails
+            subprocess.run(['barformatter', str(file)], check=True)
+            ok('Formatted {}'.format(str(file)))
+
+        return 0
+```
+
 ## Maintainer
 
 This project is maintained by [Greenbone Networks GmbH](https://www.greenbone.net/).
