@@ -35,6 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Improved and colorized terminal output [#14](https://github.com/greenbone/autohooks/pull/14)
 * Show a warning if changes created by formatting plugins conflict with stashed
   unstaged changes [#13](https://github.com/greenbone/autohooks/pull/13)
+* Allow to access config sections via passing an argument list to **config.get**
+  e.g. config.get('tools', 'autohooks', 'plugins', 'foo')
+  [#15](https://github.com/greenbone/autohooks/pull/15)
 
 ### Removed
 

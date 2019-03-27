@@ -157,3 +157,16 @@ class ConfigTestCase(unittest.TestCase):
         self.assertEqual(foo_config.get_value('lorem'), 'ipsum')
         self.assertEqual(foo_config.get_value('lorem', 'dolor'), 'ipsum')
         self.assertEqual(foo_config.get_value('bar', 'dolor'), 'dolor')
+
+    def test_config_point_syntax(self):
+        config_dict = {
+            'tool': {'autohooks': {'plugins': {'bar': {'lorem': 'ipsum'}}}}
+        }
+
+        config = Config(config_dict)
+
+        self.assertFalse(config.is_empty())
+
+        bar_config = config.get('tool', 'autohooks', 'plugins', 'bar')
+        self.assertFalse(bar_config.is_empty())
+        self.assertEqual(bar_config.get_value('lorem'), 'ipsum')
