@@ -17,8 +17,10 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   git checkout -b create-new-release upstream/master
   ```
 
-* Open autohooks/version.py
+* Open [autohooks/version.py](autohooks/version.py)
   and increment the version number.
+
+* Update [CHANGELOG](CHANGELOG.md)
 
 * Create a source distribution only. Do **NOT** create a wheel by running
   bdist_wheel.
@@ -35,12 +37,34 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   git commit -m "Prepare release <version>"
   ```
 
+* Create a pypirc file
+
+  ```sh
+  vim ~/.pypirc
+  ```
+
+  with the following content (Note: `<username>` must be replaced)
+
+```ini
+[distutils]
+index-servers =
+    pypi
+    testpypi
+
+[pypi]
+username = <username>
+
+[testpypi]
+repository = https://test.pypi.org/legacy/
+username = <username>
+```
+
 * Create an account at [Test PyPI](https://packaging.python.org/guides/using-testpypi/)
 
 * Upload the archives in dist to [Test PyPI](https://test.pypi.org/)
 
   ```sh
-  twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+  twine upload -r testpypi dist/*
   ```
 
 * Check if the package is available at https://test.pypi.org/project/autohooks
