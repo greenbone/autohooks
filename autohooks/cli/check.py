@@ -63,15 +63,15 @@ def check_hooks():
     pyproject_toml = get_pyproject_toml_path()
     if not pyproject_toml.exists():
         error(
-            'Missing {} file. Please add a pyproject.toml file and include'
-            'a {} section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
+            'Missing {} file. Please add a pyproject.toml file and include '
+            'a "{}" section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
         )
     else:
         config = load_config_from_pyproject_toml(pyproject_toml)
         if not config.is_autohooks_enabled():
             error(
                 'autohooks is not enabled in your {} file. Please add '
-                'a {} section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
+                'a "{}" section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
             )
         else:
             plugins = config.get_pre_commit_script_names()
@@ -79,7 +79,7 @@ def check_hooks():
                 error(
                     'No autohooks plugin is activated in {} for your pre '
                     'commit hook. Please add a '
-                    '"pre-commit = [plugin1, plugin2]"'
+                    '"pre-commit = [plugin1, plugin2]" '
                     'setting.'.format(str(pyproject_toml))
                 )
             else:
