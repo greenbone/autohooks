@@ -85,16 +85,19 @@ username = <username>
   rm -rf autohooks-install-test
   ```
 
-* Create an account at [PyPI](https://pypi.org/) if not exist already
-
-* Upload to real [PyPI](https://pypi.org/)
+* Create a release PR
 
   ```sh
-  twine upload dist/*
+  git push origin
   ```
+  Open GitHub and create a PR against https://github.com/greenbone/autohooks
 
-* Check if new version is available at https://pypi.org/project/autohooks
+* Update after PR is merged
 
+  ```sh
+  git fetch upstream
+  git rebase upstream/master
+  ```
 * Create a git tag
 
   ```sh
@@ -106,6 +109,22 @@ username = <username>
   ```sh
   git tag -s v<version>
   ```
+* Create final source distribution
+
+  ```sh
+  rm -rf dist build autohooks.egg-info
+  python3 setup.py sdist
+  ```
+
+* Create an account at [PyPI](https://pypi.org/) if not exist already
+
+* Upload to real [PyPI](https://pypi.org/)
+
+  ```sh
+  twine upload dist/*
+  ```
+
+* Check if new version is available at https://pypi.org/project/autohooks
 
 * Update version in autohooks/version.py
 
