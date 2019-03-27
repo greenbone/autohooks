@@ -38,3 +38,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Allow to access config sections via passing an argument list to **config.get**
   e.g. config.get('tools', 'autohooks', 'plugins', 'foo')
   [#15](https://github.com/greenbone/autohooks/pull/15)
+
+[1.1.0]: https://github.com/greenbone/autohooks/compare/v1.0.0...v1.1.0
