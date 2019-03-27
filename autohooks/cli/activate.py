@@ -43,7 +43,7 @@ def install_hooks(args):
         if not config.is_autohooks_enabled():
             print(
                 'Warning: autohooks is not enabled in your {} file. Please add '
-                'a {} section. Run autohooks check for more details.'.format(
+                'a "{}" section. Run autohooks check for more details.'.format(
                     str(pyproject_toml), AUTOHOOKS_SECTION
                 ),
                 file=sys.stderr,
