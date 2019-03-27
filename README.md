@@ -178,10 +178,7 @@ def precommit(**kwargs):
     config = kwargs.get('config')
     default_value = 1
     setting = config
-      .get('tool')
-      .get('autohooks')
-      .get('plugins')
-      .get('foo')
+      .get('tool', 'autohooks', 'plugins', 'foo')
       .get_value('bar', default_value)
     return 0
 ```
@@ -219,7 +216,7 @@ def get_include(config)
     if not config:
         return DEFAULT_INCLUDE
 
-    config = config.get('tool').get('autohooks').get('plugins').get('foo')
+    config = config.get('tool', 'autohooks', 'plugins', 'foo')
     return config.get_value('include', DEFAULT_INCUDE)
 
 
@@ -277,7 +274,7 @@ def get_include(config)
     if not config:
         return DEFAULT_INCLUDE
 
-    config = config.get('tool').get('autohooks').get('plugins').get('bar')
+    config = config.get('tool', 'autohooks', 'plugins', 'bar')
     return config.get_value('include', DEFAULT_INCUDE)
 
 

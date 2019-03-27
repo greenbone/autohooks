@@ -26,8 +26,13 @@ class Config:
     def __init__(self, config_dict=None):
         self._config_dict = config_dict or {}
 
-    def get(self, key):
-        return Config(self._config_dict.get(key, {}))
+    def get(self, *keys):
+        config_dict = self._config_dict
+
+        for key in keys:
+            config_dict = config_dict.get(key, {})
+
+        return Config(config_dict)
 
     def get_value(self, key, default=None):
         return self._config_dict.get(key, default)
