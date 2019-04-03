@@ -1,11 +1,26 @@
 ![Greenbone Logo](https://www.greenbone.net/wp-content/uploads/gb_logo_resilience_horizontal.png)
 
-# Autohooks
+# Autohooks <!-- omit in toc -->
 
 [![PyPI release](https://img.shields.io/pypi/v/autohooks.svg)](https://pypi.org/project/autohooks/)
 
 Library for managing and writing [git hooks](https://git-scm.com/docs/githooks)
 in Python
+
+- [Why?](#why)
+- [Solution](#solution)
+- [Installation](#installation)
+  - [Install autohooks python package](#install-autohooks-python-package)
+  - [Activating the git hooks](#activating-the-git-hooks)
+  - [Configure plugins to be run](#configure-plugins-to-be-run)
+- [Proposed Workflow](#proposed-workflow)
+- [Plugins](#plugins)
+- [How-to write a Plugin](#how-to-write-a-plugin)
+  - [Linting plugin](#linting-plugin)
+  - [Formatting plugin](#formatting-plugin)
+- [Maintainer](#maintainer)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Why?
 
