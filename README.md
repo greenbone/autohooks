@@ -241,6 +241,7 @@ def precommit(**kwargs):
                 ok('Validated {}'.format(str(file)))
 
         return 1 if failed else 0
+```
 
 ### Formatting plugin
 
@@ -256,6 +257,7 @@ Usually the standard call sequence for a formatting plugin is
 8. return 0
 
 Example plugin:
+
 ```python3
 import subprocess
 
