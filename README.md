@@ -66,11 +66,28 @@ To install autohooks as a development dependency run
 pipenv install --dev autohooks
 ```
 
-Alternatively autohooks can be installed directly from GitHub
+or add
+
+```
+autohooks = {git = "https://github.com/greenbone/autohooks"}
+```
+
+to your `Pipfile`.
+
+Alternatively autohooks can be installed directly from GitHub by running
 
 ```sh
-pipenv install --dev -e git+https://github.com/greenbone/autohooks#egg=autohooks
+pipenv install --dev git+https://github.com/greenbone/autohooks#egg=autohooks
 ```
+
+or adding
+
+```
+autohooks = {git = "https://github.com/greenbone/autohooks"}
+```
+
+to your `Pipfile`.
+
 
 ### Activating the git hooks
 
