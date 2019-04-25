@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import shutil
+import os
 
 from setuptools.command.install import install
 from setuptools.command.develop import develop
@@ -32,9 +33,14 @@ def get_pre_commit_hook_path():
 
 
 def get_pre_commit_hook_template_path():
-    setup_dir_path = get_autohooks_directory_path()
-    return setup_dir_path / 'precommit' / 'template'
+    # check if in pipenv
+    ret_code = os.system("pipenv graph")
 
+
+    setup_dir_path = get_autohooks_directory_path() / 'precommit'
+    if ret_code == 0:
+        return setup_dir_path / 'template_pipenv'
+    return setup_dir_path / 'template'
 
 def install_pre_commit_hook(pre_commit_hook_file, pre_commit_hook):
     shutil.copy(str(pre_commit_hook_file), str(pre_commit_hook))
