@@ -9,5 +9,5 @@ blessings = "*"
 
 [dev-packages]
 pylint = "*"
-black = "==19.3b0"
+black = "==18.9b0"
 twine = "*"
