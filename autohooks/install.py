@@ -16,15 +16,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import shutil
-import os
 
-from setuptools.command.install import install
 from setuptools.command.develop import develop
+from setuptools.command.install import install
 
+from autohooks.config import load_config_from_pyproject_toml
 from autohooks.utils import (
     get_git_hook_directory_path,
     get_autohooks_directory_path,
-)
+    get_pyproject_toml_path)
+
+pyproject_toml = get_pyproject_toml_path()
+config = load_config_from_pyproject_toml(pyproject_toml)
 
 
 def get_pre_commit_hook_path():
@@ -33,14 +36,13 @@ def get_pre_commit_hook_path():
 
 
 def get_pre_commit_hook_template_path():
-    # check if in pipenv
-    ret_code = os.system("pipenv graph")
-
+    auto_install = config.get_auto_install()
 
     setup_dir_path = get_autohooks_directory_path() / 'precommit'
-    if ret_code == 0:
+    if auto_install:
         return setup_dir_path / 'template_pipenv'
     return setup_dir_path / 'template'
+
 
 def install_pre_commit_hook(pre_commit_hook_file, pre_commit_hook):
     shutil.copy(str(pre_commit_hook_file), str(pre_commit_hook))
