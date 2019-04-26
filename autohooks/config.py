@@ -66,7 +66,7 @@ class AutohooksConfig:
 
     def get_auto_install(self):
         if self.has_autohooks_config():
-            return self._autohooks_config.get_value('auto-install', False)
+            return self._autohooks_config.get_value('auto-run', False)
 
 
 def load_config_from_pyproject_toml(pyproject_toml=None):

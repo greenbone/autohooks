@@ -169,17 +169,18 @@ $ git commit
 This allows the user to choose whether to execute the hooks by activating the
 virtual environment or to ignore them by deactivating it.
 
-### Auto Installation as an alternative
+### `auto-run` as an alternative
 
-There might be use cases where you want the Git hooks to be installed 
-automatically at build time of the `Pipenv`. To enable this, you have to add 
-an option
+There might be use cases where you want the Git hooks to be run 
+automatically, for example if you want to commit using the commit
+tools of your IDE or if you want to enforce a certain code style
+across your team. In such cases, you can add
 ```
-auto-install = true
+auto-run = true
 ```
-to your `pyproject.toml`. Furthermore, the automatic installation 
-only works if `autohooks` is installed via the Git repository
-as explained above. Otherwise, you have to run `pipenv run autohooks activate`
+to your `pyproject.toml`. As explained above, the automatic installation
+of the hooks only works if `autohooks` is installed via the Git repository.
+Otherwise, you have to run `pipenv run autohooks activate`
 manually.
 
 ## Plugins
