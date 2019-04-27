@@ -5,19 +5,19 @@ executors:
     docker:
       - image: circleci/python:3.5
         environment:
-            PIPENV_VENV_IN_PROJECT: true
+          PIPENV_VENV_IN_PROJECT: true
     working_directory: ~/repo
   python-36:
     docker:
       - image: circleci/python:3.6
         environment:
-            PIPENV_VENV_IN_PROJECT: true
+          PIPENV_VENV_IN_PROJECT: true
     working_directory: ~/repo
   python-37:
     docker:
       - image: circleci/python:3.7
         environment:
-            PIPENV_VENV_IN_PROJECT: true
+          PIPENV_VENV_IN_PROJECT: true
     working_directory: ~/repo
 
 commands:
