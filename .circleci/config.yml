@@ -41,6 +41,17 @@ commands:
           name: Install dependencies
           command: pipenv install
       - run:
+          name: Run unit tests
+          command: |
+            pipenv run python -m unittest
+  test-with-codecov:
+    description: "Download and run tests"
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: pipenv install
+      - run:
           name: Install codecov
           command: |
             pipenv run pip install codecov
@@ -88,7 +99,7 @@ jobs:
     environment:
       VERSION: 3.7
     steps:
-      - test
+      - test-with-codecov
 
 workflows:
   version: 2
