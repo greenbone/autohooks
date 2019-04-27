@@ -26,9 +26,6 @@ from autohooks.utils import (
     get_autohooks_directory_path,
     get_pyproject_toml_path)
 
-pyproject_toml = get_pyproject_toml_path()
-config = load_config_from_pyproject_toml(pyproject_toml)
-
 
 def get_pre_commit_hook_path():
     git_hook_dir_path = get_git_hook_directory_path()
@@ -36,7 +33,10 @@ def get_pre_commit_hook_path():
 
 
 def get_pre_commit_hook_template_path():
-    auto_install = config.get_auto_install()
+    pyproject_toml = get_pyproject_toml_path()
+    config = load_config_from_pyproject_toml(pyproject_toml)
+
+    auto_install = config.get_auto_run()
 
     setup_dir_path = get_autohooks_directory_path() / 'precommit'
     if auto_install:

@@ -178,10 +178,7 @@ across your team. In such cases, you can add
 ```
 auto-run = true
 ```
-to your `pyproject.toml`. As explained above, the automatic installation
-of the hooks only works if `autohooks` is installed via the Git repository.
-Otherwise, you have to run `pipenv run autohooks activate`
-manually.
+to your `pyproject.toml`.
 
 ## Plugins
 

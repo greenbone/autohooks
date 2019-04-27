@@ -64,7 +64,7 @@ class AutohooksConfig:
     def get_config(self):
         return self._config
 
-    def get_auto_install(self):
+    def get_auto_run(self):
         if self.has_autohooks_config():
             return self._autohooks_config.get_value('auto-run', False)
 
