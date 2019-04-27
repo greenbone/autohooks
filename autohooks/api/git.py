@@ -152,10 +152,7 @@ def stage_files_from_status_list(status_list):
 
 
 def get_diff(files=None):
-    args = [
-      '--no-pager',
-      'diff',
-    ]
+    args = ['--no-pager', 'diff']
 
     if files is not None:
         args.append('--')

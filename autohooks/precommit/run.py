@@ -70,16 +70,14 @@ def run():
                 plugin = load_plugin(name)
                 if not has_precommit_function(plugin):
                     error(
-                        'No precommit function found in plugin {}'.format(name),
+                        'No precommit function found in plugin {}'.format(name)
                     )
                     return 0
 
                 if has_precommit_parameters(plugin):
                     retval = plugin.precommit(config=config.get_config())
                 else:
-                    warning(
-                        'precommit function without kwargs is deprecated.',
-                    )
+                    warning('precommit function without kwargs is deprecated.')
                     retval = plugin.precommit()
 
                 if retval:
@@ -88,12 +86,12 @@ def run():
             except ImportError as e:
                 error(
                     'An error occurred while importing pre-commit '
-                    'hook {}. {}. The hook will be ignored.'.format(name, e),
+                    'hook {}. {}. The hook will be ignored.'.format(name, e)
                 )
             except Exception as e:  # pylint: disable=broad-except
                 error(
                     'An error occurred while running pre-commit '
-                    'hook {}. {}. The hook will be ignored.'.format(name, e),
+                    'hook {}. {}. The hook will be ignored.'.format(name, e)
                 )
 
     return 0
