@@ -66,38 +66,26 @@ commands:
 jobs:
   build-35:
     executor: python-35
-    environment:
-      VERSION: 3.5
     steps:
       - build
   test-35:
     executor: python-35
-    environment:
-      VERSION: 3.5
     steps:
       - test
   build-36:
     executor: python-36
-    environment:
-      VERSION: 3.6
     steps:
       - build
   test-36:
     executor: python-36
-    environment:
-      VERSION: 3.6
     steps:
       - test
   build-37:
     executor: python-37
-    environment:
-      VERSION: 3.7
     steps:
       - build
   test-37:
     executor: python-37
-    environment:
-      VERSION: 3.7
     steps:
       - test-with-codecov
 
