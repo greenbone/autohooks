@@ -62,6 +62,19 @@ commands:
       - run:
           name: Upload coverage to Codecov
           command: pipenv run codecov
+  lint:
+    description: "Lint python files"
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: pipenv install --dev
+      - run:
+          name: Check with black
+          command: pipenv run black --check autohooks
+      - run:
+          name: Check with pylint
+          command: pipenv run pylint --disable=R autohooks
 
 jobs:
   build-35:
@@ -88,6 +101,10 @@ jobs:
     executor: python-37
     steps:
       - test-with-codecov
+  lint-37:
+    executor: python-37
+    steps:
+      - lint
 
 workflows:
   version: 2
@@ -99,3 +116,4 @@ workflows:
       - test-36
       - build-37
       - test-37
+      - lint-37
