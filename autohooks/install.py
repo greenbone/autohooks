@@ -15,8 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import shutil
-
 from setuptools.command.install import install
 from setuptools.command.develop import develop
 
@@ -36,8 +34,12 @@ def get_pre_commit_hook_template_path():
     return setup_dir_path / 'precommit' / 'template'
 
 
-def install_pre_commit_hook(pre_commit_hook_file, pre_commit_hook):
-    shutil.copy(str(pre_commit_hook_file), str(pre_commit_hook))
+# pylint: disable=bad-continuation
+def install_pre_commit_hook(
+    pre_commit_hook_template_path, pre_commit_hook_path
+):
+    template = pre_commit_hook_template_path.read_text()
+    pre_commit_hook_path.write_text(template)
 
 
 class AutohooksInstall:
