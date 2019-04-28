@@ -43,6 +43,7 @@ def exec_git(*args, ignore_errors=False):
 
 def get_git_directory_path():
     pwd = os.environ['PWD']
+
     try:
         git_dir = exec_git('-C', pwd, 'rev-parse', '--git-dir').rstrip()
     except subprocess.CalledProcessError as e:
@@ -63,8 +64,9 @@ def get_autohooks_directory_path():
     return Path(__file__).resolve().parent
 
 
-def get_git_hook_directory_path():
-    git_dir_path = get_git_directory_path()
+def get_git_hook_directory_path(git_dir_path=None):
+    if git_dir_path is None:
+        git_dir_path = get_git_directory_path()
     return git_dir_path / 'hooks'
 
 
@@ -77,8 +79,10 @@ def is_project_root(path):
     )
 
 
-def get_project_root_path():
-    path = Path(os.environ['PWD'])
+def get_project_root_path(path=None):
+    if path is None:
+        path = Path(os.environ['PWD'])
+
     path.resolve()
 
     if is_project_root(path):
@@ -91,11 +95,11 @@ def get_project_root_path():
     return path
 
 
-def get_project_autohooks_plugins_path():
-    root = get_project_root_path()
+def get_project_autohooks_plugins_path(path=None):
+    root = get_project_root_path(path)
     return root / '.autohooks'
 
 
-def get_pyproject_toml_path():
-    root = get_project_root_path()
+def get_pyproject_toml_path(path=None):
+    root = get_project_root_path(path)
     return root / 'pyproject.toml'
