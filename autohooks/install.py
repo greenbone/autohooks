@@ -34,22 +34,23 @@ def get_pre_commit_hook_template_path():
     return setup_dir_path / 'precommit' / 'template'
 
 
-# pylint: disable=bad-continuation
-def install_pre_commit_hook(
-    pre_commit_hook_template_path, pre_commit_hook_path
-):
-    template = pre_commit_hook_template_path.read_text()
-    pre_commit_hook_path.write_text(template)
+def get_autohooks_pre_commit_hook():
+    template_path = get_pre_commit_hook_template_path()
+    return template_path.read_text()
+
+
+def install_pre_commit_hook(pre_commit_hook, pre_commit_hook_path):
+    pre_commit_hook_path.write_text(pre_commit_hook)
 
 
 class AutohooksInstall:
     def install_git_hook(self):
         try:
-            pre_commit_hook = get_pre_commit_hook_path()
-            if not pre_commit_hook.exists():
-                pre_commit_hook_template = get_pre_commit_hook_template_path()
+            pre_commit_hook_path = get_pre_commit_hook_path()
+            if not pre_commit_hook_path.exists():
+                autohooks_pre_commit_hook = get_autohooks_pre_commit_hook()
                 install_pre_commit_hook(
-                    pre_commit_hook_template, pre_commit_hook
+                    autohooks_pre_commit_hook, pre_commit_hook_path
                 )
         except Exception:  # pylint: disable=broad-except
             pass

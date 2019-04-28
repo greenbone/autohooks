@@ -22,6 +22,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from autohooks.install import (
+    get_autohooks_pre_commit_hook,
     get_pre_commit_hook_path,
     get_pre_commit_hook_template_path,
     install_pre_commit_hook,
@@ -65,12 +66,11 @@ class GetPreCommitHookTemplatePath(unittest.TestCase):
 
 class InstallPreCommitHook(GitDirTestCase):
     def test_install(self):
-        template_path = get_pre_commit_hook_template_path()
+        hooks = get_autohooks_pre_commit_hook()
         pre_commmit_hook_path = get_pre_commit_hook_path()
 
-        self.assertTrue(template_path.exists())
         self.assertFalse(pre_commmit_hook_path.exists())
 
-        install_pre_commit_hook(template_path, pre_commmit_hook_path)
+        install_pre_commit_hook(hooks, pre_commmit_hook_path)
 
         self.assertTrue(pre_commmit_hook_path.exists())
