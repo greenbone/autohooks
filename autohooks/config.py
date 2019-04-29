@@ -15,11 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from enum import Enum
+
 import toml
 
 from autohooks.utils import get_pyproject_toml_path
 
 AUTOHOOKS_SECTION = 'tool.autohooks'
+
+
+class Mode(Enum):
+    PIPENV = 1
+    UNDEFINED = -1
+    UNKNOWN = -2
 
 
 class Config:
@@ -60,6 +68,17 @@ class AutohooksConfig:
             return self._autohooks_config.get_value('pre-commit', [])
 
         return []
+
+    def get_mode(self):
+        if self.has_autohooks_config():
+            mode = (
+                self._autohooks_config.get_value('mode') or Mode.UNDEFINED.name
+            )
+            try:
+                return Mode[mode.upper()]
+            except KeyError:
+                return Mode.UNKNOWN
+        return Mode.UNDEFINED
 
     def get_config(self):
         return self._config
