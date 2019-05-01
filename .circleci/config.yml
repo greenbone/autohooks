@@ -5,19 +5,19 @@ executors:
     docker:
       - image: circleci/python:3.5
         environment:
-            PIPENV_VENV_IN_PROJECT: true
+          PIPENV_VENV_IN_PROJECT: true
     working_directory: ~/repo
   python-36:
     docker:
       - image: circleci/python:3.6
         environment:
-            PIPENV_VENV_IN_PROJECT: true
+          PIPENV_VENV_IN_PROJECT: true
     working_directory: ~/repo
   python-37:
     docker:
       - image: circleci/python:3.7
         environment:
-            PIPENV_VENV_IN_PROJECT: true
+          PIPENV_VENV_IN_PROJECT: true
     working_directory: ~/repo
 
 commands:
@@ -41,6 +41,17 @@ commands:
           name: Install dependencies
           command: pipenv install
       - run:
+          name: Run unit tests
+          command: |
+            pipenv run python -m unittest
+  test-with-codecov:
+    description: "Download and run tests"
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: pipenv install
+      - run:
           name: Install codecov
           command: |
             pipenv run pip install codecov
@@ -51,44 +62,49 @@ commands:
       - run:
           name: Upload coverage to Codecov
           command: pipenv run codecov
+  lint:
+    description: "Lint python files"
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: pipenv install --dev
+      - run:
+          name: Check with black
+          command: pipenv run black --check autohooks
+      - run:
+          name: Check with pylint
+          command: pipenv run pylint --disable=R autohooks
 
 jobs:
   build-35:
     executor: python-35
-    environment:
-      VERSION: 3.5
     steps:
       - build
   test-35:
     executor: python-35
-    environment:
-      VERSION: 3.5
     steps:
       - test
   build-36:
     executor: python-36
-    environment:
-      VERSION: 3.6
     steps:
       - build
   test-36:
     executor: python-36
-    environment:
-      VERSION: 3.6
     steps:
       - test
   build-37:
     executor: python-37
-    environment:
-      VERSION: 3.7
     steps:
       - build
   test-37:
     executor: python-37
-    environment:
-      VERSION: 3.7
     steps:
-      - test
+      - test-with-codecov
+  lint-37:
+    executor: python-37
+    steps:
+      - lint
 
 workflows:
   version: 2
@@ -100,3 +116,4 @@ workflows:
       - test-36
       - build-37
       - test-37
+      - lint-37

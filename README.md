@@ -68,11 +68,11 @@ pipenv install --dev autohooks
 
 or add
 
-```
-autohooks = {git = "https://github.com/greenbone/autohooks"}
+```toml
+autohooks = "*"
 ```
 
-to your `Pipfile`.
+to the `[dev-packages]` section of your `Pipfile`.
 
 Alternatively autohooks can be installed directly from GitHub by running
 
@@ -82,12 +82,11 @@ pipenv install --dev git+https://github.com/greenbone/autohooks#egg=autohooks
 
 or adding
 
-```
+```toml
 autohooks = {git = "https://github.com/greenbone/autohooks"}
 ```
 
-to your `Pipfile`.
-
+to the `[dev-packages]` section of your `Pipfile`.
 
 ### Activating the git hooks
 
