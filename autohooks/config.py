@@ -64,13 +64,15 @@ class AutohooksConfig:
 
     def get_mode(self):
         if self.has_autohooks_config():
-            mode = (
-                self._autohooks_config.get_value('mode') or Mode.UNDEFINED.name
-            )
+            mode = self._autohooks_config.get_value('mode')
+            if not mode:
+                return Mode.UNDEFINED
+
             try:
                 return Mode[mode.upper()]
             except KeyError:
                 return Mode.UNKNOWN
+
         return Mode.UNDEFINED
 
     def get_config(self):
