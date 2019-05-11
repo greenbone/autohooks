@@ -8,4 +8,3 @@ try:
 except ImportError:
     print('autohooks not installed. Ignoring pre-commit hook.')
     sys.exit(0)
-
