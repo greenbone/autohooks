@@ -19,7 +19,8 @@ from string import Template
 from setuptools.command.install import install
 from setuptools.command.develop import develop
 
-from autohooks.config import Mode, load_config_from_pyproject_toml
+from autohooks.config import load_config_from_pyproject_toml
+from autohooks.settings import Mode
 
 from autohooks.utils import (
     get_git_hook_directory_path,

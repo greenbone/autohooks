@@ -15,19 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from enum import Enum
-
 import toml
 
+from autohooks.setting import Mode
 from autohooks.utils import get_pyproject_toml_path
 
 AUTOHOOKS_SECTION = 'tool.autohooks'
-
-
-class Mode(Enum):
-    PIPENV = 1
-    UNDEFINED = -1
-    UNKNOWN = -2
 
 
 class Config:
