@@ -25,7 +25,9 @@ from autohooks.install import (
     get_autohooks_pre_commit_hook,
     get_pre_commit_hook_path,
     install_pre_commit_hook,
+    is_autohooks_pre_commit_hook,
 )
+from autohooks.template import get_pre_commit_hook_template_path
 from autohooks.utils import exec_git
 
 
@@ -66,3 +68,25 @@ class InstallPreCommitHook(GitDirTestCase):
         install_pre_commit_hook(hooks, pre_commmit_hook_path)
 
         self.assertTrue(pre_commmit_hook_path.exists())
+
+
+class FakeHookPath:
+    def __init__(self, text):
+        self._text = text
+
+    def read_text(self):
+        return self._text
+
+
+class IsAutohooksPreCommitHook(unittest.TestCase):
+    def test_other_hook(self):
+        path = FakeHookPath('foo\nbar')
+        self.assertFalse(is_autohooks_pre_commit_hook(path))
+
+    def test_pre_commit_template_path(self):
+        path = get_pre_commit_hook_template_path()
+        self.assertTrue(is_autohooks_pre_commit_hook(path))
+
+
+if __name__ == '__main__':
+    unittest.main()

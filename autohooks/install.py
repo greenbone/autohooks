@@ -38,6 +38,12 @@ def get_autohooks_pre_commit_hook():
     return template.render(mode=mode)
 
 
+def is_autohooks_pre_commit_hook(path):
+    hook = path.read_text()
+    lines = hook.split('\n')
+    return len(lines) > 5 and "autohooks.precommit" in lines[5]
+
+
 def install_pre_commit_hook(pre_commit_hook, pre_commit_hook_path):
     pre_commit_hook_path.write_text(pre_commit_hook)
 
