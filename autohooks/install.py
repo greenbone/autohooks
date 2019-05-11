@@ -14,21 +14,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from string import Template
 
 from setuptools.command.install import install
 from setuptools.command.develop import develop
 
 from autohooks.config import load_config_from_pyproject_toml
-from autohooks.settings import Mode
+from autohooks.template import PreCommitTemplate
 
-from autohooks.utils import (
-    get_git_hook_directory_path,
-    get_autohooks_directory_path,
-)
-
-PYTHON3_SHEBANG = '/usr/bin/env python3'
-PIPENV_SHEBANG = '/usr/bin/env pipenv run python'
+from autohooks.utils import get_git_hook_directory_path
 
 
 def get_pre_commit_hook_path():
@@ -36,24 +29,13 @@ def get_pre_commit_hook_path():
     return git_hook_dir_path / 'pre-commit'
 
 
-def get_pre_commit_hook_template_path():
-    setup_dir_path = get_autohooks_directory_path()
-    return setup_dir_path / 'precommit' / 'template'
-
-
 def get_autohooks_pre_commit_hook():
-    template_path = get_pre_commit_hook_template_path()
-    strtemplate = Template(template_path.read_text())
-
     config = load_config_from_pyproject_toml()
 
     mode = config.get_mode()
-    if mode == Mode.PIPENV:
-        params = dict(SHEBANG=PIPENV_SHEBANG)
-    else:
-        params = dict(SHEBANG=PYTHON3_SHEBANG)
+    template = PreCommitTemplate()
 
-    return strtemplate.safe_substitute(params)
+    return template.render(mode=mode)
 
 
 def install_pre_commit_hook(pre_commit_hook, pre_commit_hook_path):

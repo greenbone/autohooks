@@ -24,7 +24,6 @@ from tempfile import TemporaryDirectory
 from autohooks.install import (
     get_autohooks_pre_commit_hook,
     get_pre_commit_hook_path,
-    get_pre_commit_hook_template_path,
     install_pre_commit_hook,
 )
 from autohooks.utils import exec_git
@@ -55,13 +54,6 @@ class GetPreCommitHookPathTestCase(GitDirTestCase):
             pre_commmit_hook_path,
             self.temp_dir_path / '.git' / 'hooks' / 'pre-commit',
         )
-
-
-class GetPreCommitHookTemplatePath(unittest.TestCase):
-    def test_template_exists(self):
-        template_path = get_pre_commit_hook_template_path()
-        self.assertTrue(template_path.exists())
-        self.assertTrue(template_path.is_file())
 
 
 class InstallPreCommitHook(GitDirTestCase):
