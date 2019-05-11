@@ -15,17 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from enum import Enum
+import unittest
+
+from autohooks.setting import Mode
 
 
-class Mode(Enum):
-    PIPENV = 1
-    MANUAL = 2
-    UNDEFINED = -1
-    UNKNOWN = -2
+class ModeTestCase(unittest.TestCase):
+    def test_get_effective_mode(self):
+        self.assertEqual(Mode.PIPENV.get_effective_mode(), Mode.PIPENV)
+        self.assertEqual(Mode.MANUAL.get_effective_mode(), Mode.MANUAL)
+        self.assertEqual(Mode.UNDEFINED.get_effective_mode(), Mode.MANUAL)
+        self.assertEqual(Mode.UNKNOWN.get_effective_mode(), Mode.MANUAL)
 
-    def get_effective_mode(self):
-        # pylint: disable=comparison-with-callable
-        if self.value == Mode.PIPENV.value:
-            return Mode.PIPENV
-        return Mode.MANUAL
+
+if __name__ == '__main__':
+    unittest.main()
