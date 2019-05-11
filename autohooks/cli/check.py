@@ -17,7 +17,7 @@
 
 from autohooks.install import (
     get_pre_commit_hook_path,
-    get_pre_commit_hook_template_path,
+    is_autohooks_pre_commit_hook,
 )
 
 from autohooks.config import (
@@ -38,13 +38,9 @@ from autohooks.terminal import ok, error, warning
 
 def check_hooks():
     pre_commit_hook = get_pre_commit_hook_path()
-    pre_commit_template = get_pre_commit_hook_template_path()
-
-    template = pre_commit_template.read_text()
 
     if pre_commit_hook.is_file():
-        hook = pre_commit_hook.read_text()
-        if hook == template:
+        if is_autohooks_pre_commit_hook(pre_commit_hook):
             ok('autohooks pre-commit hook is active.')
         else:
             error(
