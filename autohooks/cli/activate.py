@@ -25,19 +25,19 @@ from autohooks.config import (
 from autohooks.install import (
     install_pre_commit_hook,
     get_pre_commit_hook_path,
-    get_pre_commit_hook_template_path,
+    get_autohooks_pre_commit_hook,
 )
 
 
 def install_hooks(args):
-    pre_commit_hook = get_pre_commit_hook_path()
+    pre_commit_hook_path = get_pre_commit_hook_path()
     pyproject_toml = get_pyproject_toml_path()
     config = load_config_from_pyproject_toml(pyproject_toml)
 
-    if pre_commit_hook.exists() and not args.force:
+    if pre_commit_hook_path.exists() and not args.force:
         print(
             'pre-commit hook is already installed at {}. --force to '
-            'override.'.format(str(pre_commit_hook))
+            'override.'.format(str(pre_commit_hook_path))
         )
     else:
         if not config.is_autohooks_enabled():
@@ -49,7 +49,9 @@ def install_hooks(args):
                 file=sys.stderr,
             )
 
-        pre_commit_hook_template = get_pre_commit_hook_template_path()
-        install_pre_commit_hook(pre_commit_hook_template, pre_commit_hook)
+        autohooks_pre_commit_hook = get_autohooks_pre_commit_hook()
+        install_pre_commit_hook(autohooks_pre_commit_hook, pre_commit_hook_path)
 
-        print('pre-commit hook installed at {}'.format(str(pre_commit_hook)))
+        print(
+            'pre-commit hook installed at {}'.format(str(pre_commit_hook_path))
+        )
