@@ -174,6 +174,8 @@ virtual environment or to ignore them by deactivating it.
 
 * Python code linting via [pylint](https://github.com/greenbone/autohooks-plugin-pylint)
 
+* Python import sorting via [isort](https://github.com/greenbone/autohooks-plugin-isort)
+
 ## How-to write a Plugin
 
 Plugins need to be available in the
