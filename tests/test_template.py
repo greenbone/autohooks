@@ -57,7 +57,8 @@ class PreCommitTemplateTestCase(unittest.TestCase):
         path = FakeTemplatePath("$SHEBANG")
         template = PreCommitTemplate(path)
         self.assertEqual(
-            template.render(mode=Mode.PIPENV), "/usr/bin/env pipenv run python"
+            template.render(mode=Mode.PIPENV),
+            "/usr/bin/env -S pipenv run python3",
         )
 
     def test_should_render_mode_unknown(self):

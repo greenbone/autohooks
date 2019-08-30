@@ -22,7 +22,7 @@ from autohooks.utils import get_autohooks_directory_path
 
 
 PYTHON3_SHEBANG = '/usr/bin/env python3'
-PIPENV_SHEBANG = '/usr/bin/env pipenv run python'
+PIPENV_SHEBANG = '/usr/bin/env -S pipenv run python3'
 
 
 def get_pre_commit_hook_template_path():
