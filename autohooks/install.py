@@ -46,6 +46,7 @@ def is_autohooks_pre_commit_hook(path):
 
 def install_pre_commit_hook(pre_commit_hook, pre_commit_hook_path):
     pre_commit_hook_path.write_text(pre_commit_hook)
+    pre_commit_hook_path.chmod(0o775)
 
 
 class AutohooksInstall:
