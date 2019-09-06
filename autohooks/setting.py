@@ -29,3 +29,13 @@ class Mode(Enum):
         if self.value == Mode.PIPENV.value:
             return Mode.PIPENV
         return Mode.PYTHONPATH
+
+    @staticmethod
+    def from_string(modestring):
+        if not modestring:
+            return Mode.UNDEFINED
+
+        try:
+            return Mode[modestring.upper()]
+        except KeyError:
+            return Mode.UNKNOWN

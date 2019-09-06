@@ -27,6 +27,19 @@ class ModeTestCase(unittest.TestCase):
         self.assertEqual(Mode.UNDEFINED.get_effective_mode(), Mode.PYTHONPATH)
         self.assertEqual(Mode.UNKNOWN.get_effective_mode(), Mode.PYTHONPATH)
 
+    def test_get_pipenv_mode_from_string(self):
+        self.assertEqual(Mode.from_string('pipenv'), Mode.PIPENV)
+        self.assertEqual(Mode.from_string('PIPENV'), Mode.PIPENV)
+
+    def test_get_pythonpath_mode_from_string(self):
+        self.assertEqual(Mode.from_string('pythonpath'), Mode.PYTHONPATH)
+        self.assertEqual(Mode.from_string('PYTHONPATH'), Mode.PYTHONPATH)
+
+    def test_get_invalid_mode_from_string(self):
+        self.assertEqual(Mode.from_string('foo'), Mode.UNKNOWN)
+        self.assertEqual(Mode.from_string(None), Mode.UNDEFINED)
+        self.assertEqual(Mode.from_string(''), Mode.UNDEFINED)
+
 
 if __name__ == '__main__':
     unittest.main()
