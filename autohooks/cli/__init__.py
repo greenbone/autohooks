@@ -17,6 +17,7 @@
 
 import argparse
 
+from autohooks.setting import Mode
 from autohooks.version import get_version
 
 from autohooks.cli.activate import install_hooks
@@ -42,6 +43,14 @@ def main():
         '--force',
         action='store_true',
         help='Force activation of hook even if a hook already exists',
+    )
+    activate_parser.add_argument(
+        '-m',
+        '--mode',
+        dest='mode',
+        choices=[str(Mode.PYTHONPATH), str(Mode.PIPENV)],
+        help='Mode for loading autohooks during hook execution. Either load '
+        'autohooks from the PYTHON_PATH or via pipenv.',
     )
 
     subparsers.add_parser('check', help='Check installed pre-commit hook')
