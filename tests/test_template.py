@@ -51,7 +51,9 @@ class FakeTemplatePath:
 class PreCommitTemplateTestCase(unittest.TestCase):
     def test_should_use_default_template(self):
         template = PreCommitTemplate()
-        self.assertEqual(template.render(mode=Mode.MANUAL), DEFAULT_TEMPLATE)
+        self.assertEqual(
+            template.render(mode=Mode.PYTHONPATH), DEFAULT_TEMPLATE
+        )
 
     def test_should_render_mode_pipenv(self):
         path = FakeTemplatePath("$SHEBANG")

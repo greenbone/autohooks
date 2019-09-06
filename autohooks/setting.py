@@ -20,7 +20,7 @@ from enum import Enum
 
 class Mode(Enum):
     PIPENV = 1
-    MANUAL = 2
+    PYTHONPATH = 2
     UNDEFINED = -1
     UNKNOWN = -2
 
@@ -28,4 +28,4 @@ class Mode(Enum):
         # pylint: disable=comparison-with-callable
         if self.value == Mode.PIPENV.value:
             return Mode.PIPENV
-        return Mode.MANUAL
+        return Mode.PYTHONPATH

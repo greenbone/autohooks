@@ -23,9 +23,9 @@ from autohooks.setting import Mode
 class ModeTestCase(unittest.TestCase):
     def test_get_effective_mode(self):
         self.assertEqual(Mode.PIPENV.get_effective_mode(), Mode.PIPENV)
-        self.assertEqual(Mode.MANUAL.get_effective_mode(), Mode.MANUAL)
-        self.assertEqual(Mode.UNDEFINED.get_effective_mode(), Mode.MANUAL)
-        self.assertEqual(Mode.UNKNOWN.get_effective_mode(), Mode.MANUAL)
+        self.assertEqual(Mode.PYTHONPATH.get_effective_mode(), Mode.PYTHONPATH)
+        self.assertEqual(Mode.UNDEFINED.get_effective_mode(), Mode.PYTHONPATH)
+        self.assertEqual(Mode.UNKNOWN.get_effective_mode(), Mode.PYTHONPATH)
 
 
 if __name__ == '__main__':
