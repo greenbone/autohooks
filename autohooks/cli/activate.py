@@ -54,5 +54,7 @@ def install_hooks(args):
         install_pre_commit_hook(autohooks_pre_commit_hook, pre_commit_hook_path)
 
         print(
-            'pre-commit hook installed at {}'.format(str(pre_commit_hook_path))
+            'pre-commit hook installed at {} using {} mode'.format(
+                str(pre_commit_hook_path), str(mode.get_effective_mode())
+            )
         )
