@@ -9,6 +9,9 @@ in Python
 
 - [Why?](#why)
 - [Solution](#solution)
+- [Modes](#modes)
+  - [Pythonpath mode](#pythonpath-mode)
+  - [Pipenv mode](#pipenv-mode)
 - [Installation](#installation)
   - [Install autohooks python package](#install-autohooks-python-package)
   - [Activating the git hooks](#activating-the-git-hooks)
@@ -39,26 +42,61 @@ itself and doesn't install in the current environment.
 
 Autohooks is a pure python library that installs a minimal
 [executable git hook](https://github.com/greenbone/autohooks/blob/master/autohooks/precommit/template).
-If autohooks isn't installed in your current python path the hooks aren't
-executed. So autohooks is always opt-in by installing the package into your
-current development environment. It would be even possible to run different
-versions of autohooks by switching the environment.
+It allows you to decide how to maintain your hook dependencies by supporting
+different modes.
 
-Autohooks doesn't interfere with your work. If autohooks can't be run or fails
-executing a plugin, an error is shown only and the git hook will proceed.
+## Modes
+
+Currently two modes for using autohooks are supported:
+
+* `pythonpath` and
+* `pipenv`
+
+The modes handle how autohooks, the plugins and their dependencies are loaded
+during git hook execution.
+
+### Pythonpath mode
+
+In the `pythonpath` mode the user has to install autohooks, the desired
+plugins and their dependencies into the [PYTHONPATH](https://docs.python.org/3/library/sys.html#sys.path)
+manually.
+
+This can be achieved by running `pip install --user autohooks ...` to put them
+into the installation directory of the [current user](https://docs.python.org/3/library/site.html#site.USER_SITE)
+or with `pip install authooks ...` for a system wide installation.
+
+Alternatively a [virtual environment](https://packaging.python.org/tutorials/installing-packages/#creating-and-using-virtual-environments)
+could be used, which separates the installation from your global and user wide
+python packages.
+
+It would also be possible to use [pipenv] for the management of the virtual
+environment but the activation of the environment has to be done manually.
+
+Therefore it would be even possible to run different versions of autohooks by
+using the `pythonpath` mode and switching a virtual environment.
+
+### Pipenv mode
+
+In the `pipenv` mode [pipenv] is used to run autohooks in a dedicated virtual
+environment. Pipenv uses a lockfile to install exact versions. Therefore the
+installation is deterministic and reliable between different developer setups.
+In constrast to the `pythonpath` mode the activation of the virtual environment
+provided by [pipenv] is done automatically in the background.
+
+Using the `pipenv` mode is highly recommended.
 
 ## Installation
 
 For the installation of autohooks three steps are necessary:
 
-1. Install the autohooks package into your current environment
-2. Activate the [git hooks](https://git-scm.com/docs/githooks)
-3. Configure the plugins to be run
+1. Install autohooks package into your current environment
+3. Configure mode and plugins to be run
+2. Activate [git hooks](https://git-scm.com/docs/githooks)
 
 ### Install autohooks python package
 
-For installing the autohooks python package, using
-[pipenv](https://pipenv.readthedocs.io/) is highly recommended.
+For installing the autohooks python package, using [pipenv] is highly
+recommended.
 
 To install autohooks as a development dependency run
 
@@ -349,3 +387,5 @@ first.
 Copyright (C) 2019 [Greenbone Networks GmbH](https://www.greenbone.net/)
 
 Licensed under the [GNU General Public License v3.0 or later](LICENSE).
+
+[pipenv]: https://pipenv.readthedocs.io/
