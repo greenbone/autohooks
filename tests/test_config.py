@@ -99,6 +99,18 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
+    def test_get_mode_pythonpath(self):
+        config = AutohooksConfig(
+            {'tool': {'autohooks': {'mode': 'pythonpath'}}}
+        )
+
+        self.assertTrue(config.has_config())
+        self.assertTrue(config.has_autohooks_config())
+        self.assertTrue(config.is_autohooks_enabled())
+        self.assertEqual(config.get_mode(), Mode.PYTHONPATH)
+
+        self.assertEqual(len(config.get_pre_commit_script_names()), 0)
+
     def test_get_mode_unknown(self):
         config = AutohooksConfig({'tool': {'autohooks': {'mode': 'foo'}}})
 
