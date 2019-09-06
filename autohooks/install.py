@@ -29,10 +29,7 @@ def get_pre_commit_hook_path():
     return git_hook_dir_path / 'pre-commit'
 
 
-def get_autohooks_pre_commit_hook():
-    config = load_config_from_pyproject_toml()
-
-    mode = config.get_mode()
+def get_autohooks_pre_commit_hook(mode):
     template = PreCommitTemplate()
 
     return template.render(mode=mode)
@@ -54,7 +51,10 @@ class AutohooksInstall:
         try:
             pre_commit_hook_path = get_pre_commit_hook_path()
             if not pre_commit_hook_path.exists():
-                autohooks_pre_commit_hook = get_autohooks_pre_commit_hook()
+                config = load_config_from_pyproject_toml()
+
+                mode = config.get_mode()
+                autohooks_pre_commit_hook = get_autohooks_pre_commit_hook(mode)
                 install_pre_commit_hook(
                     autohooks_pre_commit_hook, pre_commit_hook_path
                 )

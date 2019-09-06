@@ -49,7 +49,8 @@ def install_hooks(args):
                 file=sys.stderr,
             )
 
-        autohooks_pre_commit_hook = get_autohooks_pre_commit_hook()
+        mode = config.get_mode()
+        autohooks_pre_commit_hook = get_autohooks_pre_commit_hook(mode)
         install_pre_commit_hook(autohooks_pre_commit_hook, pre_commit_hook_path)
 
         print(
