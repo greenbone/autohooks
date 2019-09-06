@@ -39,3 +39,6 @@ class Mode(Enum):
             return Mode[modestring.upper()]
         except KeyError:
             return Mode.UNKNOWN
+
+    def __str__(self):
+        return self.name.lower()

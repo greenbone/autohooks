@@ -40,6 +40,12 @@ class ModeTestCase(unittest.TestCase):
         self.assertEqual(Mode.from_string(None), Mode.UNDEFINED)
         self.assertEqual(Mode.from_string(''), Mode.UNDEFINED)
 
+    def test_string_conversion(self):
+        self.assertEqual(str(Mode.PIPENV), 'pipenv')
+        self.assertEqual(str(Mode.PYTHONPATH), 'pythonpath')
+        self.assertEqual(str(Mode.UNKNOWN), 'unknown')
+        self.assertEqual(str(Mode.UNDEFINED), 'undefined')
+
 
 if __name__ == '__main__':
     unittest.main()
