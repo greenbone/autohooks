@@ -41,4 +41,4 @@ class Mode(Enum):
             return Mode.UNKNOWN
 
     def __str__(self):
-        return self.name.lower()
+        return self.name.lower()  # pylint: disable=no-member
