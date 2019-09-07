@@ -14,9 +14,8 @@ in Python
   - [Pipenv mode](#pipenv-mode)
 - [Installation](#installation)
   - [Install autohooks python package](#install-autohooks-python-package)
+  - [Configure mode and plugins to be run](#configure-mode-and-plugins-to-be-run)
   - [Activating the git hooks](#activating-the-git-hooks)
-  - [Configure plugins to be run](#configure-plugins-to-be-run)
-- [Proposed Workflow](#proposed-workflow)
 - [Plugins](#plugins)
 - [How-to write a Plugin](#how-to-write-a-plugin)
   - [Linting plugin](#linting-plugin)
@@ -80,7 +79,7 @@ using the `pythonpath` mode and switching a virtual environment.
 In the `pipenv` mode [pipenv] is used to run autohooks in a dedicated virtual
 environment. Pipenv uses a lockfile to install exact versions. Therefore the
 installation is deterministic and reliable between different developer setups.
-In constrast to the `pythonpath` mode the activation of the virtual environment
+In contrast to the `pythonpath` mode the activation of the virtual environment
 provided by [pipenv] is done automatically in the background.
 
 Using the `pipenv` mode is highly recommended.
@@ -126,34 +125,24 @@ autohooks = {git = "https://github.com/greenbone/autohooks"}
 
 to the `[dev-packages]` section of your `Pipfile`.
 
-### Activating the git hooks
+### Configure mode and plugins to be run
 
-If autohooks is installed from git or a source tarball, the git hooks should be
-activated automatically. The activation can be verified by running e.g.
-`autohooks check`.
+Autohooks uses the *pyproject.toml* file specified in
+[PEP518](https://www.python.org/dev/peps/pep-0518/) for its configuration.
+Adding a *[tool.autohooks]* section allows to specify the desired [autohooks mode](#modes)
+and to set python modules to be run as [autohooks plugin](#plugins).
 
-Installing autohooks from a [wheel](https://www.python.org/dev/peps/pep-0427/)
-package will **NOT** activate the git commit hooks.
-
-To manually activate the git hooks you can run
-
-```sh
-pipenv run autohooks activate
-```
-
-### Configure plugins to be run
+The mode can be set by adding a `mode =` line to the *pyproject.toml* file.
+Current possible options are `"pythonpath"` and `"pipenv".`See
+[autohooks mode](#modes) for more details. If the mode setting is missing it
+falls back to `pythonpath` mode.
 
 To actually run an action on git hooks, [autohooks plugins](#plugins) have to be
 installed and configured. To install e.g. python linting via pylint run
 
-```
+```bash
 pipenv install --dev autohooks-plugin-pylint
 ```
-
-Autohooks uses the *pyproject.toml* file specified in
-[PEP518](https://www.python.org/dev/peps/pep-0518/) for its configuration.
-Adding a *[tool.autohooks]* section allows to set python modules to be run on a
-specific git hook.
 
 Example *pyproject.toml*:
 
@@ -163,48 +152,30 @@ requires = ["setuptools", "wheel"]
 
 [tool.autohooks]
 pre-commit = ["autohooks.plugins.black"]
+mode = "pipenv"
 ```
 
-## Proposed Workflow
+### Activating the git hooks
 
-Using [pipenv](https://pipenv.readthedocs.io/) allows to install all
-dependencies and tools with a specific version into a virtual, easily removable
-Python environment. Therefore it's best to maintain **autohooks** also via
-pipenv. Because it is not required to build or run your software, it should be
-[installed as a development dependency](#install-autohooks-python-package).
-Installing and [activating](#activating-the-git-hooks) autohooks doesn't
-actually run any check or formatting by itself. Therefore, it is required to
-[choose and install a plugin](#configure-plugins-to-be-run).
+If autohooks is installed from git or a source tarball, the git hooks should be
+activated automatically. The activation can be verified by running e.g.
+`autohooks check`.
 
-If all these tasks have been resolved, the developers are able to install
-and activate autohooks with only one single command from your project's git
-repository:
+Installing autohooks from a [wheel](https://www.python.org/dev/peps/pep-0427/)
+package will **NOT** activate the git commit hooks automatically.
 
-```sh
-pipenv install --dev
+To manually activate the git hooks you can run
+
+```bash
+pipenv run autohooks activate
 ```
 
-Because virtual environments are used for all dependencies including
-autohooks, the linting, formatting, etc. can only by done when running
-`git commit` within the virtual environment.
+Calling activate also allows for overriding the [mode](#modes) defined in the
+*pyproject.toml* settings. E.g.
 
-```sh
-$ cd myproject
-$ pipenv install --dev
-$ pipenv shell
-(myproject)$ git commit
+```bash
+pipenv run autohooks activate --mode pipenv
 ```
-
-The advantage of this process is, if the user is not running `git commit` within
-the active virtual environment, autohooks and its plugins are not executed.
-
-```sh
-$ cd myproject
-$ git commit
-```
-
-This allows the user to choose whether to execute the hooks by activating the
-virtual environment or to ignore them by deactivating it.
 
 ## Plugins
 
@@ -219,7 +190,7 @@ virtual environment or to ignore them by deactivating it.
 Plugins need to be available in the
 [Python import path](https://docs.python.org/3/reference/import.html). The
 easiest way to achieve this, is to upload a plugin to [PyPI](https://pypi.org/)
-and install it via [pip]() or [pipenv](http://pipenv.readthedocs.io/).
+and install it via [pip] or [pipenv].
 
 Alternatively, a plugin can also be put into a *.autohooks* directory at the root
 directory of the git repository where the hooks should be executed.
@@ -388,4 +359,5 @@ Copyright (C) 2019 [Greenbone Networks GmbH](https://www.greenbone.net/)
 
 Licensed under the [GNU General Public License v3.0 or later](LICENSE).
 
+[pip]: https://pip.pypa.io/
 [pipenv]: https://pipenv.readthedocs.io/
