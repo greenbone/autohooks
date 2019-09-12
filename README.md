@@ -66,7 +66,7 @@ or with `pip install authooks ...` for a system wide installation.
 
 Alternatively a [virtual environment](https://packaging.python.org/tutorials/installing-packages/#creating-and-using-virtual-environments)
 could be used, which separates the installation from your global and user wide
-python packages.
+Python packages.
 
 It would also be possible to use [pipenv] for the management of the virtual
 environment but the activation of the environment has to be done manually.
@@ -170,7 +170,7 @@ To manually activate the git hooks you can run
 pipenv run autohooks activate
 ```
 
-Calling activate also allows for overriding the [mode](#modes) defined in the
+Calling `activate` also allows for overriding the [mode](#modes) defined in the
 *pyproject.toml* settings. E.g.
 
 ```bash
