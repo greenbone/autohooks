@@ -54,6 +54,10 @@ Currently two modes for using autohooks are supported:
 The modes handle how autohooks, the plugins and their dependencies are loaded
 during git hook execution.
 
+If no mode is specified in the [`pyproject.toml` config file](#configure-mode-and-plugins-to-be-run)
+and no mode is set during [activation](#activating-the-git-hooks), autohooks
+will use the [pythonpath mode](#pythonpath-mode) by default.
+
 ### Pythonpath mode
 
 In the `pythonpath` mode the user has to install autohooks, the desired
