@@ -12,6 +12,7 @@ in Python
 - [Modes](#modes)
   - [Pythonpath mode](#pythonpath-mode)
   - [Pipenv mode](#pipenv-mode)
+  - [Poetry mode](#poetry-mode)
 - [Installation](#installation)
   - [Install autohooks python package](#install-autohooks-python-package)
   - [Configure mode and plugins to be run](#configure-mode-and-plugins-to-be-run)
@@ -88,6 +89,13 @@ provided by [pipenv] is done automatically in the background.
 
 Using the `pipenv` mode is highly recommended.
 
+### Poetry mode
+
+Like the [pipenv mode](#pipenv-mode) it is possible to run autohooks in a
+dedicated environment controlled by [poetry]. By using the `poetry` mode the
+virtual environment will be activated automatically in the background when
+executing the autohooks based git commit hook.
+
 ## Installation
 
 For the installation of autohooks three steps are necessary:
@@ -137,7 +145,7 @@ Adding a *[tool.autohooks]* section allows to specify the desired [autohooks mod
 and to set python modules to be run as [autohooks plugin](#plugins).
 
 The mode can be set by adding a `mode =` line to the *pyproject.toml* file.
-Current possible options are `"pythonpath"` and `"pipenv".`See
+Current possible options are `"pythonpath"`, `"pipenv"` and ``"poetry"`. See
 [autohooks mode](#modes) for more details. If the mode setting is missing it
 falls back to `pythonpath` mode.
 
@@ -365,3 +373,4 @@ Licensed under the [GNU General Public License v3.0 or later](LICENSE).
 
 [pip]: https://pip.pypa.io/
 [pipenv]: https://pipenv.readthedocs.io/
+[poetry]: https://poetry.eustace.io/
