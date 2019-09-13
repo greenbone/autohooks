@@ -143,10 +143,10 @@ to the `[dev-packages]` section of your `Pipfile`.
 Autohooks uses the *pyproject.toml* file specified in
 [PEP518](https://www.python.org/dev/peps/pep-0518/) for its configuration.
 Adding a *[tool.autohooks]* section allows to specify the desired [autohooks mode](#modes)
-and to set python modules to be run as [autohooks plugin](#plugins).
+and to set python modules to be run as [autohooks plugins](#plugins).
 
 The mode can be set by adding a `mode =` line to the *pyproject.toml* file.
-Current possible options are `"pythonpath"`, `"pipenv"` and ``"poetry"`. See
+Current possible options are `"pythonpath"`, `"pipenv"` and `"poetry"`. See
 [autohooks mode](#modes) for more details. If the mode setting is missing it
 falls back to `pythonpath` mode.
 
