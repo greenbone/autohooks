@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b443df8ccf50e42630c079cf8eba171eef19fd160dc1a85a6e2de9b54021dc7e"
+            "sha256": "afd4bf7ad4058d32b2114e72c22f7a70926376fdcee132fab208de349c9ea4b3"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -62,7 +62,18 @@
             "version": "==19.1.0"
         },
         "autohooks": {
-            "path": "."
+            "hashes": [
+                "sha256:2ef6e1b90d1837191bacd5faa2f4cdaafebebb7c21707b6ba22ad1879ec31326"
+            ],
+            "version": "==1.1.0"
+        },
+        "autohooks-plugin-black": {
+            "hashes": [
+                "sha256:741aa4f06de987ec717171eba35d97f622d6bc749299ae82ed665237301e1973",
+                "sha256:ae6154a287458bceca814c4f877457d25b59b596c1b8d96f76a7d9017cbf95a7"
+            ],
+            "index": "pypi",
+            "version": "==1.1.0"
         },
         "black": {
             "hashes": [
@@ -78,6 +89,15 @@
                 "sha256:3fdf7f77adcf649c9911387df51254b813185e32b2c6619f690b593a617e19fa"
             ],
             "version": "==3.1.0"
+        },
+        "blessings": {
+            "hashes": [
+                "sha256:98e5854d805f50a5b58ac2333411b0482516a8210f23f43308baeb58d77c157d",
+                "sha256:b1fdd7e7a675295630f9ae71527a8ebc10bfefa236b3d6aa4932ee4462c17ba3",
+                "sha256:caad5211e7ba5afe04367cdd4cfc68fa886e2e08f6f35e76b7387d2109ccea6e"
+            ],
+            "index": "pypi",
+            "version": "==1.7"
         },
         "certifi": {
             "hashes": [

@@ -12,3 +12,4 @@ pylint = "*"
 black = "==18.9b0"
 twine = "*"
 autohooks = {path = "."}
+autohooks-plugin-black = "*"
