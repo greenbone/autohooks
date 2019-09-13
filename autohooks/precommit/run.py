@@ -50,7 +50,7 @@ def has_precommit_function(plugin):
 
 def has_precommit_parameters(plugin):
     signature = inspect.signature(plugin.precommit)
-    return True if signature.parameters else False
+    return bool(signature.parameters)
 
 
 def run():
