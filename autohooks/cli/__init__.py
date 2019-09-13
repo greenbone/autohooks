@@ -48,9 +48,9 @@ def main():
         '-m',
         '--mode',
         dest='mode',
-        choices=[str(Mode.PYTHONPATH), str(Mode.PIPENV)],
+        choices=[str(Mode.PYTHONPATH), str(Mode.PIPENV), str(Mode.POETRY)],
         help='Mode for loading autohooks during hook execution. Either load '
-        'autohooks from the PYTHON_PATH or via pipenv.',
+        'autohooks from the PYTHON_PATH, via pipenv or via poetry.',
     )
 
     subparsers.add_parser('check', help='Check installed pre-commit hook')

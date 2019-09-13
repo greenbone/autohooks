@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   **PYTHONPATH** manually. The `pipenv` mode uses pipenv to handle the
   dependencies. Using the `pipenv` mode is recommended.
   [#24](https://github.com/greenbone/autohooks/pull/24)
+* Add `poetry` mode to run autohooks via [poetry](https://poetry.eustace.io/)
+  [#29](https://github.com/greenbone/autohooks/pull/29)
 
 ### Changed
 
