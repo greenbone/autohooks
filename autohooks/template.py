@@ -26,6 +26,8 @@ PYTHON3_SHEBANG = '/usr/bin/env python3'
 PIPENV_SHEBANG = '/usr/bin/env -S pipenv run python3'
 POETRY_SHEBANG = '/usr/bin/env -S poetry run python3'
 
+TEMPLATE_VERSION = 1
+
 
 def get_pre_commit_hook_template_path() -> Path:
     setup_dir_path = get_autohooks_directory_path()
@@ -44,11 +46,13 @@ class PreCommitTemplate:
     def render(self, *, mode: Mode) -> str:
         mode = mode.get_effective_mode()
 
+        params = dict(VERSION=TEMPLATE_VERSION)
+
         if mode == Mode.PIPENV:
-            params = dict(SHEBANG=PIPENV_SHEBANG)
+            params['SHEBANG'] = PIPENV_SHEBANG
         elif mode == Mode.POETRY:
-            params = dict(SHEBANG=POETRY_SHEBANG)
+            params['SHEBANG'] = POETRY_SHEBANG
         else:
-            params = dict(SHEBANG=PYTHON3_SHEBANG)
+            params['SHEBANG'] = PYTHON3_SHEBANG
 
         return self._template.safe_substitute(params)
