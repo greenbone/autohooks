@@ -8,7 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+* Introduction of autohooks modes. Modes configure how to handle loading
+  autohooks, plugins and dependencies when running the git hook. The
+  `pythonpath` mode requires to put the necessary python packages into the
+  **PYTHONPATH** manually. The `pipenv` mode uses pipenv to handle the
+  dependencies. Using the `pipenv` mode is recommended.
+  [#24](https://github.com/greenbone/autohooks/pull/24)
+
 ### Changed
+
+* The installed git hook will fail now if autohooks can't be loaded. Before the
+  git hook raised only a warning and was ignored. This a major change compared
+  to the previous versions. To update existing installations it requires
+  overriding the installed git hook by running `autohooks activate --force`.
+  [#24](https://github.com/greenbone/autohooks/pull/24)
+
 ### Deprecated
 ### Fixed
 ### Removed

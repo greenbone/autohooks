@@ -27,6 +27,7 @@ from autohooks.install import (
     get_pre_commit_hook_path,
     get_autohooks_pre_commit_hook,
 )
+from autohooks.setting import Mode
 
 
 def install_hooks(args):
@@ -49,9 +50,16 @@ def install_hooks(args):
                 file=sys.stderr,
             )
 
-        autohooks_pre_commit_hook = get_autohooks_pre_commit_hook()
+        if args.mode:
+            mode = Mode.from_string(args.mode)
+        else:
+            mode = config.get_mode()
+
+        autohooks_pre_commit_hook = get_autohooks_pre_commit_hook(mode)
         install_pre_commit_hook(autohooks_pre_commit_hook, pre_commit_hook_path)
 
         print(
-            'pre-commit hook installed at {}'.format(str(pre_commit_hook_path))
+            'pre-commit hook installed at {} using {} mode'.format(
+                str(pre_commit_hook_path), str(mode.get_effective_mode())
+            )
         )

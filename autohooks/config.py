@@ -17,6 +17,7 @@
 
 import toml
 
+from autohooks.setting import Mode
 from autohooks.utils import get_pyproject_toml_path
 
 AUTOHOOKS_SECTION = 'tool.autohooks'
@@ -60,6 +61,19 @@ class AutohooksConfig:
             return self._autohooks_config.get_value('pre-commit', [])
 
         return []
+
+    def get_mode(self):
+        if self.has_autohooks_config():
+            mode = self._autohooks_config.get_value('mode')
+            if not mode:
+                return Mode.UNDEFINED
+
+            try:
+                return Mode[mode.upper()]
+            except KeyError:
+                return Mode.UNKNOWN
+
+        return Mode.UNDEFINED
 
     def get_config(self):
         return self._config
