@@ -21,5 +21,5 @@ exclude = '''
 '''
 
 [tool.autohooks]
-pre-commit = ['autohooks.plugins.black']
+pre-commit = ['autohooks.plugins.black', 'autohooks.plugins.pylint']
 mode = "pipenv"
