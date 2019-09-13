@@ -47,10 +47,11 @@ different modes.
 
 ## Modes
 
-Currently two modes for using autohooks are supported:
+Currently three modes for using autohooks are supported:
 
-* `pythonpath` and
+* `pythonpath`
 * `pipenv`
+* `poetry`
 
 The modes handle how autohooks, the plugins and their dependencies are loaded
 during git hook execution.
