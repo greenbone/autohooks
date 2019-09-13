@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   to the previous versions. To update existing installations it requires
   overriding the installed git hook by running `autohooks activate --force`.
   [#24](https://github.com/greenbone/autohooks/pull/24)
+* The installed git hook will fail now if a autohooks plugin can't be executed
+  e.g. if the import fails. Before these errors were ignored.
+  [#28](https://github.com/greenbone/autohooks/pull/28)
 
 ### Deprecated
 ### Fixed

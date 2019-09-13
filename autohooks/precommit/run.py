@@ -50,7 +50,7 @@ def has_precommit_function(plugin):
 
 def has_precommit_parameters(plugin):
     signature = inspect.signature(plugin.precommit)
-    return True if signature.parameters else False
+    return bool(signature.parameters)
 
 
 def run():
@@ -70,14 +70,18 @@ def run():
                 plugin = load_plugin(name)
                 if not has_precommit_function(plugin):
                     error(
-                        'No precommit function found in plugin {}'.format(name)
+                        'No precommit function found in plugin {}. '
+                        'Your autohooks settings may be invalid.'.format(name)
                     )
-                    return 0
+                    return 1
 
                 if has_precommit_parameters(plugin):
                     retval = plugin.precommit(config=config.get_config())
                 else:
-                    warning('precommit function without kwargs is deprecated.')
+                    warning(
+                        'precommit function without kwargs is deprecated. '
+                        'Please update {} to a newer version.'.format(name)
+                    )
                     retval = plugin.precommit()
 
                 if retval:
@@ -86,12 +90,14 @@ def run():
             except ImportError as e:
                 error(
                     'An error occurred while importing pre-commit '
-                    'hook {}. {}. The hook will be ignored.'.format(name, e)
+                    'hook {}. {}.'.format(name, e)
                 )
+                return 1
             except Exception as e:  # pylint: disable=broad-except
                 error(
                     'An error occurred while running pre-commit '
-                    'hook {}. {}. The hook will be ignored.'.format(name, e)
+                    'hook {}. {}.'.format(name, e)
                 )
+                return 1
 
     return 0
