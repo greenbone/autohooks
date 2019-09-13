@@ -23,6 +23,7 @@ from autohooks.utils import get_autohooks_directory_path
 
 PYTHON3_SHEBANG = '/usr/bin/env python3'
 PIPENV_SHEBANG = '/usr/bin/env -S pipenv run python3'
+POETRY_SHEBANG = '/usr/bin/env -S poetry run python3'
 
 
 def get_pre_commit_hook_template_path():
@@ -44,6 +45,8 @@ class PreCommitTemplate:
 
         if mode == Mode.PIPENV:
             params = dict(SHEBANG=PIPENV_SHEBANG)
+        elif mode == Mode.POETRY:
+            params = dict(SHEBANG=POETRY_SHEBANG)
         else:
             params = dict(SHEBANG=PYTHON3_SHEBANG)
 
