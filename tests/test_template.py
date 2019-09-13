@@ -24,6 +24,7 @@ from autohooks.template import (
 )
 
 DEFAULT_TEMPLATE = """#!/usr/bin/env python3
+# meta = { version = 1 }
 
 import sys
 
