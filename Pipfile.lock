@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7f8bbbbe3dd3b044c8d1ecb484cc015f9501b9a2ccea9a4dd3eb4ed309ebf10a"
+            "sha256": "b443df8ccf50e42630c079cf8eba171eef19fd160dc1a85a6e2de9b54021dc7e"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -60,6 +60,9 @@
                 "sha256:f0b870f674851ecbfbbbd364d6b5cbdff9dcedbc7f3f5e18a6891057f21fe399"
             ],
             "version": "==19.1.0"
+        },
+        "autohooks": {
+            "path": "."
         },
         "black": {
             "hashes": [
