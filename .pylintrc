@@ -40,9 +40,15 @@ confidence=
 # --enable=similarities". If you want to run only the classes checker, but have
 # no Warning level messages displayed, use"--disable=all --enable=classes
 # --disable=W"
+#
+# bad-continuation is disabled because of a bug in pylint.
+# See https://github.com/ambv/black/issues/48 and https://github.com/PyCQA/pylint/issues/289
+
 disable=len-as-condition,
         attribute-defined-outside-init,
-        missing-docstring
+        missing-docstring,
+        bad-continuation
+
 #disable=print-statement,
 #       parameter-unpacking,
 #       unpacking-in-except,
