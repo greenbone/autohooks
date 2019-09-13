@@ -63,6 +63,14 @@ class PreCommitTemplateTestCase(unittest.TestCase):
             "/usr/bin/env -S pipenv run python3",
         )
 
+    def test_should_render_mode_poetry(self):
+        path = FakeTemplatePath("$SHEBANG")
+        template = PreCommitTemplate(path)
+        self.assertEqual(
+            template.render(mode=Mode.POETRY),
+            "/usr/bin/env -S poetry run python3",
+        )
+
     def test_should_render_mode_unknown(self):
         path = FakeTemplatePath("$SHEBANG")
         template = PreCommitTemplate(path)
