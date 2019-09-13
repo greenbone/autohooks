@@ -21,6 +21,7 @@ from enum import Enum
 class Mode(Enum):
     PIPENV = 1
     PYTHONPATH = 2
+    POETRY = 3
     UNDEFINED = -1
     UNKNOWN = -2
 
@@ -28,6 +29,8 @@ class Mode(Enum):
         # pylint: disable=comparison-with-callable
         if self.value == Mode.PIPENV.value:
             return Mode.PIPENV
+        if self.value == Mode.POETRY.value:
+            return Mode.POETRY
         return Mode.PYTHONPATH
 
     @staticmethod
