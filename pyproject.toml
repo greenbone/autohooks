@@ -22,3 +22,4 @@ exclude = '''
 
 [tool.autohooks]
 pre-commit = ['autohooks.plugins.black']
+mode = "pipenv"
