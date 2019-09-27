@@ -29,7 +29,7 @@ from autohooks.install import (
     get_pre_commit_hook_path,
     get_autohooks_pre_commit_hook,
 )
-from autohooks.setting import Mode
+from autohooks.settings import Mode
 
 
 def install_hooks(args: Namespace) -> None:

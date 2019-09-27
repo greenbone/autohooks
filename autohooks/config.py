@@ -20,7 +20,7 @@ from pathlib import Path
 
 import toml
 
-from autohooks.setting import Mode
+from autohooks.settings import Mode
 from autohooks.utils import get_pyproject_toml_path
 
 AUTOHOOKS_SECTION = 'tool.autohooks'

@@ -27,7 +27,7 @@ from autohooks.install import (
     install_pre_commit_hook,
     is_autohooks_pre_commit_hook,
 )
-from autohooks.setting import Mode
+from autohooks.settings import Mode
 from autohooks.template import get_pre_commit_hook_template_path
 from autohooks.utils import exec_git
 

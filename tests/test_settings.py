@@ -17,7 +17,7 @@
 
 import unittest
 
-from autohooks.setting import Mode
+from autohooks.settings import Mode
 
 
 class ModeTestCase(unittest.TestCase):

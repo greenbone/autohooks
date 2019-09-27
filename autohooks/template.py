@@ -18,7 +18,7 @@
 from pathlib import Path
 from string import Template
 
-from autohooks.setting import Mode
+from autohooks.settings import Mode
 from autohooks.utils import get_autohooks_directory_path
 
 

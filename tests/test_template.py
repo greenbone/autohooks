@@ -17,7 +17,7 @@
 
 import unittest
 
-from autohooks.setting import Mode
+from autohooks.settings import Mode
 from autohooks.template import (
     PreCommitTemplate,
     get_pre_commit_hook_template_path,
