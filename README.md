@@ -194,6 +194,8 @@ pipenv run autohooks activate --mode pipenv
 
 * Python code formatting via [black](https://github.com/greenbone/autohooks-plugin-black)
 
+* Python code formatting via [autopep8](https://github.com/LeoIV/autohooks-plugin-autopep8)
+
 * Python code linting via [pylint](https://github.com/greenbone/autohooks-plugin-pylint)
 
 * Python import sorting via [isort](https://github.com/greenbone/autohooks-plugin-isort)
