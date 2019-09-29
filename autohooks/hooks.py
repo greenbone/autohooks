@@ -25,6 +25,7 @@ from autohooks.template import (
     POETRY_SHEBANG,
     PYTHON3_SHEBANG,
     TEMPLATE_VERSION,
+    PreCommitTemplate,
 )
 from autohooks.utils import get_git_hook_directory_path
 
@@ -92,3 +93,12 @@ class PreCommitHook:
             return int(meta['version'])
         except KeyError:
             return -1
+
+    def write(self, *, mode: Mode):
+        template = PreCommitTemplate()
+        pre_commit_hook = template.render(mode=mode)
+
+        self.pre_commit_hook_path.write_text(pre_commit_hook)
+        self.pre_commit_hook_path.chmod(0o775)
+
+        self._pre_commit_hook = None
