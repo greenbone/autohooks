@@ -36,7 +36,7 @@ from autohooks.precommit.run import (
 from autohooks.terminal import ok, error, warning
 
 
-def check_hooks():
+def check_hooks() -> None:
     pre_commit_hook = get_pre_commit_hook_path()
 
     if pre_commit_hook.is_file():

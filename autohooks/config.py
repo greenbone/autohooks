@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Dict
+
 import toml
 
 from autohooks.setting import Mode
@@ -24,10 +26,10 @@ AUTOHOOKS_SECTION = 'tool.autohooks'
 
 
 class Config:
-    def __init__(self, config_dict=None):
+    def __init__(self, config_dict: Dict = None):
         self._config_dict = config_dict or {}
 
-    def get(self, *keys):
+    def get(self, *keys: str) -> "Config":
         config_dict = self._config_dict
 
         for key in keys:
@@ -38,8 +40,8 @@ class Config:
     def get_value(self, key, default=None):
         return self._config_dict.get(key, default)
 
-    def is_empty(self):
-        return False if self._config_dict else True
+    def is_empty(self) -> bool:
+        return bool(self._config_dict)
 
 
 class AutohooksConfig:

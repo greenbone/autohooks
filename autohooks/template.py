@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from pathlib import Path
 from string import Template
 
 from autohooks.setting import Mode
@@ -26,22 +27,22 @@ PIPENV_SHEBANG = '/usr/bin/env -S pipenv run python3'
 POETRY_SHEBANG = '/usr/bin/env -S poetry run python3'
 
 
-def get_pre_commit_hook_template_path():
+def get_pre_commit_hook_template_path() -> Path:
     setup_dir_path = get_autohooks_directory_path()
     return setup_dir_path / 'precommit' / 'template'
 
 
 class PreCommitTemplate:
-    def __init__(self, template_path=None):
+    def __init__(self, template_path: Path = None) -> None:
         if template_path is None:
             template_path = get_pre_commit_hook_template_path()
         self._load(template_path)
 
-    def _load(self, template_path):
+    def _load(self, template_path: Path) -> None:
         self._template = Template(template_path.read_text())
 
-    def render(self, *, mode):
-        mode = mode.get_effective_mode()
+    def render(self, *, mode: Mode) -> str:
+        #mode = mode.get_effective_mode()
 
         if mode == Mode.PIPENV:
             params = dict(SHEBANG=PIPENV_SHEBANG)

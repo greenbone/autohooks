@@ -59,7 +59,7 @@ class Status(Enum):
 
 
 class StatusEntry:
-    def __init__(self, status_string, root_path=None):
+    def __init__(self, status_string: str, root_path: Path = None):
         status = status_string[:2]
         filename = status_string[3:]
 
@@ -88,7 +88,7 @@ class StatusEntry:
         return self.path.resolve()
 
 
-def _parse_status(output):
+def _parse_status(output: str):
     output = output.rstrip('\0')
     if not output:
         return
@@ -102,7 +102,7 @@ def _parse_status(output):
             yield line
 
 
-def is_staged_status(status):
+def is_staged_status(status: Status):
     return (
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
@@ -111,7 +111,7 @@ def is_staged_status(status):
     )
 
 
-def is_partially_staged_status(status):
+def is_partially_staged_status(status: Status):
     return (
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
@@ -123,7 +123,7 @@ def is_partially_staged_status(status):
     )
 
 
-def get_status(files=None):
+def get_status(files: str[] = None):
     args = [
         'status',
         '--porcelain=v1',
@@ -165,7 +165,7 @@ def _write_tree():
     return exec_git('write-tree').strip()
 
 
-def _read_tree(ref_or_hashid):
+def _read_tree(ref_or_hashid: str):
     exec_git('read-tree', ref_or_hashid)
 
 
@@ -174,7 +174,7 @@ def _checkout_from_index(status_list):
     exec_git('checkout-index', '-f', '--', *filenames)
 
 
-def _set_ref(name, hashid):
+def _set_ref(name: str, hashid: str):
     exec_git('update-ref', name, hashid)
 
 

@@ -20,6 +20,6 @@ from pkg_resources import safe_version
 VERSION = (2, 0, 0, 'alpha')
 
 
-def get_version():
+def get_version() -> str:
     str_version = '.'.join([str(v) for v in VERSION])
     return safe_version(str_version)

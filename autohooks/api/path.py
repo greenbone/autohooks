@@ -17,14 +17,16 @@
 
 import fnmatch
 
+from typing import Iterable
+from pathlib import Path
 
-def is_python_path(path):
+def is_python_path(path: Path):
     if not path:
         return False
     return path.match('*.py')
 
 
-def match(path, pattern_list):
+def match(path: Path, pattern_list: Iterable):
     """
     Check if a Path matches to one of the patterns
 
