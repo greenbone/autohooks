@@ -20,13 +20,13 @@ import fnmatch
 from typing import Iterable
 from pathlib import Path
 
-def is_python_path(path: Path):
+def is_python_path(path: Path) -> bool:
     if not path:
         return False
     return path.match('*.py')
 
 
-def match(path: Path, pattern_list: Iterable):
+def match(path: Path, pattern_list: Iterable) -> bool:
     """
     Check if a Path matches to one of the patterns
 

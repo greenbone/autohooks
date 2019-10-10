@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Dict
+from typing import Dict, List
 
 import toml
 
@@ -26,7 +26,7 @@ AUTOHOOKS_SECTION = 'tool.autohooks'
 
 
 class Config:
-    def __init__(self, config_dict: Dict = None):
+    def __init__(self, config_dict: Dict = None) -> None:
         self._config_dict = config_dict or {}
 
     def get(self, *keys: str) -> "Config":
@@ -37,7 +37,7 @@ class Config:
 
         return Config(config_dict)
 
-    def get_value(self, key, default=None):
+    def get_value(self, key, default: List(str) = None) -> List(str):
         return self._config_dict.get(key, default)
 
     def is_empty(self) -> bool:
@@ -45,26 +45,26 @@ class Config:
 
 
 class AutohooksConfig:
-    def __init__(self, config_dict=None):
+    def __init__(self, config_dict=None) -> None:
         self._config = Config(config_dict)
         self._autohooks_config = self._config.get('tool').get('autohooks')
 
-    def has_config(self):
-        return not self._config.is_empty()
+    def has_config(self) -> bool:
+        return bool(self._config)
 
-    def has_autohooks_config(self):
-        return not self._autohooks_config.is_empty()
+    def has_autohooks_config(self) -> bool:
+        return bool(self._autohooks_config)
 
-    def is_autohooks_enabled(self):
+    def is_autohooks_enabled(self) -> bool:
         return self.has_autohooks_config()
 
-    def get_pre_commit_script_names(self):
+    def get_pre_commit_script_names(self) -> List(str):
         if self.has_autohooks_config():
             return self._autohooks_config.get_value('pre-commit', [])
 
         return []
 
-    def get_mode(self):
+    def get_mode(self) -> Mode:
         if self.has_autohooks_config():
             mode = self._autohooks_config.get_value('mode')
             if not mode:

@@ -20,5 +20,5 @@ import sys
 from autohooks.terminal import ok, fail, error, warning
 
 
-def out(message):
+def out(message: str):
     print(message)
