@@ -46,7 +46,7 @@ class Config:
 
 
 class AutohooksConfig:
-    def __init__(self, config_dict=None) -> None:
+    def __init__(self, config_dict: Dict = None) -> None:
         self._config = Config(config_dict)
         self._autohooks_config = self._config.get('tool').get('autohooks')
 
