@@ -44,13 +44,15 @@ def is_autohooks_pre_commit_hook(path: Path) -> List[str]:
     return len(lines) > 5 and "autohooks.precommit" in lines[5]
 
 
-def install_pre_commit_hook(pre_commit_hook: str, pre_commit_hook_path: Path) -> None:
+def install_pre_commit_hook(
+    pre_commit_hook: str, pre_commit_hook_path: Path
+) -> None:
     pre_commit_hook_path.write_text(pre_commit_hook)
     pre_commit_hook_path.chmod(0o775)
 
 
 class AutohooksInstall:
-    def install_git_hook(self):
+    def install_git_hook(self) -> None:
         try:
             pre_commit_hook_path = get_pre_commit_hook_path()
             if not pre_commit_hook_path.exists():
@@ -66,12 +68,12 @@ class AutohooksInstall:
 
 
 class PostInstall(install, AutohooksInstall):
-    def run(self):
+    def run(self) -> None:
         super().run()
         self.install_git_hook()
 
 
 class PostDevelop(develop, AutohooksInstall):
-    def install_for_development(self):
+    def install_for_development(self) -> None:
         super().install_for_development()
         self.install_git_hook()
