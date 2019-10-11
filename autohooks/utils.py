@@ -29,7 +29,7 @@ class GitError(subprocess.CalledProcessError):
         )
 
 
-def exec_git(*args, ignore_errors: bool = False) -> str:
+def exec_git(*args: str, ignore_errors: bool = False) -> str:
     try:
         cmd_args = ['git']
         cmd_args.extend(args)
