@@ -22,7 +22,7 @@ from pathlib import Path
 
 
 class GitError(subprocess.CalledProcessError):
-    def __str__(self):
+    def __str__(self) -> str:
         return "Git command '%s' returned non-zero exit status %d" % (
             self.cmd,
             self.returncode,
@@ -64,13 +64,13 @@ def get_autohooks_directory_path() -> Path:
     return Path(__file__).resolve().parent
 
 
-def get_git_hook_directory_path(git_dir_path=None) -> Path:
+def get_git_hook_directory_path(git_dir_path: Path = None) -> Path:
     if git_dir_path is None:
         git_dir_path = get_git_directory_path()
     return git_dir_path / 'hooks'
 
 
-def is_project_root(path) -> bool:
+def is_project_root(path: Path) -> bool:
     return (
         (path / 'pyproject.toml').is_file()
         or (path / '.git').is_dir()
@@ -100,6 +100,6 @@ def get_project_autohooks_plugins_path(path: Path = None) -> Path:
     return root / '.autohooks'
 
 
-def get_pyproject_toml_path(path: Path = None):
+def get_pyproject_toml_path(path: Path = None) -> Path:
     root = get_project_root_path(path)
     return root / 'pyproject.toml'
