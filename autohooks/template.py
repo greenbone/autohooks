@@ -42,7 +42,7 @@ class PreCommitTemplate:
         self._template = Template(template_path.read_text())
 
     def render(self, *, mode: Mode) -> str:
-        #mode = mode.get_effective_mode()
+        # mode = mode.get_effective_mode()
 
         if mode == Mode.PIPENV:
             params = dict(SHEBANG=PIPENV_SHEBANG)

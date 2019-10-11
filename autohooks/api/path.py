@@ -20,6 +20,7 @@ import fnmatch
 from typing import Iterable
 from pathlib import Path
 
+
 def is_python_path(path: Path) -> bool:
     if not path:
         return False
