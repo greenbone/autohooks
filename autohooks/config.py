@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from typing import Dict, List
+from pathlib import Path
 
 import toml
 
@@ -37,11 +38,11 @@ class Config:
 
         return Config(config_dict)
 
-    def get_value(self, key, default: List(str) = None) -> List(str):
+    def get_value(self, key: str, default: List[str] = None) -> List[str]:
         return self._config_dict.get(key, default)
 
     def is_empty(self) -> bool:
-        return bool(self._config_dict)
+        return not bool(self._config_dict)
 
 
 class AutohooksConfig:
@@ -50,15 +51,15 @@ class AutohooksConfig:
         self._autohooks_config = self._config.get('tool').get('autohooks')
 
     def has_config(self) -> bool:
-        return bool(self._config)
+        return not self._config.is_empty()
 
     def has_autohooks_config(self) -> bool:
-        return bool(self._autohooks_config)
+        return not self._autohooks_config.is_empty()
 
     def is_autohooks_enabled(self) -> bool:
         return self.has_autohooks_config()
 
-    def get_pre_commit_script_names(self) -> List(str):
+    def get_pre_commit_script_names(self) -> List[str]:
         if self.has_autohooks_config():
             return self._autohooks_config.get_value('pre-commit', [])
 
@@ -81,7 +82,7 @@ class AutohooksConfig:
         return self._config
 
 
-def load_config_from_pyproject_toml(pyproject_toml=None):
+def load_config_from_pyproject_toml(pyproject_toml: Path = None) -> AutohooksConfig:
     if pyproject_toml is None:
         pyproject_toml = get_pyproject_toml_path()
 
