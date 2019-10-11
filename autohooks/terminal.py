@@ -26,17 +26,17 @@ except curses.error:
     term = Terminal(force_styling=None)  # pylint: disable=invalid-name
 
 
-def ok(message: str) -> str:
+def ok(message: str) -> None:
     print(message, '[', term.green('ok'), ']')
 
 
-def fail(message: str) -> str:
+def fail(message: str) -> None:
     print(message, '[', term.red('fail'), ']')
 
 
-def error(message: str) -> str:
+def error(message: str) -> None:
     print(message, '[', term.red('error'), ']')
 
 
-def warning(message: str) -> str:
+def warning(message: str) -> None:
     print(message, '[', term.yellow('warning'), ']')

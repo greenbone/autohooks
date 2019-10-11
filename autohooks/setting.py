@@ -35,5 +35,5 @@ class Mode(Enum):
         except KeyError:
             return Mode.UNKNOWN
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name.lower()  # pylint: disable=no-member

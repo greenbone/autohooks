@@ -38,7 +38,7 @@ def get_autohooks_pre_commit_hook(mode: Mode) -> str:
     return template.render(mode=mode)
 
 
-def is_autohooks_pre_commit_hook(path: Path) -> List[str]:
+def is_autohooks_pre_commit_hook(path: Path) -> bool:
     hook = path.read_text()
     lines = hook.split('\n')
     return len(lines) > 5 and "autohooks.precommit" in lines[5]

@@ -19,6 +19,9 @@ import importlib
 import inspect
 import sys
 
+from types import ModuleType
+from typing import Generator
+
 from contextlib import contextmanager
 
 from autohooks.config import load_config_from_pyproject_toml
@@ -27,7 +30,7 @@ from autohooks.utils import get_project_autohooks_plugins_path
 
 
 @contextmanager
-def autohooks_module_path():
+def autohooks_module_path() -> Generator:
     plugins = get_project_autohooks_plugins_path()
     plugins_dir_name = str(plugins)
 
@@ -40,20 +43,20 @@ def autohooks_module_path():
         sys.path.remove(plugins_dir_name)
 
 
-def load_plugin(name):
+def load_plugin(name: str) -> ModuleType:
     return importlib.import_module(name)
 
 
-def has_precommit_function(plugin):
+def has_precommit_function(plugin: ModuleType) -> bool:
     return hasattr(plugin, 'precommit') and inspect.isfunction(plugin.precommit)
 
 
-def has_precommit_parameters(plugin):
+def has_precommit_parameters(plugin: ModuleType) -> bool:
     signature = inspect.signature(plugin.precommit)
     return bool(signature.parameters)
 
 
-def run():
+def run() -> int:
     print('autohooks => pre-commit')
 
     config = load_config_from_pyproject_toml()
