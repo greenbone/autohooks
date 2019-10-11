@@ -20,7 +20,7 @@ from enum import Enum
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from types import TracebackType
-from typing import List, Type, Optional, Generator, TYPE_CHECKING
+from typing import Any, List, Type, Optional, Generator, TYPE_CHECKING
 
 from autohooks.utils import exec_git, get_project_root_path, GitError
 
@@ -101,16 +101,16 @@ def _parse_status(output: str) -> Generator[str, None, None]:
     if not output:
         return
 
-    output = output.split('\0')
-    while output:
-        line = output.pop(0)
+    output_list = output.split('\0')
+    while output_list:
+        line = output_list.pop(0)
         if line[0] == Status.RENAMED.value:
-            yield '{}\0{}'.format(line, output.pop(0))
+            yield '{}\0{}'.format(line, output_list.pop(0))
         else:
             yield line
 
 
-def is_staged_status(status: Status) -> Status:
+def is_staged_status(status: StatusEntry) -> bool:
     return (
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
@@ -119,7 +119,7 @@ def is_staged_status(status: Status) -> Status:
     )
 
 
-def is_partially_staged_status(status: Status) -> Status:
+def is_partially_staged_status(status: StatusEntry) -> bool:
     return (
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
@@ -131,7 +131,7 @@ def is_partially_staged_status(status: Status) -> Status:
     )
 
 
-def get_status(files: List[str] = None) -> "StatusEntry":
+def get_status(files: List[str] = None) -> List[StatusEntry]:
     args = [
         'status',
         '--porcelain=v1',
@@ -149,17 +149,17 @@ def get_status(files: List[str] = None) -> "StatusEntry":
     return [StatusEntry(f, root_path) for f in _parse_status(output)]
 
 
-def get_staged_status(files: List[str] = None) -> List(Status):
+def get_staged_status(files: List[str] = None) -> List[StatusEntry]:
     status = get_status(files)
     return [s for s in status if is_staged_status(s)]
 
 
-def stage_files_from_status_list(status_list: List[Status]) -> None:
+def stage_files_from_status_list(status_list: List[StatusEntry]) -> None:
     filenames = [str(s.path) for s in status_list]
     exec_git('add', *filenames)
 
 
-def get_diff(files: List[str] = None) -> str:
+def get_diff(files: List[StatusEntry] = None) -> str:
     args = ['--no-pager', 'diff']
 
     if files is not None:
@@ -177,7 +177,7 @@ def _read_tree(ref_or_hashid: str) -> None:
     exec_git('read-tree', ref_or_hashid)
 
 
-def _checkout_from_index(status_list: List[Status]) -> None:
+def _checkout_from_index(status_list: List[StatusEntry]) -> None:
     filenames = [str(s.path) for s in status_list]
     exec_git('checkout-index', '-f', '--', *filenames)
 
@@ -186,7 +186,7 @@ def _set_ref(name: str, hashid: str) -> None:
     exec_git('update-ref', name, hashid)
 
 
-def _get_tree_diff(tree1: str, tree2: str) -> str:
+def _get_tree_diff(tree1: str, tree2: str) -> bytes:
     return subprocess.check_output(
         [
             'git',
@@ -202,7 +202,7 @@ def _get_tree_diff(tree1: str, tree2: str) -> str:
     )
 
 
-def _apply_diff(patch: Path) -> None:
+def _apply_diff(patch: bytes) -> None:
     with NamedTemporaryFile(mode='wb', buffering=0) as f:
         f.write(patch)
 
@@ -222,7 +222,7 @@ WORKING_REF = 'refs/autohooks/working'
 
 
 class stash_unstaged_changes:  # pylint: disable=invalid-name
-    def __init__(self, status_list: List[Status]) -> None:
+    def __init__(self, status_list: List[StatusEntry]) -> None:
         self.partially_staged = [
             s for s in status_list if is_partially_staged_status(s)
         ]
@@ -258,7 +258,7 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
             exc_type: Optional[BaseExceptionType],
             exc_value: Optional[BaseException],
             traceback: Optional[TracebackType]
-    ) -> bool:
+    ) -> Any:
         if not self.partially_staged:
             return
 
