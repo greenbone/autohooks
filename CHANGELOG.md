@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [#24](https://github.com/greenbone/autohooks/pull/24)
 * Add `poetry` mode to run autohooks via [poetry](https://poetry.eustace.io/)
   [#29](https://github.com/greenbone/autohooks/pull/29)
+* Added type hints/annotations to all methods [#32](https://github.com/greenbone/autohooks/pull/32)
 
 ### Changed
 
