@@ -30,7 +30,7 @@ class Config:
     def __init__(self, config_dict: Dict = None) -> None:
         self._config_dict = config_dict or {}
 
-    def get(self, *keys: str) -> "Config":
+    def get(self, *keys: str) -> 'Config':
         config_dict = self._config_dict
 
         for key in keys:
