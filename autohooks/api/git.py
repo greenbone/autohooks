@@ -20,7 +20,7 @@ from enum import Enum
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from types import TracebackType
-from typing import Any, List, Type, Optional, Generator, TYPE_CHECKING
+from typing import Any, List, Type, Optional, Generator, Union, TYPE_CHECKING
 
 from autohooks.utils import exec_git, get_project_root_path, GitError
 
@@ -131,7 +131,7 @@ def is_partially_staged_status(status: StatusEntry) -> bool:
     )
 
 
-def get_status(files: List[str] = None) -> List[StatusEntry]:
+def get_status(files: List[Union[Path, str]] = None) -> List[StatusEntry]:
     args = [
         'status',
         '--porcelain=v1',
@@ -149,7 +149,9 @@ def get_status(files: List[str] = None) -> List[StatusEntry]:
     return [StatusEntry(f, root_path) for f in _parse_status(output)]
 
 
-def get_staged_status(files: List[str] = None) -> List[StatusEntry]:
+def get_staged_status(
+    files: List[Union[Path, str]] = None
+) -> List[StatusEntry]:
     status = get_status(files)
     return [s for s in status if is_staged_status(s)]
 
