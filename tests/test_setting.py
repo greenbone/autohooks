@@ -21,6 +21,13 @@ from autohooks.setting import Mode
 
 
 class ModeTestCase(unittest.TestCase):
+    def test_get_effective_mode(self):
+        self.assertEqual(Mode.PIPENV.get_effective_mode(), Mode.PIPENV)
+        self.assertEqual(Mode.PYTHONPATH.get_effective_mode(), Mode.PYTHONPATH)
+        self.assertEqual(Mode.POETRY.get_effective_mode(), Mode.POETRY)
+        self.assertEqual(Mode.UNDEFINED.get_effective_mode(), Mode.PYTHONPATH)
+        self.assertEqual(Mode.UNKNOWN.get_effective_mode(), Mode.PYTHONPATH)
+
     def test_get_pipenv_mode_from_string(self):
         self.assertEqual(Mode.from_string('pipenv'), Mode.PIPENV)
         self.assertEqual(Mode.from_string('PIPENV'), Mode.PIPENV)

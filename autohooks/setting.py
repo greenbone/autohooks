@@ -25,6 +25,14 @@ class Mode(Enum):
     UNDEFINED = -1
     UNKNOWN = -2
 
+    def get_effective_mode(self):
+        # pylint: disable=comparison-with-callable
+        if self.value == Mode.PIPENV.value:
+            return Mode.PIPENV
+        if self.value == Mode.POETRY.value:
+            return Mode.POETRY
+        return Mode.PYTHONPATH
+
     @staticmethod
     def from_string(modestring: str) -> 'Mode':
         if not modestring:
