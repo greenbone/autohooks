@@ -15,6 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Dict, List
+from pathlib import Path
+
 import toml
 
 from autohooks.setting import Mode
@@ -24,10 +27,10 @@ AUTOHOOKS_SECTION = 'tool.autohooks'
 
 
 class Config:
-    def __init__(self, config_dict=None):
+    def __init__(self, config_dict: Dict = None) -> None:
         self._config_dict = config_dict or {}
 
-    def get(self, *keys):
+    def get(self, *keys: str) -> 'Config':
         config_dict = self._config_dict
 
         for key in keys:
@@ -35,34 +38,34 @@ class Config:
 
         return Config(config_dict)
 
-    def get_value(self, key, default=None):
+    def get_value(self, key: str, default: List[str] = None) -> List[str]:
         return self._config_dict.get(key, default)
 
-    def is_empty(self):
-        return False if self._config_dict else True
+    def is_empty(self) -> bool:
+        return not bool(self._config_dict)
 
 
 class AutohooksConfig:
-    def __init__(self, config_dict=None):
+    def __init__(self, config_dict: Dict = None) -> None:
         self._config = Config(config_dict)
         self._autohooks_config = self._config.get('tool').get('autohooks')
 
-    def has_config(self):
+    def has_config(self) -> bool:
         return not self._config.is_empty()
 
-    def has_autohooks_config(self):
+    def has_autohooks_config(self) -> bool:
         return not self._autohooks_config.is_empty()
 
-    def is_autohooks_enabled(self):
+    def is_autohooks_enabled(self) -> bool:
         return self.has_autohooks_config()
 
-    def get_pre_commit_script_names(self):
+    def get_pre_commit_script_names(self) -> List[str]:
         if self.has_autohooks_config():
             return self._autohooks_config.get_value('pre-commit', [])
 
         return []
 
-    def get_mode(self):
+    def get_mode(self) -> Mode:
         if self.has_autohooks_config():
             mode = self._autohooks_config.get_value('mode')
             if not mode:
@@ -79,7 +82,9 @@ class AutohooksConfig:
         return self._config
 
 
-def load_config_from_pyproject_toml(pyproject_toml=None):
+def load_config_from_pyproject_toml(
+    pyproject_toml: Path = None
+) -> AutohooksConfig:
     if pyproject_toml is None:
         pyproject_toml = get_pyproject_toml_path()
 

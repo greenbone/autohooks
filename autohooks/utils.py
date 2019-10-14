@@ -22,14 +22,14 @@ from pathlib import Path
 
 
 class GitError(subprocess.CalledProcessError):
-    def __str__(self):
+    def __str__(self) -> str:
         return "Git command '%s' returned non-zero exit status %d" % (
             self.cmd,
             self.returncode,
         )
 
 
-def exec_git(*args, ignore_errors=False):
+def exec_git(*args: str, ignore_errors: bool = False) -> str:
     try:
         cmd_args = ['git']
         cmd_args.extend(args)
@@ -41,7 +41,7 @@ def exec_git(*args, ignore_errors=False):
         raise GitError(e.returncode, e.cmd, e.output, e.stderr)
 
 
-def get_git_directory_path():
+def get_git_directory_path() -> Path:
     pwd = os.environ['PWD']
 
     try:
@@ -60,17 +60,17 @@ def get_git_directory_path():
     return git_dir_path.resolve()
 
 
-def get_autohooks_directory_path():
+def get_autohooks_directory_path() -> Path:
     return Path(__file__).resolve().parent
 
 
-def get_git_hook_directory_path(git_dir_path=None):
+def get_git_hook_directory_path(git_dir_path: Path = None) -> Path:
     if git_dir_path is None:
         git_dir_path = get_git_directory_path()
     return git_dir_path / 'hooks'
 
 
-def is_project_root(path):
+def is_project_root(path: Path) -> bool:
     return (
         (path / 'pyproject.toml').is_file()
         or (path / '.git').is_dir()
@@ -79,7 +79,7 @@ def is_project_root(path):
     )
 
 
-def get_project_root_path(path=None):
+def get_project_root_path(path: Path = None) -> Path:
     if path is None:
         path = Path(os.environ['PWD'])
 
@@ -95,11 +95,11 @@ def get_project_root_path(path=None):
     return path
 
 
-def get_project_autohooks_plugins_path(path=None):
+def get_project_autohooks_plugins_path(path: Path = None) -> Path:
     root = get_project_root_path(path)
     return root / '.autohooks'
 
 
-def get_pyproject_toml_path(path=None):
+def get_pyproject_toml_path(path: Path = None) -> Path:
     root = get_project_root_path(path)
     return root / 'pyproject.toml'

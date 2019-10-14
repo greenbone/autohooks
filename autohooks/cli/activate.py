@@ -17,6 +17,8 @@
 
 import sys
 
+from argparse import Namespace
+
 from autohooks.config import (
     load_config_from_pyproject_toml,
     get_pyproject_toml_path,
@@ -30,7 +32,7 @@ from autohooks.install import (
 from autohooks.setting import Mode
 
 
-def install_hooks(args):
+def install_hooks(args: Namespace) -> None:
     pre_commit_hook_path = get_pre_commit_hook_path()
     pyproject_toml = get_pyproject_toml_path()
     config = load_config_from_pyproject_toml(pyproject_toml)

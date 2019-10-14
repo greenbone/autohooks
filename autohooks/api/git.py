@@ -19,8 +19,16 @@ import subprocess
 from enum import Enum
 from pathlib import Path
 from tempfile import NamedTemporaryFile
+from types import TracebackType
+from typing import Any, List, Type, Optional, Generator, Union, TYPE_CHECKING
 
 from autohooks.utils import exec_git, get_project_root_path, GitError
+
+# https://stackoverflow.com/questions/49959656/typing-exit-in-3-5-fails-on-runtime-but-typechecks
+if TYPE_CHECKING:
+    BaseExceptionType = Type[BaseException]
+else:
+    BaseExceptionType = bool  # don't care, as long is it doesn't error
 
 __all__ = [
     'exec_git',
@@ -59,7 +67,7 @@ class Status(Enum):
 
 
 class StatusEntry:
-    def __init__(self, status_string, root_path=None):
+    def __init__(self, status_string: str, root_path: Path = None) -> None:
         status = status_string[:2]
         filename = status_string[3:]
 
@@ -74,35 +82,35 @@ class StatusEntry:
         else:
             self.path = Path(filename)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return '{}{} {}'.format(
             self.index.value, self.working_tree.value, str(self.path)
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '<StatusEntry {}>'.format(str(self))
 
-    def absolute_path(self):
+    def absolute_path(self) -> Path:
         if self.root_path:
             return (self.root_path / self.path).resolve()
         return self.path.resolve()
 
 
-def _parse_status(output):
+def _parse_status(output: str) -> Generator[str, None, None]:
     output = output.rstrip('\0')
     if not output:
         return
 
-    output = output.split('\0')
-    while output:
-        line = output.pop(0)
+    output_list = output.split('\0')
+    while output_list:
+        line = output_list.pop(0)
         if line[0] == Status.RENAMED.value:
-            yield '{}\0{}'.format(line, output.pop(0))
+            yield '{}\0{}'.format(line, output_list.pop(0))
         else:
             yield line
 
 
-def is_staged_status(status):
+def is_staged_status(status: StatusEntry) -> bool:
     return (
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
@@ -111,7 +119,7 @@ def is_staged_status(status):
     )
 
 
-def is_partially_staged_status(status):
+def is_partially_staged_status(status: StatusEntry) -> bool:
     return (
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
@@ -123,7 +131,7 @@ def is_partially_staged_status(status):
     )
 
 
-def get_status(files=None):
+def get_status(files: List[Union[Path, str]] = None) -> List[StatusEntry]:
     args = [
         'status',
         '--porcelain=v1',
@@ -141,17 +149,19 @@ def get_status(files=None):
     return [StatusEntry(f, root_path) for f in _parse_status(output)]
 
 
-def get_staged_status(files=None):
+def get_staged_status(
+    files: List[Union[Path, str]] = None
+) -> List[StatusEntry]:
     status = get_status(files)
     return [s for s in status if is_staged_status(s)]
 
 
-def stage_files_from_status_list(status_list):
+def stage_files_from_status_list(status_list: List[StatusEntry]) -> None:
     filenames = [str(s.path) for s in status_list]
     exec_git('add', *filenames)
 
 
-def get_diff(files=None):
+def get_diff(files: List[StatusEntry] = None) -> str:
     args = ['--no-pager', 'diff']
 
     if files is not None:
@@ -161,24 +171,24 @@ def get_diff(files=None):
     return exec_git(*args)
 
 
-def _write_tree():
+def _write_tree() -> str:
     return exec_git('write-tree').strip()
 
 
-def _read_tree(ref_or_hashid):
+def _read_tree(ref_or_hashid: str) -> None:
     exec_git('read-tree', ref_or_hashid)
 
 
-def _checkout_from_index(status_list):
+def _checkout_from_index(status_list: List[StatusEntry]) -> None:
     filenames = [str(s.path) for s in status_list]
     exec_git('checkout-index', '-f', '--', *filenames)
 
 
-def _set_ref(name, hashid):
+def _set_ref(name: str, hashid: str) -> None:
     exec_git('update-ref', name, hashid)
 
 
-def _get_tree_diff(tree1, tree2):
+def _get_tree_diff(tree1: str, tree2: str) -> bytes:
     return subprocess.check_output(
         [
             'git',
@@ -194,7 +204,7 @@ def _get_tree_diff(tree1, tree2):
     )
 
 
-def _apply_diff(patch):
+def _apply_diff(patch: bytes) -> None:
     with NamedTemporaryFile(mode='wb', buffering=0) as f:
         f.write(patch)
 
@@ -214,12 +224,12 @@ WORKING_REF = 'refs/autohooks/working'
 
 
 class stash_unstaged_changes:  # pylint: disable=invalid-name
-    def __init__(self, status_list):
+    def __init__(self, status_list: List[StatusEntry]) -> None:
         self.partially_staged = [
             s for s in status_list if is_partially_staged_status(s)
         ]
 
-    def stash_changes(self):
+    def stash_changes(self) -> None:
         # save current staging area aka. index
         self.index = _write_tree()
         # add ref to be able to restore index manually
@@ -236,17 +246,22 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
         _read_tree(self.index)
         _checkout_from_index(self.partially_staged)
 
-    def restore_working_tree(self):
+    def restore_working_tree(self) -> None:
         # restore working tree
         _read_tree(self.working_tree)
         # checkout working tree
         _checkout_from_index(self.partially_staged)
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         if self.partially_staged:
             self.stash_changes()
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(
+        self,
+        exc_type: Optional[BaseExceptionType],
+        exc_value: Optional[BaseException],
+        traceback: Optional[TracebackType],
+    ) -> Any:
         if not self.partially_staged:
             return
 
