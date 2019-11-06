@@ -9,7 +9,7 @@ blessings = "*"
 
 [dev-packages]
 pylint = "*"
-black = "==18.9b0"
+black = "==19.10b0"
 twine = "*"
 autohooks = {path = "."}
 autohooks-plugin-black = "*"

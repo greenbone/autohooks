@@ -83,7 +83,7 @@ class AutohooksConfig:
 
 
 def load_config_from_pyproject_toml(
-    pyproject_toml: Path = None
+    pyproject_toml: Path = None,
 ) -> AutohooksConfig:
     if pyproject_toml is None:
         pyproject_toml = get_pyproject_toml_path()
