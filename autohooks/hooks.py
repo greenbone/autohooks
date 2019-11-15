@@ -101,3 +101,6 @@ class PreCommitHook:
         self.pre_commit_hook_path.chmod(0o775)
 
         self._pre_commit_hook = None
+
+    def __str__(self) -> str:
+        return str(self.pre_commit_hook_path)
