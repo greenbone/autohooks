@@ -47,9 +47,8 @@ class PreCommitHook:
     @property
     def pre_commit_hook(self) -> str:
         if self._pre_commit_hook is None:
-            self._pre_commit_hook = (
-                self.pre_commit_hook_path.read_text().split()
-            )
+            self._pre_commit_hook = self.pre_commit_hook_path.read_text()
+
         return self._pre_commit_hook
 
     def exists(self) -> bool:
