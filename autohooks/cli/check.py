@@ -32,6 +32,8 @@ from autohooks.precommit.run import (
     has_precommit_parameters,
 )
 
+from autohooks.settings import Mode
+
 from autohooks.terminal import ok, error, warning
 
 
@@ -42,7 +44,7 @@ def check_hooks() -> None:
 
     pyproject_toml = get_pyproject_toml_path()
 
-    check_config(pyproject_toml)
+    check_config(pyproject_toml, pre_commit_hook.read_mode())
 
 
 def check_pre_commit_hook(pre_commit_hook: PreCommitHook) -> None:
@@ -73,7 +75,7 @@ def check_pre_commit_hook(pre_commit_hook: PreCommitHook) -> None:
         )
 
 
-def check_config(pyproject_toml: Path) -> None:
+def check_config(pyproject_toml: Path, hook_mode: Mode) -> None:
     if not pyproject_toml.exists():
         error(
             'Missing {} file. Please add a pyproject.toml file and include '
@@ -87,6 +89,16 @@ def check_config(pyproject_toml: Path) -> None:
                 'a "{}" section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
             )
         else:
+            if config.get_mode() != hook_mode:
+                warning(
+                    'autohooks mode in pre-commit hook ("{}") differs from '
+                    'mode in {} file ("{}")'.format(
+                        str(hook_mode),
+                        str(pyproject_toml),
+                        str(config.get_mode()),
+                    )
+                )
+
             plugins = config.get_pre_commit_script_names()
             if not plugins:
                 error(
