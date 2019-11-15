@@ -107,7 +107,7 @@ def check_config(pyproject_toml: Path) -> None:
                                 )
                             else:
                                 ok(
-                                    'Plugin "{}" active and loadable'.format(
+                                    'Plugin "{}" active and loadable.'.format(
                                         name
                                     )
                                 )
