@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from pathlib import Path
+
 from autohooks.config import (
     get_pyproject_toml_path,
     load_config_from_pyproject_toml,
@@ -36,6 +38,14 @@ from autohooks.terminal import ok, error, warning
 def check_hooks() -> None:
     pre_commit_hook = PreCommitHook()
 
+    check_pre_commit_hook(pre_commit_hook)
+
+    pyproject_toml = get_pyproject_toml_path()
+
+    check_config(pyproject_toml)
+
+
+def check_pre_commit_hook(pre_commit_hook: PreCommitHook) -> None:
     if pre_commit_hook.exists():
         if pre_commit_hook.is_autohooks_pre_commit_hook():
             ok('autohooks pre-commit hook is active.')
@@ -53,7 +63,8 @@ def check_hooks() -> None:
             'activate\'.'
         )
 
-    pyproject_toml = get_pyproject_toml_path()
+
+def check_config(pyproject_toml: Path) -> None:
     if not pyproject_toml.exists():
         error(
             'Missing {} file. Please add a pyproject.toml file and include '
