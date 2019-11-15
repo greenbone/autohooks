@@ -63,8 +63,8 @@ class PreCommitHook:
 
     def read_mode(self) -> Mode:
         lines = self.pre_commit_hook.split('\n')
-        if len(lines) == 0:
-            return Mode.UNKNOWN
+        if len(lines) < 1 or len(lines[0]) == 0:
+            return Mode.UNDEFINED
 
         shebang = lines[0][2:]
 
@@ -79,7 +79,7 @@ class PreCommitHook:
 
     def read_version(self) -> int:
         lines = self.pre_commit_hook.split('\n')
-        if len(lines) == 0:
+        if len(lines) < 2:
             return -1
 
         try:
