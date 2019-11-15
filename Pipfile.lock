@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7efd30b7afdbcdb5f36c98a58e4febe2000b99f5b5be9a1035dac34361f277c6"
+            "sha256": "ea5e1816dde03426266db76ea84df6fd83b8903e42ac51c65f07f5a7eeb8f641"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -62,10 +62,8 @@
             "version": "==19.3.0"
         },
         "autohooks": {
-            "hashes": [
-                "sha256:2ef6e1b90d1837191bacd5faa2f4cdaafebebb7c21707b6ba22ad1879ec31326"
-            ],
-            "version": "==1.1.0"
+            "editable": true,
+            "path": "."
         },
         "autohooks-plugin-black": {
             "hashes": [

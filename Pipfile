@@ -11,6 +11,6 @@ blessings = "*"
 pylint = "*"
 black = "==19.10b0"
 twine = "*"
-autohooks = {path = "."}
+autohooks = {editable = true,path = "."}
 autohooks-plugin-black = "*"
 autohooks-plugin-pylint = "*"
