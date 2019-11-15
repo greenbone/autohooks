@@ -40,3 +40,7 @@ def error(message: str) -> None:
 
 def warning(message: str) -> None:
     print(message, '[', term.yellow('warning'), ']')
+
+
+def info(message: str) -> None:
+    print(message, '[', term.cyan('info'), ']')
