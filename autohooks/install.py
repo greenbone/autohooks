@@ -15,53 +15,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from pathlib import Path
-
 from setuptools.command.install import install
 from setuptools.command.develop import develop
 
 from autohooks.config import load_config_from_pyproject_toml
-from autohooks.template import PreCommitTemplate
-from autohooks.setting import Mode
-from autohooks.utils import get_git_hook_directory_path
-
-
-def get_pre_commit_hook_path() -> Path:
-    git_hook_dir_path = get_git_hook_directory_path()
-    return git_hook_dir_path / 'pre-commit'
-
-
-def get_autohooks_pre_commit_hook(mode: Mode) -> str:
-    template = PreCommitTemplate()
-
-    return template.render(mode=mode)
-
-
-def is_autohooks_pre_commit_hook(path: Path) -> bool:
-    hook = path.read_text()
-    lines = hook.split('\n')
-    return len(lines) > 5 and "autohooks.precommit" in hook
-
-
-def install_pre_commit_hook(
-    pre_commit_hook: str, pre_commit_hook_path: Path
-) -> None:
-    pre_commit_hook_path.write_text(pre_commit_hook)
-    pre_commit_hook_path.chmod(0o775)
+from autohooks.hooks import PreCommitHook
 
 
 class AutohooksInstall:
     def install_git_hook(self) -> None:
         try:
-            pre_commit_hook_path = get_pre_commit_hook_path()
-            if not pre_commit_hook_path.exists():
+            pre_commit_hook = PreCommitHook()
+            if not pre_commit_hook.exists():
                 config = load_config_from_pyproject_toml()
-
-                mode = config.get_mode()
-                autohooks_pre_commit_hook = get_autohooks_pre_commit_hook(mode)
-                install_pre_commit_hook(
-                    autohooks_pre_commit_hook, pre_commit_hook_path
-                )
+                pre_commit_hook.write(mode=config.get_mode())
         except Exception:  # pylint: disable=broad-except
             pass
 
