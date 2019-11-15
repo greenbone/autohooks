@@ -47,7 +47,8 @@ confidence=
 disable=len-as-condition,
         attribute-defined-outside-init,
         missing-docstring,
-        bad-continuation
+        bad-continuation,
+        R
 
 #disable=print-statement,
 #       parameter-unpacking,
