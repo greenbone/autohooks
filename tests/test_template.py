@@ -33,7 +33,7 @@ try:
     sys.exit(run())
 except ImportError:
     print(
-        "autohooks is not installed. To force creating a commit without "
+        "Error: autohooks is not installed. To force creating a commit without "
         "verification via autohooks run 'git commit --no-verify'.",
         file=sys.stderr,
     )
