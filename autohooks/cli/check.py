@@ -15,16 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from autohooks.install import (
-    get_pre_commit_hook_path,
-    is_autohooks_pre_commit_hook,
-)
-
 from autohooks.config import (
     get_pyproject_toml_path,
     load_config_from_pyproject_toml,
     AUTOHOOKS_SECTION,
 )
+
+from autohooks.hooks import PreCommitHook
 
 from autohooks.precommit.run import (
     autohooks_module_path,
@@ -37,10 +34,10 @@ from autohooks.terminal import ok, error, warning
 
 
 def check_hooks() -> None:
-    pre_commit_hook = get_pre_commit_hook_path()
+    pre_commit_hook = PreCommitHook()
 
-    if pre_commit_hook.is_file():
-        if is_autohooks_pre_commit_hook(pre_commit_hook):
+    if pre_commit_hook.exists():
+        if pre_commit_hook.is_autohooks_pre_commit_hook():
             ok('autohooks pre-commit hook is active.')
         else:
             error(
