@@ -15,8 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
-
 from argparse import Namespace
 
 from autohooks.config import (
@@ -26,6 +24,7 @@ from autohooks.config import (
 )
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode
+from autohooks.terminal import ok, warning
 
 
 def install_hooks(args: Namespace) -> None:
@@ -34,18 +33,18 @@ def install_hooks(args: Namespace) -> None:
     config = load_config_from_pyproject_toml(pyproject_toml)
 
     if pre_commit_hook.exists() and not args.force:
-        print(
-            'pre-commit hook is already installed at {}. --force to '
-            'override.'.format(str(pre_commit_hook))
+        ok(
+            'pre-commit hook is already installed at {}.'.format(
+                str(pre_commit_hook)
+            )
         )
     else:
         if not config.is_autohooks_enabled():
-            print(
+            warning(
                 'Warning: autohooks is not enabled in your {} file. Please add '
                 'a "{}" section. Run autohooks check for more details.'.format(
                     str(pyproject_toml), AUTOHOOKS_SECTION
-                ),
-                file=sys.stderr,
+                )
             )
 
         if args.mode:
@@ -55,7 +54,7 @@ def install_hooks(args: Namespace) -> None:
 
         pre_commit_hook.write(mode=mode)
 
-        print(
+        ok(
             'pre-commit hook installed at {} using {} mode'.format(
                 str(pre_commit_hook), str(mode.get_effective_mode())
             )
