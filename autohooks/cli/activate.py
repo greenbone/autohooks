@@ -24,7 +24,7 @@ from autohooks.config import (
 )
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode
-from autohooks.terminal import ok, warning
+from autohooks.terminal import ok, warning, info
 
 
 def install_hooks(args: Namespace) -> None:
@@ -37,6 +37,14 @@ def install_hooks(args: Namespace) -> None:
             'pre-commit hook is already installed at {}.'.format(
                 str(pre_commit_hook)
             )
+        )
+        info(
+            "Run 'autohooks activate --force' to override the current "
+            "installed pre-commit hook."
+        )
+        info(
+            "Run 'autohooks check' to validate the current status of "
+            "the installed pre-commit hook."
         )
     else:
         if not config.is_autohooks_enabled():
