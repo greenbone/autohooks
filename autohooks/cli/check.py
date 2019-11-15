@@ -49,6 +49,15 @@ def check_pre_commit_hook(pre_commit_hook: PreCommitHook) -> None:
     if pre_commit_hook.exists():
         if pre_commit_hook.is_autohooks_pre_commit_hook():
             ok('autohooks pre-commit hook is active.')
+
+            if pre_commit_hook.is_current_autohooks_pre_commit_hook():
+                ok('autohooks pre-commit hook is up-to-date.')
+            else:
+                warning(
+                    'autohooks pre-commit hook is outdated. Please run '
+                    '\'autohooks activate --force\' to update your pre-commit '
+                    'hook.'
+                )
         else:
             error(
                 'autohooks pre-commit hook is not active. But a different '
