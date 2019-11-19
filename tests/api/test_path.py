@@ -58,3 +58,7 @@ class MatchTestCase(unittest.TestCase):
 
         self.assertFalse(match(Path('foo/bar.js'), patterns))
         self.assertFalse(match(Path('bar/foo.py'), patterns))
+
+
+if __name__ == '__main__':
+    unittest.main()
