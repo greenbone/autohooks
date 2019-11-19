@@ -17,13 +17,14 @@
 
 import unittest
 
-from autohooks.setting import Mode
+from autohooks.settings import Mode
 from autohooks.template import (
     PreCommitTemplate,
     get_pre_commit_hook_template_path,
 )
 
 DEFAULT_TEMPLATE = """#!/usr/bin/env python3
+# meta = { version = 1 }
 
 import sys
 
@@ -32,7 +33,7 @@ try:
     sys.exit(run())
 except ImportError:
     print(
-        "autohooks is not installed. To force creating a commit without "
+        "Error: autohooks is not installed. To force creating a commit without "
         "verification via autohooks run 'git commit --no-verify'.",
         file=sys.stderr,
     )

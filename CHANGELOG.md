@@ -18,6 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add `poetry` mode to run autohooks via [poetry](https://poetry.eustace.io/)
   [#29](https://github.com/greenbone/autohooks/pull/29)
 * Added type hints/annotations to all methods [#32](https://github.com/greenbone/autohooks/pull/32)
+* Added version meta information to installed pre commit hook
+  [#30](https://github.com/greenbone/autohooks/pull/30)
+* Extended autohooks check cli to evaluate current hook version and used mode
+  [#30](https://github.com/greenbone/autohooks/pull/30)
+* Enhanced autohooks activate cli to show additional information if a autohooks
+  git hook is already installed
+  [#30](https://github.com/greenbone/autohooks/pull/30)
 
 ### Changed
 
@@ -29,6 +36,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * The installed git hook will fail now if a autohooks plugin can't be executed
   e.g. if the import fails. Before these errors were ignored.
   [#28](https://github.com/greenbone/autohooks/pull/28)
+* The version of the installed git hook is checked during its execution
+  [#30](https://github.com/greenbone/autohooks/pull/30)
+* A warning is raised during git hook execution if the current mode is different
+  to the configured mode [#30](https://github.com/greenbone/autohooks/pull/30)
 
 ### Deprecated
 ### Fixed

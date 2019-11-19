@@ -15,16 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from autohooks.install import (
-    get_pre_commit_hook_path,
-    is_autohooks_pre_commit_hook,
-)
+from pathlib import Path
 
 from autohooks.config import (
     get_pyproject_toml_path,
     load_config_from_pyproject_toml,
     AUTOHOOKS_SECTION,
 )
+
+from autohooks.hooks import PreCommitHook
 
 from autohooks.precommit.run import (
     autohooks_module_path,
@@ -33,15 +32,34 @@ from autohooks.precommit.run import (
     has_precommit_parameters,
 )
 
+from autohooks.settings import Mode
+
 from autohooks.terminal import ok, error, warning
 
 
 def check_hooks() -> None:
-    pre_commit_hook = get_pre_commit_hook_path()
+    pre_commit_hook = PreCommitHook()
 
-    if pre_commit_hook.is_file():
-        if is_autohooks_pre_commit_hook(pre_commit_hook):
+    check_pre_commit_hook(pre_commit_hook)
+
+    pyproject_toml = get_pyproject_toml_path()
+
+    check_config(pyproject_toml, pre_commit_hook.read_mode())
+
+
+def check_pre_commit_hook(pre_commit_hook: PreCommitHook) -> None:
+    if pre_commit_hook.exists():
+        if pre_commit_hook.is_autohooks_pre_commit_hook():
             ok('autohooks pre-commit hook is active.')
+
+            if pre_commit_hook.is_current_autohooks_pre_commit_hook():
+                ok('autohooks pre-commit hook is up-to-date.')
+            else:
+                warning(
+                    'autohooks pre-commit hook is outdated. Please run '
+                    '\'autohooks activate --force\' to update your pre-commit '
+                    'hook.'
+                )
         else:
             error(
                 'autohooks pre-commit hook is not active. But a different '
@@ -56,7 +74,8 @@ def check_hooks() -> None:
             'activate\'.'
         )
 
-    pyproject_toml = get_pyproject_toml_path()
+
+def check_config(pyproject_toml: Path, hook_mode: Mode) -> None:
     if not pyproject_toml.exists():
         error(
             'Missing {} file. Please add a pyproject.toml file and include '
@@ -70,6 +89,16 @@ def check_hooks() -> None:
                 'a "{}" section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
             )
         else:
+            if config.get_mode() != hook_mode:
+                warning(
+                    'autohooks mode in pre-commit hook ("{}") differs from '
+                    'mode in {} file ("{}")'.format(
+                        str(hook_mode),
+                        str(pyproject_toml),
+                        str(config.get_mode()),
+                    )
+                )
+
             plugins = config.get_pre_commit_script_names()
             if not plugins:
                 error(
@@ -99,7 +128,7 @@ def check_hooks() -> None:
                                 )
                             else:
                                 ok(
-                                    'Plugin "{}" active and loadable'.format(
+                                    'Plugin "{}" active and loadable.'.format(
                                         name
                                     )
                                 )
