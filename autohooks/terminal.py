@@ -16,31 +16,62 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import curses
 
-from blessings import Terminal
+from contextlib import contextmanager
 
-try:
-    term = Terminal()  # pylint: disable=invalid-name
-except curses.error:
-    # handle issues with terminals and force not to style anything
-    # should not be necessary with blessings > 1.7 anymore
-    term = Terminal(force_styling=None)  # pylint: disable=invalid-name
+from typing import Callable, Generator
+
+from blessings import Terminal as Term
 
 
-def ok(message: str) -> None:
-    print(message, '[', term.green('ok'), ']')
+class Terminal:
+    def __init__(self):
+        self._indent = 0
+        try:
+            self._term = Term()
+        except curses.error:
+            # handle issues with terminals and force not to style anything
+            # should not be necessary with blessings > 1.7 anymore
+            self._term = Term(force_styling=None)
 
+    def _print_end(self, message: str, status: str, color: Callable) -> None:
+        width = self._term.width - 1
+        extra = 4  # '[ ', ' ]'
+        with self._term.location():
+            self.print(
+                message,
+                self._term.move_x(width - extra - len(status)),
+                '[',
+                color(status),
+                ']',
+            )
 
-def fail(message: str) -> None:
-    print(message, '[', term.red('fail'), ']')
+    @contextmanager
+    def indent(self, indentation: int = 4) -> Generator:
+        current_indent = self._indent
+        self.add_indent(indentation)
 
+        yield self
 
-def error(message: str) -> None:
-    print(message, '[', term.red('error'), ']')
+        self._indent = current_indent
 
+    def add_indent(self, indentation: int = 4) -> None:
+        self._indent += indentation
 
-def warning(message: str) -> None:
-    print(message, '[', term.yellow('warning'), ']')
+    def print(self, *messages: str) -> None:
+        with self._term.location(x=self._indent):
+            print(*messages)
 
+    def ok(self, message: str) -> None:
+        self._print_end(message, 'ok', self._term.green)
 
-def info(message: str) -> None:
-    print(message, '[', term.cyan('info'), ']')
+    def fail(self, message: str) -> None:
+        self._print_end(message, 'fail', self._term.red)
+
+    def error(self, message: str) -> None:
+        self._print_end(message, 'error', self._term.red)
+
+    def warning(self, message: str) -> None:
+        self._print_end(message, 'warning', self._term.yellow)
+
+    def info(self, message: str) -> None:
+        self._print_end(message, 'info', self._term.cyan)

@@ -34,34 +34,47 @@ from autohooks.precommit.run import (
 
 from autohooks.settings import Mode
 
-from autohooks.terminal import ok, error, warning
+from autohooks.terminal import Terminal
 
 
-def check_hooks() -> None:
+def check_hooks(term: Terminal) -> None:
     pre_commit_hook = PreCommitHook()
+    hook_mode = pre_commit_hook.read_mode()
 
-    check_pre_commit_hook(pre_commit_hook)
+    check_pre_commit_hook(term, pre_commit_hook, hook_mode)
 
     pyproject_toml = get_pyproject_toml_path()
 
-    check_config(pyproject_toml, pre_commit_hook.read_mode())
+    check_config(term, pyproject_toml, pre_commit_hook, hook_mode)
 
 
-def check_pre_commit_hook(pre_commit_hook: PreCommitHook) -> None:
+def check_pre_commit_hook(
+    term: Terminal, pre_commit_hook: PreCommitHook, hook_mode: Mode,
+) -> None:
     if pre_commit_hook.exists():
         if pre_commit_hook.is_autohooks_pre_commit_hook():
-            ok('autohooks pre-commit hook is active.')
+            term.ok('autohooks pre-commit hook is active.')
 
             if pre_commit_hook.is_current_autohooks_pre_commit_hook():
-                ok('autohooks pre-commit hook is up-to-date.')
+                term.ok('autohooks pre-commit hook is up-to-date.')
             else:
-                warning(
+                term.warning(
                     'autohooks pre-commit hook is outdated. Please run '
                     '\'autohooks activate --force\' to update your pre-commit '
                     'hook.'
                 )
+
+            hook_mode = pre_commit_hook.read_mode()
+            if hook_mode == Mode.UNKNOWN:
+                term.warning(
+                    'Unknown autohooks mode in {}. Falling back to "{}" '
+                    'mode.'.format(
+                        str(pre_commit_hook),
+                        str(hook_mode.get_effective_mode()),
+                    )
+                )
         else:
-            error(
+            term.error(
                 'autohooks pre-commit hook is not active. But a different '
                 'pre-commit hook has been found at {}.'.format(
                     str(pre_commit_hook)
@@ -69,39 +82,66 @@ def check_pre_commit_hook(pre_commit_hook: PreCommitHook) -> None:
             )
 
     else:
-        error(
+        term.error(
             'autohooks pre-commit hook not active. Please run \'autohooks '
             'activate\'.'
         )
 
 
-def check_config(pyproject_toml: Path, hook_mode: Mode) -> None:
+def check_config(
+    term: Terminal,
+    pyproject_toml: Path,
+    pre_commit_hook: PreCommitHook,
+    hook_mode: Mode,
+) -> None:
     if not pyproject_toml.exists():
-        error(
+        term.error(
             'Missing {} file. Please add a pyproject.toml file and include '
             'a "{}" section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
         )
     else:
         config = load_config_from_pyproject_toml(pyproject_toml)
         if not config.is_autohooks_enabled():
-            error(
+            term.error(
                 'autohooks is not enabled in your {} file. Please add '
                 'a "{}" section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
             )
         else:
-            if config.get_mode() != hook_mode:
-                warning(
-                    'autohooks mode in pre-commit hook ("{}") differs from '
-                    'mode in {} file ("{}")'.format(
+            config_mode = config.get_mode()
+            if config_mode == Mode.UNDEFINED:
+                term.warning(
+                    'autohooks mode is not defined in {}.'.format(
+                        str(pyproject_toml)
+                    )
+                )
+            elif config_mode == Mode.UNKNOWN:
+                term.warning(
+                    'Unknown autohooks mode in {}.'.format(str(pyproject_toml))
+                )
+
+            if (
+                config_mode.get_effective_mode()
+                != hook_mode.get_effective_mode()
+            ):
+                term.warning(
+                    'autohooks mode "{}" in pre-commit hook {} differs from '
+                    'mode "{}" in {}.'.format(
                         str(hook_mode),
+                        str(pre_commit_hook),
+                        str(config_mode),
                         str(pyproject_toml),
-                        str(config.get_mode()),
                     )
                 )
 
+            term.info(
+                'Using autohooks mode "{}".'.format(
+                    str(hook_mode.get_effective_mode())
+                )
+            )
+
             plugins = config.get_pre_commit_script_names()
             if not plugins:
-                error(
+                term.error(
                     'No autohooks plugin is activated in {} for your pre '
                     'commit hook. Please add a '
                     '"pre-commit = [plugin1, plugin2]" '
@@ -113,7 +153,7 @@ def check_config(pyproject_toml: Path, hook_mode: Mode) -> None:
                         try:
                             plugin = load_plugin(name)
                             if not has_precommit_function(plugin):
-                                error(
+                                term.error(
                                     'Plugin "{}" has no precommit function. '
                                     'The function is required to run the '
                                     'plugin as git pre commit hook.'.format(
@@ -121,19 +161,19 @@ def check_config(pyproject_toml: Path, hook_mode: Mode) -> None:
                                     )
                                 )
                             elif not has_precommit_parameters(plugin):
-                                warning(
+                                term.warning(
                                     'Plugin "{}" uses a deprecated signature '
                                     'for its precommit function. It is missing '
                                     'the **kwargs parameter.'.format(name)
                                 )
                             else:
-                                ok(
+                                term.ok(
                                     'Plugin "{}" active and loadable.'.format(
                                         name
                                     )
                                 )
                         except ImportError as e:
-                            error(
+                            term.error(
                                 '"{}" is not a valid autohooks '
                                 'plugin. {}'.format(name, e)
                             )

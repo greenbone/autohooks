@@ -24,10 +24,11 @@ from typing import Generator
 
 from contextlib import contextmanager
 
+from autohooks.api import _set_terminal
 from autohooks.config import load_config_from_pyproject_toml
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode
-from autohooks.terminal import error, warning
+from autohooks.terminal import Terminal
 from autohooks.utils import get_project_autohooks_plugins_path
 
 
@@ -58,35 +59,40 @@ def has_precommit_parameters(plugin: ModuleType) -> bool:
     return bool(signature.parameters)
 
 
-def check_hook_is_current(pre_commit_hook: PreCommitHook):
+def check_hook_is_current(
+    term: Terminal, pre_commit_hook: PreCommitHook
+) -> None:
     if not pre_commit_hook.is_current_autohooks_pre_commit_hook():
-        warning(
+        term.warning(
             'autohooks pre-commit hook is outdated. Please run '
             '\'autohooks activate --force\' to update your pre-commit '
             'hook.'
         )
 
 
-def check_hook_mode(config_mode: Mode, hook_mode: Mode) -> None:
-    if config_mode != hook_mode:
-        warning(
-            'autohooks mode in pre-commit hook ("{}") differs from '
-            'mode in pyproject.toml file ("{}"). Please run \'autohooks '
-            'activate --force\' to enforce {} mode.'.format(
-                str(hook_mode), str(config_mode), str(config_mode)
+def check_hook_mode(term: Terminal, config_mode: Mode, hook_mode: Mode) -> None:
+    if config_mode.get_effective_mode() != hook_mode.get_effective_mode():
+        term.warning(
+            'autohooks mode "{}" in pre-commit hook differs from '
+            'mode "{}" in pyproject.toml file.'.format(
+                str(hook_mode), str(config_mode)
             )
         )
 
 
 def run() -> int:
-    print('autohooks => pre-commit')
+    term = Terminal()
+
+    _set_terminal(term)
 
     config = load_config_from_pyproject_toml()
 
     pre_commit_hook = PreCommitHook()
 
-    check_hook_is_current(pre_commit_hook)
-    check_hook_mode(config.get_mode(), pre_commit_hook.read_mode())
+    check_hook_is_current(term, pre_commit_hook)
+
+    if config.has_autohooks_config():
+        check_hook_mode(term, config.get_mode(), pre_commit_hook.read_mode())
 
     plugins = get_project_autohooks_plugins_path()
     plugins_dir_name = str(plugins)
@@ -94,40 +100,47 @@ def run() -> int:
     if plugins.is_dir():
         sys.path.append(plugins_dir_name)
 
-    with autohooks_module_path():
+    term.print('autohooks => pre-commit')
+
+    with autohooks_module_path(), term.indent():
         for name in config.get_pre_commit_script_names():
-            try:
-                plugin = load_plugin(name)
-                if not has_precommit_function(plugin):
-                    error(
-                        'No precommit function found in plugin {}. '
-                        'Your autohooks settings may be invalid.'.format(name)
+            term.print('Running {}'.format(name))
+
+            with term.indent():
+                try:
+                    plugin = load_plugin(name)
+                    if not has_precommit_function(plugin):
+                        term.error(
+                            'No precommit function found in plugin {}. '
+                            'Your autohooks settings may be invalid.'.format(
+                                name
+                            )
+                        )
+                        return 1
+
+                    if has_precommit_parameters(plugin):
+                        retval = plugin.precommit(config=config.get_config())
+                    else:
+                        term.warning(
+                            'precommit function without kwargs is deprecated. '
+                            'Please update {} to a newer version.'.format(name)
+                        )
+                        retval = plugin.precommit()
+
+                    if retval:
+                        return retval
+
+                except ImportError as e:
+                    term.error(
+                        'An error occurred while importing pre-commit '
+                        'hook {}. {}.'.format(name, e)
                     )
                     return 1
-
-                if has_precommit_parameters(plugin):
-                    retval = plugin.precommit(config=config.get_config())
-                else:
-                    warning(
-                        'precommit function without kwargs is deprecated. '
-                        'Please update {} to a newer version.'.format(name)
+                except Exception as e:  # pylint: disable=broad-except
+                    term.error(
+                        'An error occurred while running pre-commit '
+                        'hook {}. {}.'.format(name, e)
                     )
-                    retval = plugin.precommit()
-
-                if retval:
-                    return retval
-
-            except ImportError as e:
-                error(
-                    'An error occurred while importing pre-commit '
-                    'hook {}. {}.'.format(name, e)
-                )
-                return 1
-            except Exception as e:  # pylint: disable=broad-except
-                error(
-                    'An error occurred while running pre-commit '
-                    'hook {}. {}.'.format(name, e)
-                )
-                return 1
+                    return 1
 
     return 0
