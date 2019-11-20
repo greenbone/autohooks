@@ -24,6 +24,7 @@ from typing import Generator
 
 from contextlib import contextmanager
 
+from autohooks.api import _set_terminal
 from autohooks.config import load_config_from_pyproject_toml
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode
@@ -81,6 +82,8 @@ def check_hook_mode(term: Terminal, config_mode: Mode, hook_mode: Mode) -> None:
 
 def run() -> int:
     term = Terminal()
+
+    _set_terminal(term)
 
     config = load_config_from_pyproject_toml()
 

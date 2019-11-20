@@ -19,7 +19,7 @@ import sys
 
 from autohooks.terminal import Terminal
 
-__term = Terminal()  # pylint: disable=invalid-name
+__term = None  # pylint: disable=invalid-name
 
 __all__ = [
     'error',
@@ -53,3 +53,8 @@ def info(message: str) -> None:
 
 def out(message: str):
     __term.print(message)
+
+
+def _set_terminal(term: Terminal):
+    global __term  # pylint: disable=global-statement, invalid-name
+    __term = term
