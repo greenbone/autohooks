@@ -75,26 +75,3 @@ class Terminal:
 
     def info(self, message: str) -> None:
         self._print_end(message, 'info', self._term.cyan)
-
-
-__TERM = Terminal()
-
-
-def ok(message: str) -> None:
-    __TERM.ok(message)
-
-
-def error(message: str) -> None:
-    __TERM.error(message)
-
-
-def fail(message: str) -> None:
-    __TERM.fail(message)
-
-
-def warning(message: str) -> None:
-    __TERM.warning(message)
-
-
-def info(message: str) -> None:
-    __TERM.info(message)
