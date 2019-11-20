@@ -15,7 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# pylint: disable=invalid-name, protected-access
+
 import unittest
+
+import sys
 
 from unittest.mock import Mock, MagicMock, patch
 
@@ -34,6 +38,16 @@ class PropertyMagicMock(MagicMock):
 
 
 class TerminalTestCase(unittest.TestCase):
+    def assertCalled(self, mock):
+        if sys.version_info[1] < 6:
+            self.assertEqual(
+                mock.call_count,
+                1,
+                '{} not called'.format(mock._mock_name or 'mock'),
+            )
+        else:
+            mock.assert_called()
+
     def setUp(self):
         self.print_patcher = patch('builtins.print')
         self.terminal_patcher = patch('autohooks.terminal.Term', spec=True)
@@ -76,7 +90,7 @@ class TerminalTestCase(unittest.TestCase):
         self.terminal_mock.red.assert_called_with('error')
 
         # an actual output has been generated
-        self.print_mock.assert_called()
+        self.assertCalled(self.print_mock)
 
     def test_fail(self):
         term = Terminal()
@@ -92,7 +106,7 @@ class TerminalTestCase(unittest.TestCase):
         self.terminal_mock.red.assert_called_with('fail')
 
         # an actual output has been generated
-        self.print_mock.assert_called()
+        self.assertCalled(self.print_mock)
 
     def test_info(self):
         term = Terminal()
@@ -108,7 +122,7 @@ class TerminalTestCase(unittest.TestCase):
         self.terminal_mock.cyan.assert_called_with('info')
 
         # an actual output has been generated
-        self.print_mock.assert_called()
+        self.assertCalled(self.print_mock)
 
     def test_ok(self):
         term = Terminal()
@@ -124,7 +138,7 @@ class TerminalTestCase(unittest.TestCase):
         self.terminal_mock.green.assert_called_with('ok')
 
         # an actual output has been generated
-        self.print_mock.assert_called()
+        self.assertCalled(self.print_mock)
 
     def test_warning(self):
         term = Terminal()
@@ -140,7 +154,7 @@ class TerminalTestCase(unittest.TestCase):
         self.terminal_mock.yellow.assert_called_with('warning')
 
         # an actual output has been generated
-        self.print_mock.assert_called()
+        self.assertCalled(self.print_mock)
 
     def test_print(self):
         term = Terminal()
