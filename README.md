@@ -14,8 +14,9 @@ in Python
   - [Pipenv mode](#pipenv-mode)
   - [Poetry mode](#poetry-mode)
 - [Installation](#installation)
+  - [Choose autohooks mode](#choose-autohooks-mode)
   - [Install autohooks python package](#install-autohooks-python-package)
-  - [Configure mode and plugins to be run](#configure-mode-and-plugins-to-be-run)
+  - [Configure plugins to be run](#configure-plugins-to-be-run)
   - [Activating the git hooks](#activating-the-git-hooks)
 - [Plugins](#plugins)
 - [How-to write a Plugin](#how-to-write-a-plugin)
@@ -101,9 +102,32 @@ executing the autohooks based git commit hook.
 
 For the installation of autohooks three steps are necessary:
 
-1. Install autohooks package into your current environment
-3. Configure mode and plugins to be run
-2. Activate [git hooks](https://git-scm.com/docs/githooks)
+1. Choose autohooks mode
+2. Install autohooks package into your current environment
+3. Configure plugins to be run
+4. Activate [git hooks](https://git-scm.com/docs/githooks)
+
+### Choose autohooks mode
+
+Autohooks uses the *pyproject.toml* file specified in
+[PEP518](https://www.python.org/dev/peps/pep-0518/) for its configuration.
+Adding a *[tool.autohooks]* section allows to specify the desired [autohooks mode](#modes)
+and to set python modules to be run as [autohooks plugins](#plugins).
+
+The mode can be set by adding a `mode =` line to the *pyproject.toml* file.
+Current possible options are `"pythonpath"`, `"pipenv"` and `"poetry"`. See
+[autohooks mode](#modes) for more details. If the mode setting is missing it
+falls back to `pythonpath` mode.
+
+Example *pyproject.toml*:
+
+```toml
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[tool.autohooks]
+mode = "pipenv"
+```
 
 ### Install autohooks python package
 
@@ -138,17 +162,7 @@ autohooks = {git = "https://github.com/greenbone/autohooks"}
 
 to the `[dev-packages]` section of your `Pipfile`.
 
-### Configure mode and plugins to be run
-
-Autohooks uses the *pyproject.toml* file specified in
-[PEP518](https://www.python.org/dev/peps/pep-0518/) for its configuration.
-Adding a *[tool.autohooks]* section allows to specify the desired [autohooks mode](#modes)
-and to set python modules to be run as [autohooks plugins](#plugins).
-
-The mode can be set by adding a `mode =` line to the *pyproject.toml* file.
-Current possible options are `"pythonpath"`, `"pipenv"` and `"poetry"`. See
-[autohooks mode](#modes) for more details. If the mode setting is missing it
-falls back to `pythonpath` mode.
+### Configure plugins to be run
 
 To actually run an action on git hooks, [autohooks plugins](#plugins) have to be
 installed and configured. To install e.g. python linting via pylint run
@@ -157,6 +171,10 @@ installed and configured. To install e.g. python linting via pylint run
 pipenv install --dev autohooks-plugin-pylint
 ```
 
+Afterwards the pylint plugin can be configured to run as a pre-commit git hook
+by adding the autohooks-plugins-pylint python module name to the `pre-commit`
+setting at the `[tool.autohooks]` section in the *pyproject.toml* file.
+
 Example *pyproject.toml*:
 
 ```toml
@@ -164,8 +182,8 @@ Example *pyproject.toml*:
 requires = ["setuptools", "wheel"]
 
 [tool.autohooks]
-pre-commit = ["autohooks.plugins.black"]
 mode = "pipenv"
+pre-commit = ["autohooks.plugins.pylint"]
 ```
 
 ### Activating the git hooks
@@ -184,11 +202,15 @@ pipenv run autohooks activate
 ```
 
 Calling `activate` also allows for overriding the [mode](#modes) defined in the
-*pyproject.toml* settings. E.g.
+*pyproject.toml* settings for testing purposes. E.g.
 
 ```bash
 pipenv run autohooks activate --mode pipenv
 ```
+
+Please keep in mind that autohooks will always issue a warning if the mode used
+in the git hooks is different from the configured mode in the *pyproject.toml*
+file.
 
 ## Plugins
 
