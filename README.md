@@ -10,18 +10,18 @@ in Python
 - [Why?](#why)
 - [Solution](#solution)
 - [Modes](#modes)
-  - [Pythonpath mode](#pythonpath-mode)
-  - [Pipenv mode](#pipenv-mode)
-  - [Poetry mode](#poetry-mode)
+  - [Pythonpath Mode](#pythonpath-mode)
+  - [Pipenv Mode](#pipenv-mode)
+  - [Poetry Mode](#poetry-mode)
 - [Installation](#installation)
-  - [Choose autohooks mode](#choose-autohooks-mode)
-  - [Install autohooks python package](#install-autohooks-python-package)
-  - [Configure plugins to be run](#configure-plugins-to-be-run)
-  - [Activating the git hooks](#activating-the-git-hooks)
+  - [Choose autohooks Mode](#choose-autohooks-mode)
+  - [Install autohooks Python Package](#install-autohooks-python-package)
+  - [Configure Plugins to be run](#configure-plugins-to-be-run)
+  - [Activating the Git Hooks](#activating-the-git-hooks)
 - [Plugins](#plugins)
 - [How-to write a Plugin](#how-to-write-a-plugin)
-  - [Linting plugin](#linting-plugin)
-  - [Formatting plugin](#formatting-plugin)
+  - [Linting Plugin](#linting-plugin)
+  - [Formatting Plugin](#formatting-plugin)
 - [Maintainer](#maintainer)
 - [Contributing](#contributing)
 - [License](#license)
@@ -61,7 +61,7 @@ If no mode is specified in the [`pyproject.toml` config file](#configure-mode-an
 and no mode is set during [activation](#activating-the-git-hooks), autohooks
 will use the [pythonpath mode](#pythonpath-mode) by default.
 
-### Pythonpath mode
+### Pythonpath Mode
 
 In the `pythonpath` mode the user has to install autohooks, the desired
 plugins and their dependencies into the [PYTHONPATH](https://docs.python.org/3/library/sys.html#sys.path)
@@ -81,7 +81,7 @@ environment but the activation of the environment has to be done manually.
 Therefore it would be even possible to run different versions of autohooks by
 using the `pythonpath` mode and switching a virtual environment.
 
-### Pipenv mode
+### Pipenv Mode
 
 In the `pipenv` mode [pipenv] is used to run autohooks in a dedicated virtual
 environment. Pipenv uses a lockfile to install exact versions. Therefore the
@@ -91,7 +91,7 @@ provided by [pipenv] is done automatically in the background.
 
 Using the `pipenv` mode is highly recommended.
 
-### Poetry mode
+### Poetry Mode
 
 Like the [pipenv mode](#pipenv-mode) it is possible to run autohooks in a
 dedicated environment controlled by [poetry]. By using the `poetry` mode the
@@ -107,7 +107,7 @@ For the installation of autohooks three steps are necessary:
 3. Configure plugins to be run
 4. Activate [git hooks](https://git-scm.com/docs/githooks)
 
-### Choose autohooks mode
+### Choose autohooks Mode
 
 Autohooks uses the *pyproject.toml* file specified in
 [PEP518](https://www.python.org/dev/peps/pep-0518/) for its configuration.
@@ -129,7 +129,7 @@ requires = ["setuptools", "wheel"]
 mode = "pipenv"
 ```
 
-### Install autohooks python package
+### Install autohooks Python Package
 
 For installing the autohooks python package, using [pipenv] is highly
 recommended.
@@ -162,7 +162,7 @@ autohooks = {git = "https://github.com/greenbone/autohooks"}
 
 to the `[dev-packages]` section of your `Pipfile`.
 
-### Configure plugins to be run
+### Configure Plugins to be run
 
 To actually run an action on git hooks, [autohooks plugins](#plugins) have to be
 installed and configured. To install e.g. python linting via pylint run
@@ -186,7 +186,7 @@ mode = "pipenv"
 pre-commit = ["autohooks.plugins.pylint"]
 ```
 
-### Activating the git hooks
+### Activating the Git Hooks
 
 If autohooks is installed from git or a source tarball, the git hooks should be
 activated automatically. The activation can be verified by running e.g.
@@ -265,7 +265,7 @@ def precommit(**kwargs):
 With autohooks it is possible to write all kinds of plugins. Most common are
 plugins for linting and formatting.
 
-### Linting plugin
+### Linting Plugin
 
 Usually the standard call sequence for a linting plugin is
 
@@ -322,7 +322,7 @@ def precommit(**kwargs):
         return 1 if failed else 0
 ```
 
-### Formatting plugin
+### Formatting Plugin
 
 Usually the standard call sequence for a formatting plugin is
 
