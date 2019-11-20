@@ -26,7 +26,7 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   bdist_wheel.
 
   ```sh
-  rm -rf dist build autohooks.egg-info
+  rm -rf dist build autohooks.egg-info pip-wheel-metadata
   python3 setup.py sdist
   ```
 
@@ -74,7 +74,10 @@ username = <username>
   ```sh
   mkdir autohooks-install-test
   cd autohooks-install-test
+  git init
   pipenv run pip install --pre -I --extra-index-url https://test.pypi.org/simple/ autohooks
+  pipenv run autohooks check
+  pipenv run python -c "from autohooks.version import get_version; print(get_version())"
   ```
 
 * Remove test environment
