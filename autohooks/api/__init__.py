@@ -17,8 +17,39 @@
 
 import sys
 
-from autohooks.terminal import ok, fail, error, warning
+from autohooks.terminal import Terminal
+
+__term = Terminal()  # pylint: disable=invalid-name
+
+__all__ = [
+    'error',
+    'fail',
+    'info',
+    'ok',
+    'out',
+    'warning',
+]
+
+
+def ok(message: str) -> None:
+    __term.ok(message)
+
+
+def fail(message: str) -> None:
+    __term.fail(message)
+
+
+def error(message: str) -> None:
+    __term.error(message)
+
+
+def warning(message: str) -> None:
+    __term.warning(message)
+
+
+def info(message: str) -> None:
+    __term.info(message)
 
 
 def out(message: str):
-    print(message)
+    __term.print(message)
