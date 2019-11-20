@@ -70,6 +70,9 @@ commands:
           name: Install dependencies
           command: pipenv install --dev
       - run:
+          name: Print possible diff generated with black
+          command: pipenv run black -q --diff autohooks
+      - run:
           name: Check with black
           command: pipenv run black --check autohooks
       - run:
