@@ -20,39 +20,39 @@ from argparse import Namespace
 from autohooks.config import (
     load_config_from_pyproject_toml,
     get_pyproject_toml_path,
-    AUTOHOOKS_SECTION,
 )
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode
-from autohooks.terminal import ok, warning, info
+from autohooks.terminal import Terminal
 
 
-def install_hooks(args: Namespace) -> None:
+def install_hooks(term: Terminal, args: Namespace) -> None:
     pre_commit_hook = PreCommitHook()
     pyproject_toml = get_pyproject_toml_path()
     config = load_config_from_pyproject_toml(pyproject_toml)
 
     if pre_commit_hook.exists() and not args.force:
-        ok(
-            'pre-commit hook is already installed at {}.'.format(
+        term.ok(
+            'autohooks pre-commit hook is already installed at {}.'.format(
                 str(pre_commit_hook)
             )
         )
-        info(
-            "Run 'autohooks activate --force' to override the current "
-            "installed pre-commit hook."
-        )
-        info(
-            "Run 'autohooks check' to validate the current status of "
-            "the installed pre-commit hook."
-        )
+        with term.indent():
+            term.print()
+            term.info(
+                "Run 'autohooks activate --force' to override the current "
+                "installed pre-commit hook."
+            )
+            term.info(
+                "Run 'autohooks check' to validate the current status of "
+                "the installed pre-commit hook."
+            )
     else:
         if not config.is_autohooks_enabled():
-            warning(
-                'Warning: autohooks is not enabled in your {} file. Please add '
-                'a "{}" section. Run autohooks check for more details.'.format(
-                    str(pyproject_toml), AUTOHOOKS_SECTION
-                )
+            term.warning(
+                'autohooks is not enabled in your {} file. '
+                'Run \'autohooks check\' for more '
+                'details.'.format(str(pyproject_toml))
             )
 
         if args.mode:
@@ -62,8 +62,8 @@ def install_hooks(args: Namespace) -> None:
 
         pre_commit_hook.write(mode=mode)
 
-        ok(
-            'pre-commit hook installed at {} using {} mode'.format(
+        term.ok(
+            'autohooks pre-commit hook installed at {} using {} mode.'.format(
                 str(pre_commit_hook), str(mode.get_effective_mode())
             )
         )

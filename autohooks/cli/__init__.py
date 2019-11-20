@@ -17,6 +17,7 @@
 
 import argparse
 
+from autohooks.terminal import Terminal
 from autohooks.settings import Mode
 from autohooks.version import get_version
 
@@ -60,10 +61,11 @@ def main():
     if not args.command:
         parser.print_usage()
 
+    term = Terminal()
     if args.command == 'activate':
-        install_hooks(args)
+        install_hooks(term, args)
     elif args.command == 'check':
-        check_hooks()
+        check_hooks(term)
 
 
 if __name__ == "__main__":
