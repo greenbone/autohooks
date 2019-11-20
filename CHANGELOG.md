@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Enhanced autohooks activate cli to show additional information if a autohooks
   git hook is already installed
   [#30](https://github.com/greenbone/autohooks/pull/30)
+* Added plugin API for additional info status output
+  [#39](https://github.com/greenbone/autohooks/pull/39)
+* Added plugin API for additional message printing
+  [#39](https://github.com/greenbone/autohooks/pull/39)
 
 ### Changed
 
@@ -40,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [#30](https://github.com/greenbone/autohooks/pull/30)
 * A warning is raised during git hook execution if the current mode is different
   to the configured mode [#30](https://github.com/greenbone/autohooks/pull/30)
+* Improved output formatting [#39](https://github.com/greenbone/autohooks/pull/39)
 
 ### Deprecated
 ### Fixed
