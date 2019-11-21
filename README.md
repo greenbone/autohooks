@@ -5,7 +5,11 @@
 [![PyPI release](https://img.shields.io/pypi/v/autohooks.svg)](https://pypi.org/project/autohooks/)
 
 Library for managing and writing [git hooks](https://git-scm.com/docs/githooks)
-in Python
+in Python.
+
+Looking for auto formatting or linting, e.g. with [black] and [pylint],
+while creating a git commit using a pure Python implementation?
+Welcome to **autohooks**!
 
 - [Why?](#why)
 - [Solution](#solution)
@@ -396,6 +400,8 @@ Copyright (C) 2019 [Greenbone Networks GmbH](https://www.greenbone.net/)
 
 Licensed under the [GNU General Public License v3.0 or later](LICENSE).
 
+[black]: https://black.readthedocs.io/
 [pip]: https://pip.pypa.io/
 [pipenv]: https://pipenv.readthedocs.io/
 [poetry]: https://poetry.eustace.io/
+[pylint]: https://pylint.readthedocs.io/
