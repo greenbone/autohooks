@@ -79,7 +79,7 @@ Alternatively, a [virtual environment](https://packaging.python.org/tutorials/in
 could be used separating the installation from the global and user wide
 Python packages.
 
-It is also be possible to use [pipenv] for managing the virtual
+It is also possible to use [pipenv] for managing the virtual
 environment but activating the environment has to be done manually.
 
 Therefore it is even possible to run different versions of autohooks by
