@@ -120,7 +120,7 @@ and to set python modules to be run as [autohooks plugins](#plugins).
 
 The mode can be set by adding a `mode =` line to the *pyproject.toml* file.
 Current possible options are `"pythonpath"`, `"pipenv"` and `"poetry"` (see
-[autohooks mode](#modes)). If the mode setting the `pythonpath` mode is used.
+[autohooks mode](#modes)). If the mode setting is missing, the `pythonpath` mode is used.
 
 Example *pyproject.toml*:
 
