@@ -7,7 +7,7 @@
 Library for managing and writing [git hooks](https://git-scm.com/docs/githooks)
 in Python.
 
-Looking for auto formatting or linting, e.g. with [black] and [pylint],
+Looking for automatic formatting or linting, e.g., with [black] and [pylint],
 while creating a git commit using a pure Python implementation?
 Welcome to **autohooks**!
 
@@ -32,23 +32,23 @@ Welcome to **autohooks**!
 
 ## Why?
 
-Several outstanding libraries for managing and executing git hooks already
-exist. To name few: [husky](https://github.com/typicode/husky),
+Several outstanding libraries for managing and executing git hooks exist already. 
+To name a few: [husky](https://github.com/typicode/husky),
 [lint-staged](https://github.com/okonet/lint-staged),
 [precise-commits](https://github.com/nrwl/precise-commits) or
 [pre-commit](https://github.com/pre-commit/pre-commit).
 
-But either they need another interpreter besides python (like husky) or they are
+However, they either need another interpreter besides python (like husky) or are
 too ambiguous (like pre-commit). pre-commit is written in python but has support
-hooks written in all kind of languages. Also it maintains the dependencies by
-itself and doesn't install in the current environment.
+hooks written in all kind of languages. Additionally, it maintains the dependencies by
+itself and does not install them in the current environment.
 
 ## Solution
 
-Autohooks is a pure python library that installs a minimal
+autohooks is a pure python library that installs a minimal
 [executable git hook](https://github.com/greenbone/autohooks/blob/master/autohooks/precommit/template).
-It allows you to decide how to maintain your hook dependencies by supporting
-different modes.
+It allows the decision of how to maintain the hook dependencies 
+by supporting different modes.
 
 ## Modes
 
@@ -58,7 +58,7 @@ Currently three modes for using autohooks are supported:
 * `pipenv`
 * `poetry`
 
-The modes handle how autohooks, the plugins and their dependencies are loaded
+These modes handle how autohooks, the plugins and their dependencies are loaded
 during git hook execution.
 
 If no mode is specified in the [`pyproject.toml` config file](#configure-mode-and-plugins-to-be-run)
@@ -67,7 +67,7 @@ will use the [pythonpath mode](#pythonpath-mode) by default.
 
 ### Pythonpath Mode
 
-In the `pythonpath` mode the user has to install autohooks, the desired
+In the `pythonpath` mode, the user has to install autohooks, the desired
 plugins and their dependencies into the [PYTHONPATH](https://docs.python.org/3/library/sys.html#sys.path)
 manually.
 
@@ -75,20 +75,20 @@ This can be achieved by running `pip install --user autohooks ...` to put them
 into the installation directory of the [current user](https://docs.python.org/3/library/site.html#site.USER_SITE)
 or with `pip install authooks ...` for a system wide installation.
 
-Alternatively a [virtual environment](https://packaging.python.org/tutorials/installing-packages/#creating-and-using-virtual-environments)
-could be used, which separates the installation from your global and user wide
+Alternatively, a [virtual environment](https://packaging.python.org/tutorials/installing-packages/#creating-and-using-virtual-environments)
+could be used separating the installation from the global and user wide
 Python packages.
 
-It would also be possible to use [pipenv] for the management of the virtual
-environment but the activation of the environment has to be done manually.
+It is also be possible to use [pipenv] for managing the virtual
+environment but activating the environment has to be done manually.
 
-Therefore it would be even possible to run different versions of autohooks by
-using the `pythonpath` mode and switching a virtual environment.
+Therefore it is even possible to run different versions of autohooks by
+using the `pythonpath` mode and switching to a virtual environment.
 
 ### Pipenv Mode
 
 In the `pipenv` mode [pipenv] is used to run autohooks in a dedicated virtual
-environment. Pipenv uses a lockfile to install exact versions. Therefore the
+environment. Pipenv uses a lock file to install exact versions. Therefore the
 installation is deterministic and reliable between different developer setups.
 In contrast to the `pythonpath` mode the activation of the virtual environment
 provided by [pipenv] is done automatically in the background.
@@ -97,31 +97,30 @@ Using the `pipenv` mode is highly recommended.
 
 ### Poetry Mode
 
-Like the [pipenv mode](#pipenv-mode) it is possible to run autohooks in a
+Like with the [pipenv mode](#pipenv-mode), it is possible to run autohooks in a
 dedicated environment controlled by [poetry]. By using the `poetry` mode the
 virtual environment will be activated automatically in the background when
 executing the autohooks based git commit hook.
 
-## Installation
+## Installing autohooks
 
-For the installation of autohooks three steps are necessary:
+Four steps are necessary for installing autohooks:
 
-1. Choose autohooks mode
-2. Install autohooks package into your current environment
-3. Configure plugins to be run
-4. Activate [git hooks](https://git-scm.com/docs/githooks)
+1. Choosing an autohooks mode
+2. Installing the autohooks python package into the current environment
+3. Configuring plugins to be run
+4. Activating the [git hooks](https://git-scm.com/docs/githooks)
 
-### Choose autohooks Mode
+### 1. Choosing an autohooks Mode
 
-Autohooks uses the *pyproject.toml* file specified in
-[PEP518](https://www.python.org/dev/peps/pep-0518/) for its configuration.
+For its configuration, autohooks uses the *pyproject.toml* file specified in
+[PEP518](https://www.python.org/dev/peps/pep-0518/).
 Adding a *[tool.autohooks]* section allows to specify the desired [autohooks mode](#modes)
 and to set python modules to be run as [autohooks plugins](#plugins).
 
 The mode can be set by adding a `mode =` line to the *pyproject.toml* file.
-Current possible options are `"pythonpath"`, `"pipenv"` and `"poetry"`. See
-[autohooks mode](#modes) for more details. If the mode setting is missing it
-falls back to `pythonpath` mode.
+Current possible options are `"pythonpath"`, `"pipenv"` and `"poetry"` (see
+[autohooks mode](#modes)). If the mode setting the `pythonpath` mode is used.
 
 Example *pyproject.toml*:
 
@@ -133,10 +132,9 @@ requires = ["setuptools", "wheel"]
 mode = "pipenv"
 ```
 
-### Install autohooks Python Package
+### 2. Installing the autohooks Python Package into the Current Environment
 
-For installing the autohooks python package, using [pipenv] is highly
-recommended.
+Using [pipenv] is highly recommended for installing the autohooks python package.
 
 To install autohooks as a development dependency run
 
@@ -150,9 +148,9 @@ or add
 autohooks = "*"
 ```
 
-to the `[dev-packages]` section of your `Pipfile`.
+to the `[dev-packages]` section of `Pipfile`.
 
-Alternatively autohooks can be installed directly from GitHub by running
+Alternatively, autohooks can be installed directly from GitHub by running
 
 ```sh
 pipenv install --dev git+https://github.com/greenbone/autohooks#egg=autohooks
@@ -164,20 +162,20 @@ or adding
 autohooks = {git = "https://github.com/greenbone/autohooks"}
 ```
 
-to the `[dev-packages]` section of your `Pipfile`.
+to the `[dev-packages]` section of `Pipfile`.
 
-### Configure Plugins to be run
+### 3. Configuring Plugins to Be Run
 
 To actually run an action on git hooks, [autohooks plugins](#plugins) have to be
-installed and configured. To install e.g. python linting via pylint run
+installed and configured, e.g., to install python linting via pylint run
 
 ```bash
 pipenv install --dev autohooks-plugin-pylint
 ```
 
-Afterwards the pylint plugin can be configured to run as a pre-commit git hook
+Afterwards, the pylint plugin can be configured to run as a pre-commit git hook
 by adding the autohooks-plugins-pylint python module name to the `pre-commit`
-setting at the `[tool.autohooks]` section in the *pyproject.toml* file.
+setting in the `[tool.autohooks]` section in the *pyproject.toml* file.
 
 Example *pyproject.toml*:
 
@@ -190,23 +188,26 @@ mode = "pipenv"
 pre-commit = ["autohooks.plugins.pylint"]
 ```
 
-### Activating the Git Hooks
+### 4. Activating the Git Hooks
 
 If autohooks is installed from git or a source tarball, the git hooks should be
-activated automatically. The activation can be verified by running e.g.
+activated automatically. The activation can be verified by running, e.g.,
 `autohooks check`.
 
 Installing autohooks from a [wheel](https://www.python.org/dev/peps/pep-0427/)
 package will **NOT** activate the git commit hooks automatically.
 
-To manually activate the git hooks you can run
+To manually activate the git hooks run
 
 ```bash
 pipenv run autohooks activate
 ```
 
 Calling `activate` also allows for overriding the [mode](#modes) defined in the
-*pyproject.toml* settings for testing purposes. E.g.
+*pyproject.toml* settings for testing purposes.
+
+Example:
+
 
 ```bash
 pipenv run autohooks activate --mode pipenv
@@ -226,28 +227,29 @@ file.
 
 * Python import sorting via [isort](https://github.com/greenbone/autohooks-plugin-isort)
 
-## How-to write a Plugin
+## Howto: Writing a Plugin
 
 Plugins need to be available in the
 [Python import path](https://docs.python.org/3/reference/import.html). The
-easiest way to achieve this, is to upload a plugin to [PyPI](https://pypi.org/)
-and install it via [pip] or [pipenv].
+easiest way to achieve this is uploading a plugin to [PyPI](https://pypi.org/)
+and installing it via [pip] or [pipenv].
 
-Alternatively, a plugin can also be put into a *.autohooks* directory at the root
+Alternatively, a plugin can also be put into a *.autohooks* directory in the root
 directory of the git repository where the hooks should be executed.
 
 An autohooks plugin is a Python module which provides a **precommit** function.
 The function must accept arbitrary keywords because the keywords are likely to
 change in future. Therefore using **\*\*kwargs** is highly recommended.
 Currently only a *config* keyword argument is passed to the precommit function.
-E.g.
+
+Example:
 
 ```python3
 def precommit(**kwargs):
     config = kwargs.get('config')
 ```
 
-The config can be used to receive settings from the *pyproject.toml* file. E.g.
+The config can be used to receive settings from the *pyproject.toml* file, e.g.,
 
 ```toml
 [tool.autohooks.plugins.foo]
@@ -271,7 +273,7 @@ plugins for linting and formatting.
 
 ### Linting Plugin
 
-Usually the standard call sequence for a linting plugin is
+Usually the standard call sequence for a linting plugin is the following:
 
 1. get list of staged files
 2. filter list of files for a specific file type
@@ -328,7 +330,7 @@ def precommit(**kwargs):
 
 ### Formatting Plugin
 
-Usually the standard call sequence for a formatting plugin is
+Usually the standard call sequence for a formatting plugin is the following:
 
 1. get list of staged files
 2. filter list of files for a specific file type
@@ -400,8 +402,8 @@ Copyright (C) 2019 [Greenbone Networks GmbH](https://www.greenbone.net/)
 
 Licensed under the [GNU General Public License v3.0 or later](LICENSE).
 
-[black]: https://black.readthedocs.io/
-[pip]: https://pip.pypa.io/
-[pipenv]: https://pipenv.readthedocs.io/
+[black]: https://black.readthedocs.io/en/stable/
+[pip]: https://pip.pypa.io/en/stable/
+[pipenv]: https://pipenv.readthedocs.io/en/latest/
 [poetry]: https://poetry.eustace.io/
-[pylint]: https://pylint.readthedocs.io/
+[pylint]: https://pylint.readthedocs.io/en/latest/
