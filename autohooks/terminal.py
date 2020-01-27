@@ -60,7 +60,7 @@ class Terminal:
         self._indent += indentation
 
     def print(self, *messages: str) -> None:
-        print(messages)
+        print(' ' * (self._indent - 1), messages)
 
     def ok(self, message: str) -> None:
         self._print_end(message, 'ok', cf.green)  # pylint: disable=no-member
