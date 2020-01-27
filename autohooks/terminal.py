@@ -77,4 +77,4 @@ class Terminal:
         )
 
     def info(self, message: str) -> None:
-        self._print_end(message, 'info', cf.cyan)  # pylint: disable=no-member
+        self._print_end(message, 'info', cf.cyan)
