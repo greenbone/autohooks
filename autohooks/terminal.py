@@ -63,18 +63,16 @@ class Terminal:
         print(' ' * (self._indent - 1), messages)
 
     def ok(self, message: str) -> None:
-        self._print_end(message, 'ok', cf.green)  # pylint: disable=no-member
+        self._print_end(message, 'ok', cf.green)
 
     def fail(self, message: str) -> None:
-        self._print_end(message, 'fail', cf.red)  # pylint: disable=no-member
+        self._print_end(message, 'fail', cf.red)
 
     def error(self, message: str) -> None:
-        self._print_end(message, 'error', cf.red)  # pylint: disable=no-member
+        self._print_end(message, 'error', cf.red)
 
     def warning(self, message: str) -> None:
-        self._print_end(
-            message, 'warning', cf.yellow  # pylint: disable=no-member
-        )
+        self._print_end(message, 'warning', cf.yellow)
 
     def info(self, message: str) -> None:
         self._print_end(message, 'info', cf.cyan)
