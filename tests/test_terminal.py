@@ -18,188 +18,215 @@
 # pylint: disable=invalid-name, protected-access
 
 import unittest
+import os
+from io import StringIO
+from unittest.mock import patch
 
-import sys
-
-from unittest.mock import Mock, MagicMock, patch
-
+import colorful as cf
 from autohooks.terminal import Terminal
 
 
-class PropertyMagicMock(MagicMock):
-    def __get__(self, obj, obj_type=None):
-        return self()
-
-    def __set__(self, obj, val):
-        self(val)
-
-    def _get_child_mock(self, **kwargs):
-        return MagicMock(**kwargs)
-
-
 class TerminalTestCase(unittest.TestCase):
-    def assertCalled(self, mock):
-        if sys.version_info[1] < 6:
-            self.assertEqual(
-                mock.call_count,
-                1,
-                '{} not called'.format(mock._mock_name or 'mock'),
-            )
-        else:
-            mock.assert_called()
-
     def setUp(self):
-        self.print_patcher = patch('builtins.print')
-        self.terminal_patcher = patch('autohooks.terminal.Term', spec=True)
+        self.maxDiff = None
+        # getting the bash-color-codes from the colorful module
+        self.red = cf.red.style[0]
+        self.green = cf.green.style[0]
+        self.yellow = cf.yellow.style[0]
+        self.cyan = cf.cyan.style[0]
+        self.reset = cf.black.style[
+            1
+        ]  # every colors second value is the reset value ...
 
-        terminal_mock_class = self.terminal_patcher.start()
-        self.print_mock = self.print_patcher.start()
-
-        self.width_mock = PropertyMagicMock(return_value=80, spec=1)
-
-        self.terminal_mock = terminal_mock_class.return_value
-
-        # "Because of the way mock attributes are stored you can’t directly
-        #  attach a PropertyMock to a mock object. Instead you can attach it to
-        #  the mock type object"
-        # https://docs.python.org/3/library/unittest.mock.html#unittest.mock.PropertyMock
-        type(self.terminal_mock).width = self.width_mock
-
-        self.terminal_mock.cyan = Mock()
-        self.terminal_mock.green = Mock()
-        self.terminal_mock.red = Mock()
-        self.terminal_mock.yellow = Mock()
-
-        self.terminal_mock.move_x = Mock()
-
-    def tearDown(self):
-        self.print_patcher.stop()
-        self.terminal_patcher.stop()
-
-    def test_error(self):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_error(self, mock_stdout):
         term = Terminal()
+
+        width, _ = os.get_terminal_size()
+        est_len = width + len(self.red) + len(self.reset) + 1
+
         term.error('foo bar')
 
-        # width has been calculated
-        self.width_mock.assert_called_with()
+        ret = mock_stdout.getvalue()
+        status = '[ {}error{} ]\n'.format(self.red, self.reset)
+        msg = 'foo bar'
+        sep = ' ' * (est_len - (len(msg) + len(status)))
 
-        # 70 == 80 - 5 - len('error')
-        self.terminal_mock.move_x.assert_called_with(70)
+        reg = msg + sep + status
 
-        # error has been printed in red
-        self.terminal_mock.red.assert_called_with('error')
+        self.assertIsNotNone(term._width)
+        self.assertEqual(term._width, width)
+        if width is 0:
+            est_len = len(msg) + len('[ error ]') + len(self.yellow) + len(self.reset) + 1
+        self.assertEqual(len(ret), est_len)
+        self.assertEqual(ret, reg)
 
-        # an actual output has been generated
-        self.assertCalled(self.print_mock)
-
-    def test_fail(self):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_fail(self, mock_stdout):
         term = Terminal()
-        term.fail('foo bar')
 
-        # width has been calculated
-        self.width_mock.assert_called_with()
+        width, _ = os.get_terminal_size()
+        est_len = width + len(self.red) + len(self.reset) + 1
 
-        # 71 == 80 - 5 - len('fail')
-        self.terminal_mock.move_x.assert_called_with(71)
+        term.fail('foo bar baz')
 
-        # fail has been printed in red
-        self.terminal_mock.red.assert_called_with('fail')
+        ret = mock_stdout.getvalue()
+        status = '[ {}fail{} ]\n'.format(self.red, self.reset)
+        msg = 'foo bar baz'
+        sep = ' ' * (est_len - (len(msg) + len(status)))
 
-        # an actual output has been generated
-        self.assertCalled(self.print_mock)
+        reg = msg + sep + status
 
-    def test_info(self):
+        self.assertIsNotNone(term._width)
+        self.assertEqual(term._width, width)
+        if width is 0:
+            est_len = len(msg) + len('[ fail ]') + len(self.yellow) + len(self.reset) + 1
+        self.assertEqual(len(ret), est_len)
+        self.assertEqual(ret, reg)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_info(self, mock_stdout):
         term = Terminal()
+
+        width, _ = os.get_terminal_size()
+        est_len = width + len(self.cyan) + len(self.reset) + 1
+
         term.info('foo bar')
 
-        # width has been calculated
-        self.width_mock.assert_called_with()
+        ret = mock_stdout.getvalue()
+        status = '[ {}info{} ]\n'.format(self.cyan, self.reset)
+        msg = 'foo bar'
+        sep = ' ' * (est_len - (len(msg) + len(status)))
 
-        # 71 == 80 - 5 - len('info')
-        self.terminal_mock.move_x.assert_called_with(71)
+        reg = msg + sep + status
 
-        # info has been printed in cyan
-        self.terminal_mock.cyan.assert_called_with('info')
+        self.assertIsNotNone(term._width)
+        self.assertEqual(term._width, width)
+        if width is 0:
+            est_len = len(msg) + len('[ info ]') + len(self.yellow) + len(self.reset) + 1
+        self.assertEqual(len(ret), est_len)
+        self.assertEqual(ret, reg)
 
-        # an actual output has been generated
-        self.assertCalled(self.print_mock)
-
-    def test_ok(self):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_ok(self, mock_stdout):
         term = Terminal()
+
+        width, _ = os.get_terminal_size()
+        est_len = width + len(self.green) + len(self.reset) + 1
+
         term.ok('foo bar')
 
-        # width has been calculated
-        self.width_mock.assert_called_with()
+        # get the printed output
+        ret = mock_stdout.getvalue()
 
-        # 73 == 80 - 5 - len('ok')
-        self.terminal_mock.move_x.assert_called_with(73)
+        # build the estimated output
+        status = '[ {}ok{} ]\n'.format(self.green, self.reset)
+        msg = 'foo bar'
+        sep = ' ' * (est_len - (len(msg) + len(status)))
+        reg = msg + sep + status
 
-        # ok has been printed in green
-        self.terminal_mock.green.assert_called_with('ok')
+        # assert length and output and terminal width
+        self.assertIsNotNone(term._width)
+        self.assertEqual(term._width, width)
+        if width is 0:
+            est_len = len(msg) + len('[ ok ]') + len(self.yellow) + len(self.reset) + 1
+        self.assertEqual(len(ret), est_len)
+        self.assertEqual(ret, reg)
 
-        # an actual output has been generated
-        self.assertCalled(self.print_mock)
-
-    def test_warning(self):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_warning(self, mock_stdout):
         term = Terminal()
+
+        width, _ = os.get_terminal_size()
+        est_len = width + len(self.yellow) + len(self.reset) + 1
+
         term.warning('foo bar')
 
-        # width has been calculated
-        self.width_mock.assert_called_with()
+        ret = mock_stdout.getvalue()
+        status = '[ {}warning{} ]\n'.format(self.yellow, self.reset)
+        msg = 'foo bar'
+        sep = ' ' * (est_len - (len(msg) + len(status)))
 
-        # 68 == 80 - 5 - len('warning')
-        self.terminal_mock.move_x.assert_called_with(68)
+        reg = msg + sep + status
 
-        # warning has been printed in yellow
-        self.terminal_mock.yellow.assert_called_with('warning')
+        self.assertIsNotNone(term._width)
+        self.assertEqual(term._width, width)
+        if width is 0:
+            est_len = len(msg) + len('[ warning ]') + len(self.yellow) + len(self.reset) + 1
+        self.assertEqual(len(ret), est_len)
+        self.assertEqual(ret, reg)
 
-        # an actual output has been generated
-        self.assertCalled(self.print_mock)
-
-    def test_print(self):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_print(self, mock_stdout):
         term = Terminal()
+
+        msg = 'foo bar\n'
+        est_len = len(msg)
+
         term.print('foo bar')
 
-        # printed output at current indent location
-        self.terminal_mock.location.assert_called_with(x=0)
+        ret = mock_stdout.getvalue()
 
-        # an actual output has been generated
-        self.print_mock.assert_called_with('foo bar')
+        self.assertEqual(len(ret), est_len)
+        self.assertEqual(ret, msg)
 
-    def test_add_indent(self):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_add_indent(self, mock_stdout):
         term = Terminal()
-        term.add_indent(6)
+        i = 6
+        msg = ' ' * i + 'foo\n'
+        est_len = len(msg)
+
+        term.add_indent(i)
         term.print('foo')
 
-        # printed output at current indent location
-        self.terminal_mock.location.assert_called_with(x=6)
+        ret = mock_stdout.getvalue()
 
-        # an actual output has been generated
-        self.print_mock.assert_called_with('foo')
+        self.assertEqual(len(ret), est_len)
+        self.assertEqual(ret, msg)
 
-        term.add_indent(4)
+        # clear the buffer
+        mock_stdout.truncate(0)
+        mock_stdout.seek(0)
+
+        j = 4
+        msg = ' ' * (i + j) + 'bar\n'
+        est_len = len(msg)
+        term.add_indent(j)
         term.print('bar')
 
-        # printed output at current indent location
-        self.terminal_mock.location.assert_called_with(x=10)
+        ret = mock_stdout.getvalue()
 
-        # an actual output has been generated
-        self.print_mock.assert_called_with('bar')
+        self.assertEqual(len(ret), est_len)
+        self.assertEqual(ret, msg)
 
-    def test_with_indent(self):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_with_indent(self, mock_stdout):
         term = Terminal()
 
         with term.indent(2):
+            msg = '  foo\n'
+            est_len = len(msg)
             term.print('foo')
 
-        self.terminal_mock.location.assert_called_with(x=2)
-        self.print_mock.assert_called_with('foo')
+            ret = mock_stdout.getvalue()
+
+            # self.assertEqual(len(ret), est_len)
+            self.assertEqual(ret, msg)
+
+        # clear the buffer
+        mock_stdout.truncate(0)
+        mock_stdout.seek(0)
 
         term.print('bar')
 
-        # indentation has been removed
-        self.terminal_mock.location.assert_called_with(x=0)
-        self.print_mock.assert_called_with('bar')
+        msg = 'bar\n'
+        est_len = len(msg)
+
+        ret = mock_stdout.getvalue()
+
+        self.assertEqual(len(ret), est_len)
+        self.assertEqual(ret, msg)
 
 
 if __name__ == '__main__':

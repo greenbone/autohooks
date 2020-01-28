@@ -9,7 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 ### Changed
+
+* Reworked `Terminal` class from `terminal.py` [#45](https://github.com/greenbone/autohooks/pull/45)
+
 ### Fixed
+
+* Windows Support, by exchanging the unmaintained `blessing` module through [`colorful`](https://github.com/timofurrer/colorful) [#45](https://github.com/greenbone/autohooks/pull/45)
+
 ### Removed
 
 [Unreleased]: https://github.com/greenbone/autohooks/compare/v2.0.0...master
