@@ -26,7 +26,7 @@ import colorful as cf
 
 class Terminal:
     def __init__(self):
-        self._width = 0
+        self._width = None
         self._indent = 0
 
     def _check_size(self):
@@ -59,8 +59,15 @@ class Terminal:
     def add_indent(self, indentation: int = 4) -> None:
         self._indent += indentation
 
+    def reset_indent(self) -> None:
+        self._indent = 0
+
     def print(self, *messages: str) -> None:
-        print(' ' * (self._indent - 1), messages)
+        msg = ''
+        if self._indent > 0:
+            msg = ' ' * (self._indent)
+        msg += ' '.join(messages)
+        print(msg)
 
     def ok(self, message: str) -> None:
         self._print_end(message, 'ok', cf.green)
