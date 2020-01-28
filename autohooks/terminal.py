@@ -33,18 +33,18 @@ class Terminal:
         self._width, _ = os.get_terminal_size()
 
     def _print_end(self, message: str, status: str, color: Callable) -> None:
-        extra = 6  # '[ ', ' ]'
+        extra = 4  # '[ ', ' ]'
         # python is adding a ' ' between strings if used
         # in print('foo', 'bar', 'baz') is printed to "foo bar baz"
+        self._check_size()
         if self._indent > 0:
             message = ' ' * self._indent + message
-        self._check_size()
+        if self._width > 0:
+            message += ' ' * (
+                int(self._width) - len(message) - extra - len(status)
+            )
         print(
-            message,
-            ' ' * (int(self._width) - len(message) - extra - len(status)),
-            '[',
-            color(status),
-            ']',
+            message + '[', color(status), ']',
         )
 
     @contextmanager
