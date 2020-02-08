@@ -71,13 +71,13 @@ commands:
           command: pipenv install --dev
       - run:
           name: Print possible diff generated with black
-          command: pipenv run black -q --diff autohooks
+          command: pipenv run black -q --diff autohooks tests
       - run:
           name: Check with black
-          command: pipenv run black --check autohooks
+          command: pipenv run black --check autohooks tests
       - run:
           name: Check with pylint
-          command: pipenv run pylint --disable=R autohooks
+          command: pipenv run pylint --disable=R autohooks tests
 
 jobs:
   build-35:
