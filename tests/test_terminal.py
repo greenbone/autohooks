@@ -57,7 +57,13 @@ class TerminalTestCase(unittest.TestCase):
         self.assertIsNotNone(term._width)
         self.assertEqual(term._width, width)
         if width is 0:
-            est_len = len(msg) + len('[ error ]') + len(self.yellow) + len(self.reset) + 1
+            est_len = (
+                len(msg)
+                + len('[ error ]')
+                + len(self.yellow)
+                + len(self.reset)
+                + 1
+            )
         self.assertEqual(len(ret), est_len)
         self.assertEqual(ret, reg)
 
@@ -80,7 +86,13 @@ class TerminalTestCase(unittest.TestCase):
         self.assertIsNotNone(term._width)
         self.assertEqual(term._width, width)
         if width is 0:
-            est_len = len(msg) + len('[ fail ]') + len(self.yellow) + len(self.reset) + 1
+            est_len = (
+                len(msg)
+                + len('[ fail ]')
+                + len(self.yellow)
+                + len(self.reset)
+                + 1
+            )
         self.assertEqual(len(ret), est_len)
         self.assertEqual(ret, reg)
 
@@ -103,7 +115,13 @@ class TerminalTestCase(unittest.TestCase):
         self.assertIsNotNone(term._width)
         self.assertEqual(term._width, width)
         if width is 0:
-            est_len = len(msg) + len('[ info ]') + len(self.yellow) + len(self.reset) + 1
+            est_len = (
+                len(msg)
+                + len('[ info ]')
+                + len(self.yellow)
+                + len(self.reset)
+                + 1
+            )
         self.assertEqual(len(ret), est_len)
         self.assertEqual(ret, reg)
 
@@ -129,7 +147,13 @@ class TerminalTestCase(unittest.TestCase):
         self.assertIsNotNone(term._width)
         self.assertEqual(term._width, width)
         if width is 0:
-            est_len = len(msg) + len('[ ok ]') + len(self.yellow) + len(self.reset) + 1
+            est_len = (
+                len(msg)
+                + len('[ ok ]')
+                + len(self.yellow)
+                + len(self.reset)
+                + 1
+            )
         self.assertEqual(len(ret), est_len)
         self.assertEqual(ret, reg)
 
@@ -152,7 +176,13 @@ class TerminalTestCase(unittest.TestCase):
         self.assertIsNotNone(term._width)
         self.assertEqual(term._width, width)
         if width is 0:
-            est_len = len(msg) + len('[ warning ]') + len(self.yellow) + len(self.reset) + 1
+            est_len = (
+                len(msg)
+                + len('[ warning ]')
+                + len(self.yellow)
+                + len(self.reset)
+                + 1
+            )
         self.assertEqual(len(ret), est_len)
         self.assertEqual(ret, reg)
 
