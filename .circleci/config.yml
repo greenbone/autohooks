@@ -19,6 +19,12 @@ executors:
         environment:
           PIPENV_VENV_IN_PROJECT: true
     working_directory: ~/repo
+  python-38:
+    docker:
+      - image: circleci/python:3.8
+        environment:
+          PIPENV_VENV_IN_PROJECT: true
+    working_directory: ~/repo
 
 commands:
   build:
@@ -108,6 +114,14 @@ jobs:
     executor: python-37
     steps:
       - lint
+  build-38:
+    executor: python-38
+    steps:
+      - build
+  test-38:
+    executor: python-38
+    steps:
+      - test
 
 workflows:
   version: 2
@@ -120,3 +134,5 @@ workflows:
       - build-37
       - test-37
       - lint-37
+      - build-38
+      - test-38
