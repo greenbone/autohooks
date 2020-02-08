@@ -13,6 +13,7 @@ Welcome to **autohooks**!
 
 - [Why?](#why)
 - [Solution](#solution)
+- [Requirements](#requirements)
 - [Modes](#modes)
   - [Pythonpath Mode](#pythonpath-mode)
   - [Pipenv Mode](#pipenv-mode)
@@ -49,6 +50,17 @@ autohooks is a pure python library that installs a minimal
 [executable git hook](https://github.com/greenbone/autohooks/blob/master/autohooks/precommit/template).
 It allows the decision of how to maintain the hook dependencies 
 by supporting different modes.
+
+## Requirements
+
+autohooks uses `/usr/bin/env` with the `-S` argument to support
+[pipenv](#pythonpath-mode) and [poetry](#poetry-mode) modes. The `-S` argument
+got introduced with coreutils [8.30 (2018-07-01)](https://github.com/coreutils/coreutils/blob/master/NEWS#L241).
+This version is available in Debian Buster and since Ubuntu 19.04.
+
+If you are using an older distribution not providing coreutils 8.30 or newer please choose the [python path mode](#pythonpath-mode).
+
+autohooks supports Python 3.5+. For development Python 3.6+ is required.
 
 ## Modes
 
