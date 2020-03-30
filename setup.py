@@ -15,7 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# pylint: disable=wrong-import-position, invalid-name
+
 import sys
+
+if sys.version_info[0] < 3:
+    raise Exception('Python 2 is not supported by autohooks.')
 
 from pathlib import Path
 
