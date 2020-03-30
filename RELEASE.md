@@ -7,7 +7,7 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
 * Install development dependencies
 
   ```sh
-  pipenv install --dev
+  poetry install
   ```
 
 * Fetch upstream changes and create release branch
@@ -23,11 +23,11 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
 * Update [CHANGELOG](CHANGELOG.md)
 
 * Create a source distribution only. Do **NOT** create a wheel by running
-  bdist_wheel.
+  poetry build without arguments.
 
   ```sh
   rm -rf dist build autohooks.egg-info pip-wheel-metadata
-  python3 setup.py sdist
+  poetry build --format=sdist
   ```
 
 * Create a git commit
@@ -75,15 +75,16 @@ username = <username>
   mkdir autohooks-install-test
   cd autohooks-install-test
   git init
-  pipenv run pip install --pre -I --extra-index-url https://test.pypi.org/simple/ autohooks
-  pipenv run autohooks check
-  pipenv run python -c "from autohooks.version import get_version; print(get_version())"
+  python3 -m venv test-env
+  source ./test-env/bin/activate
+  pip install --pre -I --extra-index-url https://test.pypi.org/simple/ autohooks
+  autohooks check
+  python -c "from autohooks.version import get_version; print(get_version())"
   ```
 
 * Remove test environment
 
   ```sh
-  pipenv --rm
   cd ..
   rm -rf autohooks-install-test
   ```
@@ -113,7 +114,7 @@ username = <username>
   git tag -s v<version>
   ```
 
-* Push changes and tag to GitHub
+* Push tag to GitHub
 
   ```sh
   git push --tags upstream
@@ -123,10 +124,9 @@ username = <username>
 
 * Check if new version is available at https://pypi.org/project/autohooks
 
-* Update version in autohooks/version.py
+* Update version in `pyproject.toml`
 
-  Use a alpha version like `(1, 1, 1, 'alpha')` or
-  `(1, 1, 1, 'alpha', 0)`
+  Use a development version like `1.1.1.dev1`
 
 * Create a commit
 
@@ -137,7 +137,7 @@ username = <username>
 * Push changes to GitHub
 
   ```sh
-  git push --tags upstream
+  git push upstream
   ```
 
 * Create a Github release:
