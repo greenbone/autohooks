@@ -15,8 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Dict, List
+from typing import Any, Dict, List, Union, Optional
 from pathlib import Path
+
+from pkg_resources import safe_version
 
 import toml
 
@@ -38,20 +40,74 @@ class Config:
 
         return Config(config_dict)
 
-    def get_value(self, key: str, default: List[str] = None) -> List[str]:
+    def get_value(self, key: str, default: Any = None) -> Union[str, List[str]]:
         return self._config_dict.get(key, default)
 
     def is_empty(self) -> bool:
         return not bool(self._config_dict)
 
 
-class AutohooksConfig:
+class BaseToolConfig:
     def __init__(self, config_dict: Dict = None) -> None:
         self._config = Config(config_dict)
-        self._autohooks_config = self._config.get('tool').get('autohooks')
 
     def has_config(self) -> bool:
         return not self._config.is_empty()
+
+    def get_config(self) -> Config:
+        return self._config
+
+
+class PoetryConfig(BaseToolConfig):
+    def __init__(self, config_dict: Dict = None) -> None:
+        super().__init__(config_dict)
+        self._poetry_config = self._config.get('tool').get('poetry')
+
+    @staticmethod
+    def from_pyproject_toml(pyproject_toml: Path = None) -> "PoetryConfig":
+        if pyproject_toml is None:
+            pyproject_toml = get_pyproject_toml_path()
+
+        if not pyproject_toml.exists():
+            return PoetryConfig()
+
+        config_dict = toml.load(str(pyproject_toml))
+        return PoetryConfig(config_dict)
+
+    def has_poetry_config(self) -> bool:
+        return not self._poetry_config.is_empty()
+
+    def get_version(self) -> Optional[str]:
+        version = self._poetry_config.get_value('version')
+
+        return safe_version(version) if version else None
+
+    def get_name(self) -> Optional[str]:
+        return self._poetry_config.get_value('name')
+
+    def get_description(self) -> Optional[str]:
+        return self._poetry_config.get_value('description')
+
+    def get_homepage(self) -> Optional[str]:
+        return self._poetry_config.get_value('homepage')
+
+    def get_repository(self) -> Optional[str]:
+        return self._poetry_config.get_value('repository')
+
+    def get_license(self) -> Optional[str]:
+        return self._poetry_config.get_value('license')
+
+    def get_classifiers(self) -> List[str]:
+        return self._poetry_config.get_value('classifiers', [])
+
+    def get_scripts(self) -> Dict[str, str]:
+        return self._poetry_config.get_value('scripts', {})
+
+
+class AutohooksConfig(BaseToolConfig):
+    def __init__(self, config_dict: Dict = None) -> None:
+        super().__init__(config_dict)
+        self._autohooks_config = self._config.get('tool').get('autohooks')
 
     def has_autohooks_config(self) -> bool:
         return not self._autohooks_config.is_empty()
@@ -78,18 +134,19 @@ class AutohooksConfig:
 
         return Mode.UNDEFINED
 
-    def get_config(self):
-        return self._config
+    @staticmethod
+    def from_pyproject_toml(pyproject_toml: Path = None) -> "AutohooksConfig":
+        if pyproject_toml is None:
+            pyproject_toml = get_pyproject_toml_path()
+
+        if not pyproject_toml.exists():
+            return AutohooksConfig()
+
+        config_dict = toml.load(str(pyproject_toml))
+        return AutohooksConfig(config_dict)
 
 
 def load_config_from_pyproject_toml(
     pyproject_toml: Path = None,
 ) -> AutohooksConfig:
-    if pyproject_toml is None:
-        pyproject_toml = get_pyproject_toml_path()
-
-    if not pyproject_toml.exists():
-        return AutohooksConfig()
-
-    config_dict = toml.load(str(pyproject_toml))
-    return AutohooksConfig(config_dict)
+    return AutohooksConfig.from_pyproject_toml(pyproject_toml)

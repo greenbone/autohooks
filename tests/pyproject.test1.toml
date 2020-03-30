@@ -1,2 +1,27 @@
 [tool.autohooks]
 pre-commit = ['foo', 'bar']
+
+[tool.poetry]
+name = "foo"
+version = "1.0.1a0"
+description = "Foo Bar"
+license = "GPL-3.0-or-later"
+homepage = "https://foo.bar"
+repository = "https://bar.foo"
+classifiers=[
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",  # pylint: disable=line-too-long
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "Programming Language :: Python :: 3.5",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Software Development :: Version Control :: Git",
+]
+
+[tool.poetry.scripts]
+foo = "foo.cli:main"
