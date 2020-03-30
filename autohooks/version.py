@@ -15,11 +15,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from pkg_resources import safe_version
+from pathlib import Path
 
-VERSION = (2, 0, 1, 'alpha', 0)
+from autohooks.config import PoetryConfig
 
 
 def get_version() -> str:
-    str_version = '.'.join([str(v) for v in VERSION])
-    return safe_version(str_version)
+    path = Path(__file__)
+    pyproject_toml_path = path.parent.parent / 'pyproject.toml'
+
+    if not pyproject_toml_path.exists():
+        raise RuntimeError('pyproject.toml file not found.')
+
+    config = PoetryConfig.from_pyproject_toml(pyproject_toml_path)
+    if not config.has_poetry_config():
+        raise RuntimeError(
+            'Version information not found in pyproject.toml file.'
+        )
+
+    return config.get_version()
