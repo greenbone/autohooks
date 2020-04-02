@@ -39,17 +39,15 @@ from autohooks.terminal import Terminal
 
 def check_hooks(term: Terminal) -> None:
     pre_commit_hook = PreCommitHook()
-    hook_mode = pre_commit_hook.read_mode()
-
-    check_pre_commit_hook(term, pre_commit_hook, hook_mode)
+    check_pre_commit_hook(term, pre_commit_hook)
 
     pyproject_toml = get_pyproject_toml_path()
 
-    check_config(term, pyproject_toml, pre_commit_hook, hook_mode)
+    check_config(term, pyproject_toml, pre_commit_hook)
 
 
 def check_pre_commit_hook(
-    term: Terminal, pre_commit_hook: PreCommitHook, hook_mode: Mode,
+    term: Terminal, pre_commit_hook: PreCommitHook
 ) -> None:
     if pre_commit_hook.exists():
         if pre_commit_hook.is_autohooks_pre_commit_hook():
@@ -89,10 +87,7 @@ def check_pre_commit_hook(
 
 
 def check_config(
-    term: Terminal,
-    pyproject_toml: Path,
-    pre_commit_hook: PreCommitHook,
-    hook_mode: Mode,
+    term: Terminal, pyproject_toml: Path, pre_commit_hook: PreCommitHook,
 ) -> None:
     if not pyproject_toml.exists():
         term.error(
@@ -106,8 +101,10 @@ def check_config(
                 'autohooks is not enabled in your {} file. Please add '
                 'a "{}" section.'.format(str(pyproject_toml), AUTOHOOKS_SECTION)
             )
-        else:
+        elif pre_commit_hook.exists():
             config_mode = config.get_mode()
+            hook_mode = pre_commit_hook.read_mode()
+
             if config_mode == Mode.UNDEFINED:
                 term.warning(
                     'autohooks mode is not defined in {}.'.format(
