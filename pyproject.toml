@@ -27,7 +27,7 @@ classifiers=[
 ]
 
 packages = [
-  { include = "autohooks/**/*.py" },
+  { include = "autohooks"},
   { include = "tests", format = "sdist" },
 ]
 include = [
