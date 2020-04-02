@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2019-2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -15,22 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from pathlib import Path
-
-from autohooks.config import PoetryConfig
-
 
 def get_version() -> str:
-    path = Path(__file__)
-    pyproject_toml_path = path.parent.parent / 'pyproject.toml'
+    # pylint: disable=import-outside-toplevel, relative-beyond-top-level
+    from .__version__ import __version__
 
-    if not pyproject_toml_path.exists():
-        raise RuntimeError('pyproject.toml file not found.')
-
-    config = PoetryConfig.from_pyproject_toml(pyproject_toml_path)
-    if not config.has_poetry_config():
-        raise RuntimeError(
-            'Version information not found in pyproject.toml file.'
-        )
-
-    return config.get_version()
+    return __version__
