@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2019-2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -20,7 +20,7 @@ from pathlib import Path
 
 from pkg_resources import safe_version
 
-import toml
+import tomlkit
 
 from autohooks.settings import Mode
 from autohooks.utils import get_pyproject_toml_path
@@ -71,7 +71,7 @@ class PoetryConfig(BaseToolConfig):
         if not pyproject_toml.exists():
             return PoetryConfig()
 
-        config_dict = toml.load(str(pyproject_toml))
+        config_dict = tomlkit.loads(pyproject_toml.read_text())
         return PoetryConfig(config_dict)
 
     def has_poetry_config(self) -> bool:
@@ -142,7 +142,7 @@ class AutohooksConfig(BaseToolConfig):
         if not pyproject_toml.exists():
             return AutohooksConfig()
 
-        config_dict = toml.load(str(pyproject_toml))
+        config_dict = tomlkit.loads(pyproject_toml.read_text())
         return AutohooksConfig(config_dict)
 
 
