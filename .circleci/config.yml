@@ -81,7 +81,7 @@ commands:
       - run:
           name: Initialize .pypirc
           command: |
-            echo -e "[distutils]" >> ~/.pypirc
+            echo -e "[distutils]" > ~/.pypirc
             echo -e "index-servers = pypi" >> ~/.pypirc
             echo -e "[pypi]" >> ~/.pypirc
             echo -e "username = __token__" >> ~/.pypirc
