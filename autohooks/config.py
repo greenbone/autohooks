@@ -18,12 +18,11 @@
 from typing import Any, Dict, List, Union, Optional
 from pathlib import Path
 
-from pkg_resources import safe_version
-
 import tomlkit
 
 from autohooks.settings import Mode
 from autohooks.utils import get_pyproject_toml_path
+from autohooks.version import safe_version
 
 AUTOHOOKS_SECTION = 'tool.autohooks'
 
