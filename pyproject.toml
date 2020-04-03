@@ -39,6 +39,7 @@ include = [
 python = "^3.5"
 toml = "^0.10.0"
 colorful = "^0.5.4"
+packaging = "^20.3"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.4.4"

@@ -14,6 +14,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import re
+
+from packaging.version import Version, InvalidVersion
 
 
 def get_version() -> str:
@@ -21,3 +24,30 @@ def get_version() -> str:
     from .__version__ import __version__
 
     return __version__
+
+
+def strip_version(version: str) -> str:
+    """
+    Strips a leading 'v' from a version string
+
+    E.g. v1.2.3 will be converted to 1.2.3
+    """
+    if version and version[0] == 'v':
+        return version[1:]
+
+    return version
+
+
+def safe_version(version: str) -> str:
+    """
+    Returns the version as a string in `PEP440`_ compliant
+    format.
+
+    .. _PEP440:
+       https://www.python.org/dev/peps/pep-0440
+    """
+    try:
+        return str(Version(version))
+    except InvalidVersion:
+        version = version.replace(' ', '.')
+        return re.sub('[^A-Za-z0-9.]+', '-', version)
