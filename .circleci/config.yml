@@ -84,6 +84,30 @@ commands:
       - run:
           name: Check with pylint
           command: pipenv run pylint --disable=R autohooks tests
+  deploy:
+    description: "Upload package to PyPI"
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: pipenv install
+      - run:
+          name: Install twine
+          command: pipenv run pip install twine
+      - run:
+          name: Initialize .pypirc
+          command: |
+            echo -e "[distutils]" >> ~/.pypirc
+            echo -e "index-servers = pypi" >> ~/.pypirc
+            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "username = __token__" >> ~/.pypirc
+            echo -e "password = $PYPI_TOKEN" >> ~/.pypirc
+      - run:
+          name: Create and upload distribution to pypi
+          command: |
+            rm -rf dist build python_gvm.egg-info
+            pipenv run setup.py sdist
+            pipenv run twine upload dist/*
 
 jobs:
   build-35:
@@ -122,6 +146,10 @@ jobs:
     executor: python-38
     steps:
       - test
+  deploy-37:
+    executor: python-37
+    steps:
+      - deploy
 
 workflows:
   version: 2
@@ -136,3 +164,19 @@ workflows:
       - lint-37
       - build-38
       - test-38
+  build_and_deploy:
+    jobs:
+      - build-37:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
+      - deploy-37:
+          requires:
+            - build-37
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
