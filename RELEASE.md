@@ -99,7 +99,7 @@ username = <username>
 
   ```sh
   git fetch upstream
-  git rebase upstream/master
+  git rebase upstream/master master
   ```
 * Create a git tag
 
@@ -112,20 +112,14 @@ username = <username>
   ```sh
   git tag -s v<version>
   ```
-* Create final source distribution
+
+* Push changes and tag to GitHub
 
   ```sh
-  rm -rf dist build autohooks.egg-info
-  python3 setup.py sdist
+  git push --tags upstream
   ```
 
-* Create an account at [PyPI](https://pypi.org/) if not exist already
-
-* Upload to real [PyPI](https://pypi.org/)
-
-  ```sh
-  twine upload dist/*
-  ```
+* Uploading to PyPI is done automatically by pushing a git tag via CircleCI
 
 * Check if new version is available at https://pypi.org/project/autohooks
 
@@ -140,8 +134,12 @@ username = <username>
   git commit -m "Update version after <version> release"
   ```
 
-* Push changes and tag to GitHub
+* Push changes to GitHub
 
   ```sh
-  git push --tags upstream master
+  git push --tags upstream
   ```
+
+* Create a Github release:
+
+   See https://help.github.com/articles/creating-releases/
