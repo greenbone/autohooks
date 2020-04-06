@@ -68,6 +68,9 @@ commands:
       - run:
           name: Check with pylint
           command: poetry run pylint --disable=R autohooks tests
+      - run:
+          name: Check version information
+          command: poetry run python -m autohooks.version verify current
   deploy:
     description: "Upload package to PyPI"
     steps:
@@ -75,6 +78,9 @@ commands:
       - run:
           name: Install dependencies
           command: poetry install --no-dev
+      - run:
+          name: Verify tag version
+          command: poetry run python -m autohooks.version verify ${CIRCLE_TAG}
       - run:
           name: Install twine
           command: poetry run pip install twine
