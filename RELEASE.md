@@ -4,11 +4,46 @@ Before creating a new release please do a careful consideration about the
 version number for the new release. We are following [Semantic Versioning](https://semver.org/)
 and [PEP440](https://www.python.org/dev/peps/pep-0440/).
 
+## Preparing the Required Python Packages
+
 * Install development dependencies
 
   ```sh
   poetry install
   ```
+
+* Install twine for pypi package uploads
+
+  ```sh
+  python3 -m pip install --user --upgrade twine
+  ```
+
+## Configuring the Access to the Python Package Index (PyPI)
+
+*Note:* This is only necessary for users performing the release process for the
+first time.
+
+* Create an account at [Test PyPI](https://packaging.python.org/guides/using-testpypi/).
+
+* Create an account at [PyPI](https://pypi.org/).
+
+* Create a pypi configuration file `~/.pypirc` with the following content (Note:
+  `<username>` must be replaced):
+
+  ```ini
+  [distutils]
+  index-servers =
+      pypi
+      testpypi
+
+  [pypi]
+  username = <username>
+
+  [testpypi]
+  repository = https://test.pypi.org/legacy/
+  username = <username>
+
+## Prepare testing the Release
 
 * Fetch upstream changes and create release branch
 
@@ -17,10 +52,19 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   git checkout -b create-new-release upstream/master
   ```
 
-* Open [autohooks/version.py](autohooks/version.py)
-  and increment the version number.
+* Get the current version number
 
-* Update [CHANGELOG](CHANGELOG.md)
+  ```sh
+  poetry run python -m autohooks.version show
+  ```
+
+* Update the version number to some alpha version e.g.
+
+  ```sh
+  poetry run python -m autohooks.version update 2.2.3a1
+  ```
+
+## Uploading to the PyPI Test Instance
 
 * Create a source distribution only. Do **NOT** create a wheel by running
   poetry build without arguments.
@@ -30,44 +74,13 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   poetry build --format=sdist
   ```
 
-* Create a git commit
-
-  ```sh
-  git add .
-  git commit -m "Prepare release <version>"
-  ```
-
-* Create a pypirc file
-
-  ```sh
-  vim ~/.pypirc
-  ```
-
-  with the following content (Note: `<username>` must be replaced)
-
-```ini
-[distutils]
-index-servers =
-    pypi
-    testpypi
-
-[pypi]
-username = <username>
-
-[testpypi]
-repository = https://test.pypi.org/legacy/
-username = <username>
-```
-
-* Create an account at [Test PyPI](https://packaging.python.org/guides/using-testpypi/)
-
-* Upload the archives in dist to [Test PyPI](https://test.pypi.org/)
+* Upload the archives in `dist` to [Test PyPI](https://test.pypi.org/):
 
   ```sh
   twine upload -r testpypi dist/*
   ```
 
-* Check if the package is available at https://test.pypi.org/project/autohooks
+* Check if the package is available at <https://test.pypi.org/project/autohooks>
 
 * Create a test directory
 
@@ -77,24 +90,56 @@ username = <username>
   git init
   python3 -m venv test-env
   source ./test-env/bin/activate
+  pip install -U pip  # ensure the environment uses a recent version of pip
   pip install --pre -I --extra-index-url https://test.pypi.org/simple/ autohooks
-  autohooks check
   python -c "from autohooks.version import get_version; print(get_version())"
+  autohooks check
   ```
 
 * Remove test environment
 
   ```sh
+  deactivate
   cd ..
   rm -rf autohooks-install-test
   ```
 
-* Create a release PR
+## Prepare the Release
+
+* Determine new release version number
+
+  If the output is something like  `2.2.3.dev1` or `2.2.3a1`, the new version
+  should be `2.2.3`.
+
+* Update to new version number (`<new-version>` must be replaced by the version
+  from the last step)
+
+  ```sh
+  cd path/to/git/clone/of/autohooks
+  poetry run python -m autohooks.version update <new-version>
+  ```
+
+* Update the `CHANGELOG.md` file:
+  * Change `[unreleased]` to new release version.
+  * Add a release date.
+  * Update reference to Github diff.
+  * Remove empty sub sections like *Deprecated*.
+
+* Create a git commit:
+
+  ```sh
+  git add .
+  git commit -m "Prepare release <version>"
+  ```
+
+## Performing the Release on GitHub
+
+* Create a pull request (PR) for the earlier commit:
 
   ```sh
   git push origin
   ```
-  Open GitHub and create a PR against https://github.com/greenbone/autohooks
+  Open GitHub and create a PR against <https://github.com/greenbone/autohooks>
 
 * Update after PR is merged
 
@@ -102,6 +147,7 @@ username = <username>
   git fetch upstream
   git rebase upstream/master master
   ```
+
 * Create a git tag
 
   ```sh
@@ -120,13 +166,22 @@ username = <username>
   git push --tags upstream
   ```
 
+## Uploading to the 'real' PyPI
+
 * Uploading to PyPI is done automatically by pushing a git tag via CircleCI
 
-* Check if new version is available at https://pypi.org/project/autohooks
+* Check if new version is available at <https://pypi.org/project/autohooks>
 
-* Update version in `pyproject.toml`
+## Bumping `master` Branch to the Next Version
 
-  Use a development version like `1.1.1.dev1`
+* Update to a Development Version
+
+  The next version should contain an incremented minor version and a dev suffix
+  e.g. 2.3.0.dev1
+
+  ```sh
+  poetry run python -m autohooks.version update <next-dev-version>
+  ```
 
 * Create a commit
 
@@ -139,6 +194,8 @@ username = <username>
   ```sh
   git push upstream
   ```
+
+## Announcing the Release
 
 * Create a Github release:
 
