@@ -54,7 +54,7 @@ setup(
     include_package_data=True,
     python_requires='>=3.5',
     classifiers=config.get_classifiers(),
-    install_requires=['toml', 'colorful'],
+    install_requires=['tomlkit', 'colorful', 'packaging'],
     cmdclass={"install": PostInstall, "develop": PostDevelop},
     entry_points={
         'console_scripts': [
