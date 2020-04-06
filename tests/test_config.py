@@ -238,9 +238,7 @@ class PoetryConfigTestCase(unittest.TestCase):
         self.assertEqual(config.get_license(), 'GPL-3.0-or-later')
 
         self.assertEqual(len(config.get_classifiers()), 12)
-        self.assertEqual(config.get_scripts(), {'foo', "foo.cli:main"})
-
-        print(config.get_scripts())
+        self.assertEqual(config.get_scripts(), {'foo': 'foo.cli:main'})
 
     def test_load_from_non_existing_toml_file(self):
         config_path = Path('foo')
