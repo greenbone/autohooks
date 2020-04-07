@@ -180,14 +180,12 @@ pre-commit = ["autohooks.plugins.pylint"]
 
 ### 4. Activating the Git Hooks
 
-If autohooks is installed from git or a source tarball, the git hooks should be
-activated automatically. The activation can be verified by running, e.g.,
-`autohooks check`.
+Because installing and activating git hooks automatically isn't reliable (with
+using source distributions and different versions of pip) and even impossible
+(with using [wheels](https://www.python.org/dev/peps/pep-0427/)) the hooks need
+to be activated manually once in each installation.
 
-Installing autohooks from a [wheel](https://www.python.org/dev/peps/pep-0427/)
-package will **NOT** activate the git commit hooks automatically.
-
-To manually activate the git hooks run
+To activate the git hooks run
 
 ```bash
 poetry run autohooks activate
@@ -200,12 +198,14 @@ Example:
 
 
 ```bash
-pipenv run autohooks activate --mode pipenv
+autohooks activate --mode pipenv
 ```
 
 Please keep in mind that autohooks will always issue a warning if the mode used
 in the git hooks is different from the configured mode in the *pyproject.toml*
 file.
+
+The activation can always be verified by running `autohooks check`.
 
 ## Plugins
 
