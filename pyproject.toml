@@ -1,6 +1,56 @@
 [build-system]
 requires = ["setuptools", "toml", "wheel"]
 
+[tool.poetry]
+name = "autohooks"
+version = "2.0.1a0"
+description = "Library for managing git hooks"
+authors = ["Greenbone Networks GmbH <info@greenbone.net>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+homepage = "https://github.com/greenbone/autohooks"
+repository = "https://github.com/greenbone/autohooks"
+classifiers=[
+  # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",  # pylint: disable=line-too-long
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "Programming Language :: Python :: 3.5",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Software Development :: Version Control :: Git",
+]
+
+packages = [
+  { include = "autohooks"},
+  { include = "tests", format = "sdist" },
+]
+include = [
+  "CHANGELOG.md",
+  "autohooks/precommit/template",
+]
+
+[tool.poetry.dependencies]
+python = "^3.5"
+colorful = "^0.5.4"
+packaging = "^20.3"
+tomlkit = "^0.5.11"
+setuptools = "^46.1.3"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.4.4"
+autohooks-plugin-pylint = "^1.2.0"
+autohooks-plugin-black = {version = "^1.2.0", python = "^3.6"}
+black = {version = "19.10b0", python = "^3.6"}
+
+[tool.poetry.scripts]
+autohooks = "autohooks.cli:main"
+
 [tool.black]
 line-length = 80
 target-version = ['py35', 'py36', 'py37', 'py38']
@@ -22,4 +72,4 @@ exclude = '''
 
 [tool.autohooks]
 pre-commit = ['autohooks.plugins.black', 'autohooks.plugins.pylint']
-mode = "pipenv"
+mode = "poetry"

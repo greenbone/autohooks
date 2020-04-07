@@ -15,7 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# pylint: disable=wrong-import-position, invalid-name
+
 import sys
+
+if sys.version_info[0] < 3:
+    raise Exception('Python 2 is not supported by autohooks.')
 
 from pathlib import Path
 
@@ -25,44 +30,36 @@ __here__ = Path(__file__).parent.resolve()
 
 sys.path.insert(0, str(__here__))
 
-# pylint: disable=wrong-import-position
-
-from autohooks.version import get_version
+from autohooks.config import PoetryConfig
 from autohooks.install import PostInstall, PostDevelop
 
 
 with (__here__ / 'README.md').open('r') as f:
-    long_description = f.read()  # pylint: disable=invalid-name
+    long_description = f.read()
+
+config = PoetryConfig.from_pyproject_toml(__here__ / "pyproject.toml")
 
 setup(
-    name='autohooks',
-    version=get_version(),
+    name=config.get_name(),
+    version=config.get_version(),
     author='Greenbone Networks GmbH',
     author_email='info@greenbone.net',
-    description='Library for managing git hooks',
+    description=config.get_description(),
+    license=config.get_license(),
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/greenbone/autohooks',
+    url=config.get_homepage(),
     packages=find_namespace_packages(include=['autohooks', 'autohooks.*']),
     package_data={'': ['template']},
     include_package_data=True,
     python_requires='>=3.5',
-    classifiers=[
-        # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
-        'Development Status :: 4 - Beta',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',  # pylint: disable=line-too-long
-        'Environment :: Console',
-        'Intended Audience :: Developers',
-        'Intended Audience :: System Administrators',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Operating System :: OS Independent',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-        'Topic :: Software Development :: Version Control :: Git',
-    ],
-    install_requires=['toml', 'colorful'],
+    classifiers=config.get_classifiers(),
+    install_requires=['tomlkit', 'colorful', 'packaging'],
     cmdclass={"install": PostInstall, "develop": PostDevelop},
-    entry_points={'console_scripts': ['autohooks=autohooks.cli:main']},
+    entry_points={
+        'console_scripts': [
+            '{}={}'.format(key, value)
+            for key, value in config.get_scripts().items()
+        ]
+    },
 )

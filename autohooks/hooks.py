@@ -17,7 +17,7 @@
 
 from pathlib import Path
 
-import toml
+import tomlkit
 
 from autohooks.settings import Mode
 from autohooks.template import (
@@ -83,8 +83,8 @@ class PreCommitHook:
             return -1
 
         try:
-            parsed = toml.loads(lines[1][1:])
-        except toml.TomlDecodeError:
+            parsed = tomlkit.loads(lines[1][1:])
+        except tomlkit.exceptions.TOMLKitError:
             return -1
 
         try:

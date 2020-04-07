@@ -21,6 +21,7 @@ from pathlib import Path
 
 from autohooks.config import (
     AutohooksConfig,
+    PoetryConfig,
     Config,
     Mode,
     load_config_from_pyproject_toml,
@@ -218,6 +219,68 @@ class ConfigTestCase(unittest.TestCase):
         bar_config = config.get('tool', 'autohooks', 'plugins', 'bar')
         self.assertFalse(bar_config.is_empty())
         self.assertEqual(bar_config.get_value('lorem'), 'ipsum')
+
+
+class PoetryConfigTestCase(unittest.TestCase):
+    def test_load_from_toml_file(self):
+        config_path = get_test_config_path('pyproject.test1.toml')
+        self.assertTrue(config_path.is_file())
+
+        config = PoetryConfig.from_pyproject_toml(config_path)
+
+        self.assertTrue(config.has_config())
+        self.assertTrue(config.has_poetry_config())
+        self.assertEqual(config.get_name(), 'foo')
+        self.assertEqual(config.get_version(), '1.0.1a0')
+        self.assertEqual(config.get_description(), 'Foo Bar')
+        self.assertEqual(config.get_homepage(), 'https://foo.bar')
+        self.assertEqual(config.get_repository(), 'https://bar.foo')
+        self.assertEqual(config.get_license(), 'GPL-3.0-or-later')
+
+        self.assertEqual(len(config.get_classifiers()), 12)
+        self.assertEqual(config.get_scripts(), {'foo': 'foo.cli:main'})
+
+    def test_load_from_non_existing_toml_file(self):
+        config_path = Path('foo')
+        self.assertFalse(config_path.exists())
+
+        config = PoetryConfig.from_pyproject_toml(config_path)
+
+        self.assertFalse(config.has_config())
+        self.assertIsNone(config.get_name())
+        self.assertIsNone(config.get_version())
+        self.assertIsNone(config.get_description())
+        self.assertIsNone(config.get_homepage())
+        self.assertIsNone(config.get_repository())
+        self.assertIsNone(config.get_license())
+
+        self.assertEqual(len(config.get_classifiers()), 0)
+
+    def test_empty_config(self):
+        config = PoetryConfig()
+
+        self.assertFalse(config.has_config())
+        self.assertIsNone(config.get_name())
+        self.assertIsNone(config.get_version())
+        self.assertIsNone(config.get_description())
+        self.assertIsNone(config.get_homepage())
+        self.assertIsNone(config.get_repository())
+        self.assertIsNone(config.get_license())
+
+        self.assertEqual(len(config.get_classifiers()), 0)
+
+    def test_empty_config_dict(self):
+        config = PoetryConfig({'foo': 'bar'})
+
+        self.assertTrue(config.has_config())
+        self.assertIsNone(config.get_name())
+        self.assertIsNone(config.get_version())
+        self.assertIsNone(config.get_description())
+        self.assertIsNone(config.get_homepage())
+        self.assertIsNone(config.get_repository())
+        self.assertIsNone(config.get_license())
+
+        self.assertEqual(len(config.get_classifiers()), 0)
 
 
 if __name__ == '__main__':

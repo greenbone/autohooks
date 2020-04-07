@@ -8,9 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+* Added tools for version handling in autohooks [#51](https://github.com/greenbone/autohooks/pull/51)
+
 ### Changed
 
 * Reworked `Terminal` class from `terminal.py` [#45](https://github.com/greenbone/autohooks/pull/45)
+* Replaced pipenv with poetry for dependency management. `poetry install` works a
+  bit different than `pipenv install`. It installs dev packages and also autohooks
+  in editable mode by default. [#51](https://github.com/greenbone/autohooks/pull/51)
 
 ### Fixed
 

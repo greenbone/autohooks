@@ -137,44 +137,25 @@ Current possible options are `"pythonpath"`, `"pipenv"` and `"poetry"` (see
 Example *pyproject.toml*:
 
 ```toml
-[build-system]
-requires = ["setuptools", "wheel"]
-
 [tool.autohooks]
 mode = "pipenv"
 ```
 
 ### 2. Installing the autohooks Python Package into the Current Environment
 
-Using [pipenv] is highly recommended for installing the autohooks python package.
+Using [poetry] is highly recommended for installing the autohooks python package.
 
 To install autohooks as a development dependency run
 
 ```sh
-pipenv install --dev autohooks
+poetry add --dev autohooks
 ```
-
-or add
-
-```toml
-autohooks = "*"
-```
-
-to the `[dev-packages]` section of `Pipfile`.
 
 Alternatively, autohooks can be installed directly from GitHub by running
 
 ```sh
-pipenv install --dev git+https://github.com/greenbone/autohooks#egg=autohooks
+poetry add --dev git+https://github.com/greenbone/autohooks
 ```
-
-or adding
-
-```toml
-autohooks = {git = "https://github.com/greenbone/autohooks"}
-```
-
-to the `[dev-packages]` section of `Pipfile`.
 
 ### 3. Configuring Plugins to Be Run
 
@@ -182,7 +163,7 @@ To actually run an action on git hooks, [autohooks plugins](#plugins) have to be
 installed and configured, e.g., to install python linting via pylint run
 
 ```bash
-pipenv install --dev autohooks-plugin-pylint
+poetry add --dev autohooks-plugin-pylint
 ```
 
 Afterwards, the pylint plugin can be configured to run as a pre-commit git hook
@@ -192,9 +173,6 @@ setting in the `[tool.autohooks]` section in the *pyproject.toml* file.
 Example *pyproject.toml*:
 
 ```toml
-[build-system]
-requires = ["setuptools", "wheel"]
-
 [tool.autohooks]
 mode = "pipenv"
 pre-commit = ["autohooks.plugins.pylint"]
@@ -212,7 +190,7 @@ package will **NOT** activate the git commit hooks automatically.
 To manually activate the git hooks run
 
 ```bash
-pipenv run autohooks activate
+poetry run autohooks activate
 ```
 
 Calling `activate` also allows for overriding the [mode](#modes) defined in the
@@ -417,5 +395,5 @@ Licensed under the [GNU General Public License v3.0 or later](LICENSE).
 [black]: https://black.readthedocs.io/en/stable/
 [pip]: https://pip.pypa.io/en/stable/
 [pipenv]: https://pipenv.readthedocs.io/en/latest/
-[poetry]: https://poetry.eustace.io/
+[poetry]: https://python-poetry.org/
 [pylint]: https://pylint.readthedocs.io/en/latest/
