@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
+import shutil
 
 from contextlib import contextmanager
 
@@ -30,7 +30,7 @@ class Terminal:
         self._indent = 0
 
     def _check_size(self):
-        self._width, _ = os.get_terminal_size()
+        self._width, _ = shutil.get_terminal_size()
 
     def _print_end(self, message: str, status: str, color: Callable) -> None:
         extra = 4  # '[ ', ' ]'
