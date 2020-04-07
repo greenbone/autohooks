@@ -28,23 +28,27 @@ TERMINAL_SIZE_FALLBACK = (80, 24)  # use a small standard size as fallback
 
 class Terminal:
     def __init__(self):
-        self._width = None
         self._indent = 0
 
-    def _check_size(self):
-        self._width, _ = shutil.get_terminal_size(TERMINAL_SIZE_FALLBACK)
+    @staticmethod
+    def get_width() -> int:
+        """
+        Get the width of the terminal window
+        """
+        width, _ = shutil.get_terminal_size(TERMINAL_SIZE_FALLBACK)
+        return width
 
     def _print_end(self, message: str, status: str, color: Callable) -> None:
-        extra = 4  # '[ ', ' ]'
-        # python is adding a ' ' between strings if used
-        # in print('foo', 'bar', 'baz') is printed to "foo bar baz"
-        self._check_size()
+        extra = 4  # '[ ' and ' ]'
+
         if self._indent > 0:
             message = ' ' * self._indent + message
-        if self._width > 0:
-            message += ' ' * (
-                int(self._width) - len(message) - extra - len(status)
-            )
+
+        width = self.get_width()
+
+        if width > 0:
+            message += ' ' * (int(width) - len(message) - extra - len(status))
+
         print(
             message + '[', color(status), ']',
         )
