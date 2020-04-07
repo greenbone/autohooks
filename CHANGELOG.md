@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Replaced pipenv with poetry for dependency management. `poetry install` works a
   bit different than `pipenv install`. It installs dev packages and also autohooks
   in editable mode by default. [#51](https://github.com/greenbone/autohooks/pull/51)
+* Activation of the git hooks must be done manually with `autohooks activate`
+  always. Using source distributions and a setuptools extension to activate the
+  hooks isn't reliable at all [#52](https://github.com/greenbone/autohooks/pull/52)
 
 ### Fixed
 
