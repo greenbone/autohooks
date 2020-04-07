@@ -180,10 +180,10 @@ pre-commit = ["autohooks.plugins.pylint"]
 
 ### 4. Activating the Git Hooks
 
-Because installing and activating git hooks isn't reliable (with using source
-distributions and different versions of pip) and even impossible (with using
-[wheels](https://www.python.org/dev/peps/pep-0427/)) the hooks need to be
-activated manually in each installation.
+Because installing and activating git hooks automatically isn't reliable (with
+using source distributions and different versions of pip) and even impossible
+(with using [wheels](https://www.python.org/dev/peps/pep-0427/)) the hooks need
+to be activated manually once in each installation.
 
 To activate the git hooks run
 
