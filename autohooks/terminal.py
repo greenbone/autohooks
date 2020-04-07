@@ -23,6 +23,8 @@ from typing import Callable, Generator
 
 import colorful as cf
 
+TERMINAL_SIZE_FALLBACK = (80, 24)  # use a small standard size as fallback
+
 
 class Terminal:
     def __init__(self):
@@ -30,7 +32,7 @@ class Terminal:
         self._indent = 0
 
     def _check_size(self):
-        self._width, _ = shutil.get_terminal_size()
+        self._width, _ = shutil.get_terminal_size(TERMINAL_SIZE_FALLBACK)
 
     def _print_end(self, message: str, status: str, color: Callable) -> None:
         extra = 4  # '[ ', ' ]'
