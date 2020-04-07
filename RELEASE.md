@@ -66,12 +66,11 @@ first time.
 
 ## Uploading to the PyPI Test Instance
 
-* Create a source distribution only. Do **NOT** create a wheel by running
-  poetry build without arguments.
+* Create a source and wheel distribution:
 
   ```sh
   rm -rf dist build autohooks.egg-info pip-wheel-metadata
-  poetry build --format=sdist
+  poetry build
   ```
 
 * Upload the archives in `dist` to [Test PyPI](https://test.pypi.org/):
