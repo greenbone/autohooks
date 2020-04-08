@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [#49](https://github.com/greenbone/autohooks/pull/49)
 
 ### Removed
+* Removed code relying on setuptools and switched to a full poetry build
+  process [#54](https://github.com/greenbone/autohooks/pull/54)
 
 [Unreleased]: https://github.com/greenbone/autohooks/compare/v2.0.0...master
 
