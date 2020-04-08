@@ -108,10 +108,10 @@ commands:
             echo -e "username = __token__" >> ~/.pypirc
             echo -e "password = $PYPI_TOKEN" >> ~/.pypirc
       - run:
-          name: Create and upload distribution to pypi
+          name: Create and upload distributions to pypi
           command: |
             rm -rf dist build python_gvm.egg-info
-            poetry build --format sdist
+            poetry build
             poetry run twine upload dist/*
 
 jobs:
