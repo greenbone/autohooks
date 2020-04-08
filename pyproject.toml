@@ -26,6 +26,12 @@ classifiers=[
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: Software Development :: Version Control :: Git",
 ]
+keywords = [
+  "git",
+  "formatting",
+  "linting",
+  "hooks",
+]
 
 packages = [
   { include = "autohooks"},
