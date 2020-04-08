@@ -24,8 +24,8 @@ commands:
     steps:
       - checkout
       - run:
-          name: Create environment, update pip and setuptools
-          command: poetry run pip install -U pip setuptools
+          name: Create environment and update pip
+          command: poetry run pip install -U pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
@@ -34,8 +34,8 @@ commands:
     steps:
       - checkout
       - run:
-          name: Create environment, update pip and setuptools
-          command: poetry run pip install -U pip setuptools
+          name: Create environment and update pip
+          command: poetry run pip install -U pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
@@ -47,8 +47,8 @@ commands:
     steps:
       - checkout
       - run:
-          name: Create environment, update pip and setuptools
-          command: poetry run pip install -U pip setuptools
+          name: Create environment and update pip
+          command: poetry run pip install -U pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
@@ -66,8 +66,8 @@ commands:
     steps:
       - checkout
       - run:
-          name: Create environment, update pip and setuptools
-          command: poetry run pip install -U pip setuptools
+          name: Create environment and update pip
+          command: poetry run pip install -U pip
       - run:
           name: Install dependencies
           command: poetry install
@@ -88,8 +88,8 @@ commands:
     steps:
       - checkout
       - run:
-          name: Create environment, update pip and setuptools
-          command: poetry run pip install -U pip setuptools
+          name: Create environment and update pip
+          command: poetry run pip install -U pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
