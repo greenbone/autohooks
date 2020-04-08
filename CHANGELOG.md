@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Activation of the git hooks must be done manually with `autohooks activate`
   always. Using source distributions and a setuptools extension to activate the
   hooks isn't reliable at all [#52](https://github.com/greenbone/autohooks/pull/52)
+* Recommend the `poetry` mode instead of the `pipenv` mode. poetry is more
+  reliable then pipenv [#55](https://github.com/greenbone/autohooks/pull/55)
 
 ### Fixed
 
