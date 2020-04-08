@@ -105,14 +105,14 @@ installation is deterministic and reliable between different developer setups.
 In contrast to the `pythonpath` mode the activation of the virtual environment
 provided by [pipenv] is done automatically in the background.
 
-Using the `pipenv` mode is highly recommended.
-
 ### Poetry Mode
 
 Like with the [pipenv mode](#pipenv-mode), it is possible to run autohooks in a
 dedicated environment controlled by [poetry]. By using the `poetry` mode the
 virtual environment will be activated automatically in the background when
 executing the autohooks based git commit hook.
+
+Using the `poetry` mode is highly recommended.
 
 ## Installing autohooks
 
