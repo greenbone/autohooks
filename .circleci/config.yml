@@ -24,8 +24,8 @@ commands:
     steps:
       - checkout
       - run:
-          name: Create environment, update pip and setuptools
-          command: poetry run pip install -U pip setuptools
+          name: Create environment and update pip
+          command: poetry run pip install --upgrade pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
@@ -34,8 +34,8 @@ commands:
     steps:
       - checkout
       - run:
-          name: Create environment, update pip and setuptools
-          command: poetry run pip install -U pip setuptools
+          name: Create environment and update pip
+          command: poetry run pip install --upgrade pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
@@ -47,8 +47,8 @@ commands:
     steps:
       - checkout
       - run:
-          name: Create environment, update pip and setuptools
-          command: poetry run pip install -U pip setuptools
+          name: Create environment and update pip
+          command: poetry run pip install --upgrade pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
@@ -66,8 +66,8 @@ commands:
     steps:
       - checkout
       - run:
-          name: Create environment, update pip and setuptools
-          command: poetry run pip install -U pip setuptools
+          name: Create environment and update pip
+          command: poetry run pip install --upgrade pip
       - run:
           name: Install dependencies
           command: poetry install
@@ -88,8 +88,8 @@ commands:
     steps:
       - checkout
       - run:
-          name: Create environment, update pip and setuptools
-          command: poetry run pip install -U pip setuptools
+          name: Create environment and update pip
+          command: poetry run pip install --upgrade pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
@@ -108,10 +108,10 @@ commands:
             echo -e "username = __token__" >> ~/.pypirc
             echo -e "password = $PYPI_TOKEN" >> ~/.pypirc
       - run:
-          name: Create and upload distribution to pypi
+          name: Create and upload distributions to pypi
           command: |
             rm -rf dist build python_gvm.egg-info
-            poetry build --format sdist
+            poetry build
             poetry run twine upload dist/*
 
 jobs:

@@ -15,14 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Any, Dict, List, Union, Optional
+from typing import Any, Dict, List, Union
 from pathlib import Path
 
 import tomlkit
 
 from autohooks.settings import Mode
 from autohooks.utils import get_pyproject_toml_path
-from autohooks.version import safe_version
 
 AUTOHOOKS_SECTION = 'tool.autohooks'
 
@@ -55,52 +54,6 @@ class BaseToolConfig:
 
     def get_config(self) -> Config:
         return self._config
-
-
-class PoetryConfig(BaseToolConfig):
-    def __init__(self, config_dict: Dict = None) -> None:
-        super().__init__(config_dict)
-        self._poetry_config = self._config.get('tool').get('poetry')
-
-    @staticmethod
-    def from_pyproject_toml(pyproject_toml: Path = None) -> "PoetryConfig":
-        if pyproject_toml is None:
-            pyproject_toml = get_pyproject_toml_path()
-
-        if not pyproject_toml.exists():
-            return PoetryConfig()
-
-        config_dict = tomlkit.loads(pyproject_toml.read_text())
-        return PoetryConfig(config_dict)
-
-    def has_poetry_config(self) -> bool:
-        return not self._poetry_config.is_empty()
-
-    def get_version(self) -> Optional[str]:
-        version = self._poetry_config.get_value('version')
-
-        return safe_version(version) if version else None
-
-    def get_name(self) -> Optional[str]:
-        return self._poetry_config.get_value('name')
-
-    def get_description(self) -> Optional[str]:
-        return self._poetry_config.get_value('description')
-
-    def get_homepage(self) -> Optional[str]:
-        return self._poetry_config.get_value('homepage')
-
-    def get_repository(self) -> Optional[str]:
-        return self._poetry_config.get_value('repository')
-
-    def get_license(self) -> Optional[str]:
-        return self._poetry_config.get_value('license')
-
-    def get_classifiers(self) -> List[str]:
-        return self._poetry_config.get_value('classifiers', [])
-
-    def get_scripts(self) -> Dict[str, str]:
-        return self._poetry_config.get_value('scripts', {})
 
 
 class AutohooksConfig(BaseToolConfig):

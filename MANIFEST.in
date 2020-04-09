@@ -1,3 +1,0 @@
-include README.md CHANGELOG.md LICENSE pyproject.toml setup.py
-recursive-include tests *.py
-recursive-include autohooks template
