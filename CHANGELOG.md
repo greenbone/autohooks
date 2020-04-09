@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added tools for version handling in autohooks [#51](https://github.com/greenbone/autohooks/pull/51)
+* Added static `get_width` method to Terminal class [#53](https://github.com/greenbone/autohooks/pull/53)
 
 ### Changed
 
