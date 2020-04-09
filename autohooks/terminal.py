@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
+import shutil
 
 from contextlib import contextmanager
 
@@ -23,26 +23,32 @@ from typing import Callable, Generator
 
 import colorful as cf
 
+TERMINAL_SIZE_FALLBACK = (80, 24)  # use a small standard size as fallback
+
 
 class Terminal:
     def __init__(self):
-        self._width = None
         self._indent = 0
 
-    def _check_size(self):
-        self._width, _ = os.get_terminal_size()
+    @staticmethod
+    def get_width() -> int:
+        """
+        Get the width of the terminal window
+        """
+        width, _ = shutil.get_terminal_size(TERMINAL_SIZE_FALLBACK)
+        return width
 
     def _print_end(self, message: str, status: str, color: Callable) -> None:
-        extra = 4  # '[ ', ' ]'
-        # python is adding a ' ' between strings if used
-        # in print('foo', 'bar', 'baz') is printed to "foo bar baz"
-        self._check_size()
+        extra = 4  # '[ ' and ' ]'
+
         if self._indent > 0:
             message = ' ' * self._indent + message
-        if self._width > 0:
-            message += ' ' * (
-                int(self._width) - len(message) - extra - len(status)
-            )
+
+        width = self.get_width()
+
+        if width > 0:
+            message += ' ' * (int(width) - len(message) - extra - len(status))
+
         print(
             message + '[', color(status), ']',
         )

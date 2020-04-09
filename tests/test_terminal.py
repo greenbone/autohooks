@@ -18,11 +18,12 @@
 # pylint: disable=invalid-name, protected-access
 
 import unittest
-import os
+
 from io import StringIO
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 import colorful as cf
+
 from autohooks.terminal import Terminal
 
 
@@ -37,212 +38,156 @@ class TerminalTestCase(unittest.TestCase):
         self.reset = cf.black.style[
             1
         ]  # every colors second value is the reset value ...
+        self.term = Terminal()
+        self.term.get_width = MagicMock(return_value=80)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_error(self, mock_stdout):
-        term = Terminal()
+        msg = 'foo bar'
 
-        width, _ = os.get_terminal_size()
-        est_len = width + len(self.red) + len(self.reset) + 1
+        width = self.term.get_width()
+        expected_len = width + len(self.red) + len(self.reset) + 1
 
-        term.error('foo bar')
+        status = '[ {}error{} ]\n'.format(self.red, self.reset)
+        sep = ' ' * (expected_len - len(msg) - len(status))
+
+        expected_msg = msg + sep + status
+
+        self.term.error(msg)
 
         ret = mock_stdout.getvalue()
-        status = '[ {}error{} ]\n'.format(self.red, self.reset)
-        msg = 'foo bar'
-        sep = ' ' * (est_len - (len(msg) + len(status)))
 
-        reg = msg + sep + status
-
-        self.assertIsNotNone(term._width)
-        self.assertEqual(term._width, width)
-        if width is 0:
-            est_len = (
-                len(msg)
-                + len('[ error ]')
-                + len(self.yellow)
-                + len(self.reset)
-                + 1
-            )
-        self.assertEqual(len(ret), est_len)
-        self.assertEqual(ret, reg)
+        self.assertEqual(len(ret), expected_len)
+        self.assertEqual(ret, expected_msg)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_fail(self, mock_stdout):
-        term = Terminal()
+        width = self.term.get_width()
+        expected_len = width + len(self.red) + len(self.reset) + 1
 
-        width, _ = os.get_terminal_size()
-        est_len = width + len(self.red) + len(self.reset) + 1
-
-        term.fail('foo bar baz')
-
-        ret = mock_stdout.getvalue()
         status = '[ {}fail{} ]\n'.format(self.red, self.reset)
         msg = 'foo bar baz'
-        sep = ' ' * (est_len - (len(msg) + len(status)))
+        sep = ' ' * (expected_len - len(msg) - len(status))
 
-        reg = msg + sep + status
+        expected_msg = msg + sep + status
 
-        self.assertIsNotNone(term._width)
-        self.assertEqual(term._width, width)
-        if width is 0:
-            est_len = (
-                len(msg)
-                + len('[ fail ]')
-                + len(self.yellow)
-                + len(self.reset)
-                + 1
-            )
-        self.assertEqual(len(ret), est_len)
-        self.assertEqual(ret, reg)
+        self.term.fail('foo bar baz')
+
+        ret = mock_stdout.getvalue()
+
+        self.assertEqual(len(ret), expected_len)
+        self.assertEqual(ret, expected_msg)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_info(self, mock_stdout):
-        term = Terminal()
+        width = self.term.get_width()
+        expected_len = width + len(self.cyan) + len(self.reset) + 1
 
-        width, _ = os.get_terminal_size()
-        est_len = width + len(self.cyan) + len(self.reset) + 1
-
-        term.info('foo bar')
-
-        ret = mock_stdout.getvalue()
         status = '[ {}info{} ]\n'.format(self.cyan, self.reset)
         msg = 'foo bar'
-        sep = ' ' * (est_len - (len(msg) + len(status)))
+        sep = ' ' * (expected_len - len(msg) - len(status))
 
-        reg = msg + sep + status
+        expected_msg = msg + sep + status
 
-        self.assertIsNotNone(term._width)
-        self.assertEqual(term._width, width)
-        if width is 0:
-            est_len = (
-                len(msg)
-                + len('[ info ]')
-                + len(self.yellow)
-                + len(self.reset)
-                + 1
-            )
-        self.assertEqual(len(ret), est_len)
-        self.assertEqual(ret, reg)
+        self.term.info('foo bar')
+
+        ret = mock_stdout.getvalue()
+
+        self.assertEqual(len(ret), expected_len)
+        self.assertEqual(ret, expected_msg)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_ok(self, mock_stdout):
-        term = Terminal()
+        width = self.term.get_width()
+        expected_len = width + len(self.green) + len(self.reset) + 1
 
-        width, _ = os.get_terminal_size()
-        est_len = width + len(self.green) + len(self.reset) + 1
-
-        term.ok('foo bar')
-
-        # get the printed output
-        ret = mock_stdout.getvalue()
-
-        # build the estimated output
         status = '[ {}ok{} ]\n'.format(self.green, self.reset)
         msg = 'foo bar'
-        sep = ' ' * (est_len - (len(msg) + len(status)))
-        reg = msg + sep + status
+        sep = ' ' * (expected_len - len(msg) - len(status))
+        expected_msg = msg + sep + status
 
-        # assert length and output and terminal width
-        self.assertIsNotNone(term._width)
-        self.assertEqual(term._width, width)
-        if width is 0:
-            est_len = (
-                len(msg)
-                + len('[ ok ]')
-                + len(self.yellow)
-                + len(self.reset)
-                + 1
-            )
-        self.assertEqual(len(ret), est_len)
-        self.assertEqual(ret, reg)
+        self.term.ok('foo bar')
+
+        ret = mock_stdout.getvalue()
+
+        self.assertEqual(len(ret), expected_len)
+        self.assertEqual(ret, expected_msg)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_warning(self, mock_stdout):
-        term = Terminal()
+        width = self.term.get_width()
+        expected_len = width + len(self.yellow) + len(self.reset) + 1
 
-        width, _ = os.get_terminal_size()
-        est_len = width + len(self.yellow) + len(self.reset) + 1
+        msg = 'foo bar'
 
-        term.warning('foo bar')
+        status = '[ {}warning{} ]\n'.format(self.yellow, self.reset)
+        sep = ' ' * (expected_len - len(msg) - len(status))
+
+        expected_msg = msg + sep + status
+
+        self.term.warning(msg)
 
         ret = mock_stdout.getvalue()
-        status = '[ {}warning{} ]\n'.format(self.yellow, self.reset)
-        msg = 'foo bar'
-        sep = ' ' * (est_len - (len(msg) + len(status)))
 
-        reg = msg + sep + status
-
-        self.assertIsNotNone(term._width)
-        self.assertEqual(term._width, width)
-        if width is 0:
-            est_len = (
-                len(msg)
-                + len('[ warning ]')
-                + len(self.yellow)
-                + len(self.reset)
-                + 1
-            )
-        self.assertEqual(len(ret), est_len)
-        self.assertEqual(ret, reg)
+        self.assertEqual(len(ret), expected_len)
+        self.assertEqual(ret, expected_msg)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_print(self, mock_stdout):
         term = Terminal()
 
-        msg = 'foo bar\n'
-        est_len = len(msg)
+        expected_msg = 'foo bar\n'
 
         term.print('foo bar')
 
         ret = mock_stdout.getvalue()
 
-        self.assertEqual(len(ret), est_len)
-        self.assertEqual(ret, msg)
+        self.assertEqual(len(ret), len(expected_msg))
+        self.assertEqual(ret, expected_msg)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_add_indent(self, mock_stdout):
         term = Terminal()
+
         i = 6
-        msg = ' ' * i + 'foo\n'
-        est_len = len(msg)
+        expected_msg = ' ' * i + 'foo\n'
 
         term.add_indent(i)
         term.print('foo')
 
         ret = mock_stdout.getvalue()
 
-        self.assertEqual(len(ret), est_len)
-        self.assertEqual(ret, msg)
+        self.assertEqual(len(ret), len(expected_msg))
+        self.assertEqual(ret, expected_msg)
 
         # clear the buffer
         mock_stdout.truncate(0)
         mock_stdout.seek(0)
 
         j = 4
-        msg = ' ' * (i + j) + 'bar\n'
-        est_len = len(msg)
+        expected_msg = ' ' * (i + j) + 'bar\n'
+
         term.add_indent(j)
         term.print('bar')
 
         ret = mock_stdout.getvalue()
 
-        self.assertEqual(len(ret), est_len)
-        self.assertEqual(ret, msg)
+        self.assertEqual(len(ret), len(expected_msg))
+        self.assertEqual(ret, expected_msg)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_with_indent(self, mock_stdout):
         term = Terminal()
 
+        expected_msg = '  foo\n'
+
         with term.indent(2):
-            msg = '  foo\n'
-            est_len = len(msg)
             term.print('foo')
 
             ret = mock_stdout.getvalue()
 
-            # self.assertEqual(len(ret), est_len)
-            self.assertEqual(ret, msg)
+        self.assertEqual(len(ret), len(expected_msg))
+        self.assertEqual(ret, expected_msg)
 
         # clear the buffer
         mock_stdout.truncate(0)
@@ -250,13 +195,12 @@ class TerminalTestCase(unittest.TestCase):
 
         term.print('bar')
 
-        msg = 'bar\n'
-        est_len = len(msg)
+        expected_msg = 'bar\n'
 
         ret = mock_stdout.getvalue()
 
-        self.assertEqual(len(ret), est_len)
-        self.assertEqual(ret, msg)
+        self.assertEqual(len(ret), len(expected_msg))
+        self.assertEqual(ret, expected_msg)
 
 
 if __name__ == '__main__':
