@@ -25,7 +25,7 @@ commands:
       - checkout
       - run:
           name: Create environment and update pip
-          command: poetry run pip install -U pip
+          command: poetry run pip install --upgrade pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
@@ -35,7 +35,7 @@ commands:
       - checkout
       - run:
           name: Create environment and update pip
-          command: poetry run pip install -U pip
+          command: poetry run pip install --upgrade pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
@@ -48,7 +48,7 @@ commands:
       - checkout
       - run:
           name: Create environment and update pip
-          command: poetry run pip install -U pip
+          command: poetry run pip install --upgrade pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
@@ -67,7 +67,7 @@ commands:
       - checkout
       - run:
           name: Create environment and update pip
-          command: poetry run pip install -U pip
+          command: poetry run pip install --upgrade pip
       - run:
           name: Install dependencies
           command: poetry install
@@ -89,7 +89,7 @@ commands:
       - checkout
       - run:
           name: Create environment and update pip
-          command: poetry run pip install -U pip
+          command: poetry run pip install --upgrade pip
       - run:
           name: Install dependencies
           command: poetry install --no-dev
