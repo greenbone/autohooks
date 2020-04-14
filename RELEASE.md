@@ -55,13 +55,13 @@ first time.
 * Get the current version number
 
   ```sh
-  poetry run python -m autohooks.version show
+  poetry run python -m pontos.version show
   ```
 
 * Update the version number to some alpha version e.g.
 
   ```sh
-  poetry run python -m autohooks.version update 2.2.3a1
+  poetry run python -m pontos.version update 2.2.3a1
   ```
 
 ## Uploading to the PyPI Test Instance
@@ -115,7 +115,7 @@ first time.
 
   ```sh
   cd path/to/git/clone/of/autohooks
-  poetry run python -m autohooks.version update <new-version>
+  poetry run python -m pontos.version update <new-version>
   ```
 
 * Update the `CHANGELOG.md` file:
@@ -179,7 +179,7 @@ first time.
   e.g. 2.3.0.dev1
 
   ```sh
-  poetry run python -m autohooks.version update <next-dev-version>
+  poetry run python -m pontos.version update <next-dev-version>
   ```
 
 * Create a commit
