@@ -167,6 +167,18 @@ version = "0.7.0"
 
 [[package]]
 category = "dev"
+description = "Common utilities and tools maintained by Greenbone Networks"
+name = "pontos"
+optional = false
+python-versions = ">=3.5,<4.0"
+version = "0.2.0"
+
+[package.dependencies]
+packaging = ">=20.3,<21.0"
+tomlkit = ">=0.5.11,<0.6.0"
+
+[[package]]
+category = "dev"
 description = "python code static checker"
 name = "pylint"
 optional = false
@@ -250,7 +262,7 @@ python-versions = "*"
 version = "1.11.2"
 
 [metadata]
-content-hash = "76c726aa16bb9a9c6f1f91e38d4fefb253712beaa5fc97b75be37ea788597308"
+content-hash = "f31cf6d1c73d93b493303b0018b15a5766ab010f13a911b77cadf019ef9cd436"
 python-versions = "^3.5"
 
 [metadata.files]
@@ -328,6 +340,10 @@ packaging = [
 pathspec = [
     {file = "pathspec-0.7.0-py2.py3-none-any.whl", hash = "sha256:163b0632d4e31cef212976cf57b43d9fd6b0bac6e67c26015d611a647d5e7424"},
     {file = "pathspec-0.7.0.tar.gz", hash = "sha256:562aa70af2e0d434367d9790ad37aed893de47f1693e4201fd1d3dca15d19b96"},
+]
+pontos = [
+    {file = "pontos-0.2.0-py3-none-any.whl", hash = "sha256:6f2778efce3374ab91834845c4ef6176bb455cb2fb3f7653f1518cab7008f65e"},
+    {file = "pontos-0.2.0.tar.gz", hash = "sha256:eb94a5af108f99ff32ff63614296835b7343c00fbc7fd6f30c9f78798d2ae217"},
 ]
 pylint = [
     {file = "pylint-2.4.4-py3-none-any.whl", hash = "sha256:886e6afc935ea2590b462664b161ca9a5e40168ea99e5300935f6591ad467df4"},
