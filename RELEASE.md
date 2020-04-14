@@ -91,7 +91,7 @@ first time.
   source ./test-env/bin/activate
   pip install -U pip  # ensure the environment uses a recent version of pip
   pip install --pre -I --extra-index-url https://test.pypi.org/simple/ autohooks
-  python -c "from autohooks.version import get_version; print(get_version())"
+  python -c "from autohooks.__version__ import __version__; print(__version__)"
   autohooks check
   ```
 
