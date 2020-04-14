@@ -84,3 +84,6 @@ exclude = '''
 [tool.autohooks]
 pre-commit = ['autohooks.plugins.black', 'autohooks.plugins.pylint']
 mode = "poetry"
+
+[tool.pontos.version]
+version-module-file = "autohooks/__version__.py"
