@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Use version handling via [pontos](https://github.com/greenbone/pontos) and
+  remove all version handling code again [#57](https://github.com/greenbone/autohooks/pull/57)
+
 [Unrelased]: https://github.com/greenbone/autohooks/compare/v2.1.0...master
 
 ## [2.1.0] - 2020-04-09

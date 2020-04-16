@@ -19,7 +19,7 @@ import argparse
 
 from autohooks.terminal import Terminal
 from autohooks.settings import Mode
-from autohooks.version import get_version
+from autohooks.__version__ import __version__ as version
 
 from autohooks.cli.activate import install_hooks
 from autohooks.cli.check import check_hooks
@@ -30,9 +30,7 @@ DESCRIPTION = 'autohooks - Manage git hooks'
 def main():
     parser = argparse.ArgumentParser(description=DESCRIPTION)
     parser.add_argument(
-        '--version',
-        action='version',
-        version='%(prog)s {}'.format(get_version()),
+        '--version', action='version', version='%(prog)s {}'.format(version),
     )
 
     subparsers = parser.add_subparsers(dest='command')
