@@ -49,7 +49,7 @@ include = [
 python = "^3.5"
 colorful = "^0.5.4"
 packaging = "^20.3"
-tomlkit = "^0.5.11"
+tomlkit = ">=0.5.11,<0.7.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.4.4"
