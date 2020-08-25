@@ -15,8 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import shutil
 
+from shutil import get_terminal_size
+from enum import Enum
 from contextlib import contextmanager
 
 from typing import Callable, Generator
@@ -24,6 +25,20 @@ from typing import Callable, Generator
 import colorful as cf
 
 TERMINAL_SIZE_FALLBACK = (80, 24)  # use a small standard size as fallback
+
+
+class Signs(Enum):
+    FAIL = u'\N{HEAVY MULTIPLICATION X}'
+    ERROR = u'\N{MULTIPLICATION SIGN}'
+    WARNING = u'\N{warning sign}'
+    OK = u'\N{check mark}'
+    INFO = u'\N{information source}'
+
+    def __str__(self):
+        return '{}'.format(self.value)
+
+
+STATUS_LEN = 2
 
 
 class Terminal:
@@ -35,23 +50,24 @@ class Terminal:
         """
         Get the width of the terminal window
         """
-        width, _ = shutil.get_terminal_size(TERMINAL_SIZE_FALLBACK)
+        width, _ = get_terminal_size(TERMINAL_SIZE_FALLBACK)
         return width
 
-    def _print_end(self, message: str, status: str, color: Callable) -> None:
-        extra = 4  # '[ ' and ' ]'
+    def _print_end(
+        self, message: str, status: str, color: Callable, style: Callable,
+    ) -> None:
+        width = self.get_width()
+        line = '{} '.format(color(status))
 
         if self._indent > 0:
-            message = ' ' * self._indent + message
-
-        width = self.get_width()
-
-        if width > 0:
-            message += ' ' * (int(width) - len(message) - extra - len(status))
-
-        print(
-            message + '[', color(status), ']',
-        )
+            line += ' ' * self._indent
+        usable_width = width - STATUS_LEN - self._indent
+        while usable_width < len(message):
+            part_line = ' ' * (self._indent + STATUS_LEN)
+            part = message[:usable_width]
+            message = message[usable_width:]
+            print('{}{}'.format(part_line, part))
+        print('{}{}'.format(style(line), style(message)))
 
     @contextmanager
     def indent(self, indentation: int = 4) -> Generator:
@@ -75,17 +91,20 @@ class Terminal:
         msg += ' '.join(messages)
         print(msg)
 
-    def ok(self, message: str) -> None:
-        self._print_end(message, 'ok', cf.green)
+    def ok(self, message: str, style: Callable = cf.reset) -> None:
+        self._print_end(message, Signs.OK, cf.green, style)
 
-    def fail(self, message: str) -> None:
-        self._print_end(message, 'fail', cf.red)
+    def fail(self, message: str, style: Callable = cf.reset) -> None:
+        self._print_end(message, Signs.FAIL, cf.red, style)
 
-    def error(self, message: str) -> None:
-        self._print_end(message, 'error', cf.red)
+    def error(self, message: str, style: Callable = cf.reset) -> None:
+        self._print_end(message, Signs.ERROR, cf.red, style)
 
-    def warning(self, message: str) -> None:
-        self._print_end(message, 'warning', cf.yellow)
+    def warning(self, message: str, style: Callable = cf.reset) -> None:
+        self._print_end(message, Signs.WARNING, cf.yellow, style)
 
-    def info(self, message: str) -> None:
-        self._print_end(message, 'info', cf.cyan)
+    def info(self, message: str, style: Callable = cf.reset) -> None:
+        self._print_end(message, Signs.INFO, cf.cyan, style)
+
+    def bold_info(self, message: str, style: Callable = cf.bold) -> None:
+        self._print_end(message, Signs.INFO, cf.cyan, style)
