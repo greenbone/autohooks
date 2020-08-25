@@ -33,6 +33,7 @@ class Signs(Enum):
     WARNING = u'\N{warning sign}'
     OK = u'\N{check mark}'
     INFO = u'\N{information source}'
+    NONE = ' '
 
     def __str__(self):
         return '{}'.format(self.value)
@@ -53,21 +54,26 @@ class Terminal:
         width, _ = get_terminal_size(TERMINAL_SIZE_FALLBACK)
         return width
 
-    def _print_end(
+    def _print_status(
         self, message: str, status: str, color: Callable, style: Callable,
     ) -> None:
+        first_line = ''
+        output = ''
         width = self.get_width()
-        line = '{} '.format(color(status))
-
+        if status == Signs.NONE:
+            first_line += '  '
+        else:
+            first_line += '{} '.format(color(status))
         if self._indent > 0:
-            line += ' ' * self._indent
+            first_line += ' ' * self._indent
         usable_width = width - STATUS_LEN - self._indent
         while usable_width < len(message):
             part_line = ' ' * (self._indent + STATUS_LEN)
             part = message[:usable_width]
             message = message[usable_width:]
-            print('{}{}'.format(part_line, part))
-        print('{}{}'.format(style(line), style(message)))
+            output += '{}{}\n'.format(part_line, part)
+        output += '{}{}'.format(first_line, message)
+        print(style(output))
 
     @contextmanager
     def indent(self, indentation: int = 4) -> Generator:
@@ -84,27 +90,24 @@ class Terminal:
     def reset_indent(self) -> None:
         self._indent = 0
 
-    def print(self, *messages: str) -> None:
-        msg = ''
-        if self._indent > 0:
-            msg = ' ' * (self._indent)
-        msg += ' '.join(messages)
-        print(msg)
+    def print(self, *messages: str, style: Callable = cf.reset) -> None:
+        message = ''.join(messages)
+        self._print_status(message, Signs.NONE, cf.white, style)
 
     def ok(self, message: str, style: Callable = cf.reset) -> None:
-        self._print_end(message, Signs.OK, cf.green, style)
+        self._print_status(message, Signs.OK, cf.green, style)
 
     def fail(self, message: str, style: Callable = cf.reset) -> None:
-        self._print_end(message, Signs.FAIL, cf.red, style)
+        self._print_status(message, Signs.FAIL, cf.red, style)
 
     def error(self, message: str, style: Callable = cf.reset) -> None:
-        self._print_end(message, Signs.ERROR, cf.red, style)
+        self._print_status(message, Signs.ERROR, cf.red, style)
 
     def warning(self, message: str, style: Callable = cf.reset) -> None:
-        self._print_end(message, Signs.WARNING, cf.yellow, style)
+        self._print_status(message, Signs.WARNING, cf.yellow, style)
 
     def info(self, message: str, style: Callable = cf.reset) -> None:
-        self._print_end(message, Signs.INFO, cf.cyan, style)
+        self._print_status(message, Signs.INFO, cf.cyan, style)
 
     def bold_info(self, message: str, style: Callable = cf.bold) -> None:
-        self._print_end(message, Signs.INFO, cf.cyan, style)
+        self._print_status(message, Signs.INFO, cf.cyan, style)
