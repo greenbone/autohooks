@@ -185,12 +185,10 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_with_indent(self, mock_stdout):
-        term = Terminal()
-
         expected_msg = self.reset('    foo').styled_string + '\n'
 
-        with term.indent(2):
-            term.print('foo')
+        with self.term.indent(2):
+            self.term.print('foo')
 
             ret = mock_stdout.getvalue()
 
@@ -201,9 +199,13 @@ class TerminalTestCase(unittest.TestCase):
         mock_stdout.truncate(0)
         mock_stdout.seek(0)
 
-        term.print('bar')
+        expected_msg = self.reset('  bar').styled_string + '\n'
+        self.term.print('bar')
 
-        expected_msg = 'bar\n'
+        ret = mock_stdout.getvalue()
+
+        self.assertEqual(len(ret), len(expected_msg))
+        self.assertEqual(ret, expected_msg)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_long_msg(self, mock_stdout):
