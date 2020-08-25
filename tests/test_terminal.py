@@ -36,6 +36,7 @@ class TerminalTestCase(unittest.TestCase):
         self.yellow = cf.yellow
         self.cyan = cf.cyan
         self.reset = cf.reset
+        self.bold = cf.bold
         # every colors second value is the reset value ...
         self.term = Terminal()
         self.term.get_width = MagicMock(return_value=80)
@@ -85,6 +86,23 @@ class TerminalTestCase(unittest.TestCase):
         expected_len = len(expected_msg)
 
         self.term.info(msg)
+
+        ret = mock_stdout.getvalue()
+
+        self.assertEqual(ret, expected_msg)
+        self.assertEqual(len(ret), expected_len)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_bold_info(self, mock_stdout):
+        status = '{} '.format(self.cyan(Signs.INFO))
+        msg = 'bold foo bar'
+
+        expected_msg = (
+            self.bold('{}{}'.format(status, msg)).styled_string + '\n'
+        )
+        expected_len = len(expected_msg)
+
+        self.term.bold_info(msg)
 
         ret = mock_stdout.getvalue()
 

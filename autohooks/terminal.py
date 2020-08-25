@@ -16,10 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from shutil import get_terminal_size
-from enum import Enum
 from contextlib import contextmanager
-
+from enum import Enum
+from shutil import get_terminal_size
 from typing import Callable, Generator
 
 import colorful as cf
@@ -30,9 +29,9 @@ TERMINAL_SIZE_FALLBACK = (80, 24)  # use a small standard size as fallback
 class Signs(Enum):
     FAIL = u'\N{HEAVY MULTIPLICATION X}'
     ERROR = u'\N{MULTIPLICATION SIGN}'
-    WARNING = u'\N{warning sign}'
-    OK = u'\N{check mark}'
-    INFO = u'\N{information source}'
+    WARNING = u'\N{WARNING SIGN}'
+    OK = u'\N{CHECK MARK}'
+    INFO = u'\N{INFORMATION SOURCE}'
     NONE = ' '
 
     def __str__(self):
@@ -55,7 +54,7 @@ class Terminal:
         return width
 
     def _print_status(
-        self, message: str, status: str, color: Callable, style: Callable,
+        self, message: str, status: Signs, color: Callable, style: Callable,
     ) -> None:
         first_line = ''
         output = ''
