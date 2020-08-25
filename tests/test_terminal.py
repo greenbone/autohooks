@@ -184,6 +184,28 @@ class TerminalTestCase(unittest.TestCase):
         self.assertEqual(ret, expected_msg)
 
     @patch('sys.stdout', new_callable=StringIO)
+    def test_with_indent(self, mock_stdout):
+        term = Terminal()
+
+        expected_msg = self.reset('    foo').styled_string + '\n'
+
+        with term.indent(2):
+            term.print('foo')
+
+            ret = mock_stdout.getvalue()
+
+        self.assertEqual(len(ret), len(expected_msg))
+        self.assertEqual(ret, expected_msg)
+
+        # clear the buffer
+        mock_stdout.truncate(0)
+        mock_stdout.seek(0)
+
+        term.print('bar')
+
+        expected_msg = 'bar\n'
+
+    @patch('sys.stdout', new_callable=StringIO)
     def test_long_msg(self, mock_stdout):
         long_msg = (
             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, '
