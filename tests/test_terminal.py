@@ -24,121 +24,131 @@ from unittest.mock import patch, MagicMock
 
 import colorful as cf
 
-from autohooks.terminal import Terminal
+from autohooks.terminal import Terminal, Signs
 
 
 class TerminalTestCase(unittest.TestCase):
     def setUp(self):
-        self.maxDiff = None
+        self.maxDiff = 180
         # getting the bash-color-codes from the colorful module
-        self.red = cf.red.style[0]
-        self.green = cf.green.style[0]
-        self.yellow = cf.yellow.style[0]
-        self.cyan = cf.cyan.style[0]
-        self.reset = cf.black.style[
-            1
-        ]  # every colors second value is the reset value ...
+        self.red = cf.red
+        self.green = cf.green
+        self.yellow = cf.yellow
+        self.cyan = cf.cyan
+        self.reset = cf.reset
+        self.bold = cf.bold
+        # every colors second value is the reset value ...
         self.term = Terminal()
         self.term.get_width = MagicMock(return_value=80)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_error(self, mock_stdout):
+        status = '{} '.format(self.red(Signs.ERROR))
         msg = 'foo bar'
 
-        width = self.term.get_width()
-        expected_len = width + len(self.red) + len(self.reset) + 1
-
-        status = '[ {}error{} ]\n'.format(self.red, self.reset)
-        sep = ' ' * (expected_len - len(msg) - len(status))
-
-        expected_msg = msg + sep + status
+        expected_msg = (
+            self.reset('{}{}'.format(status, msg)).styled_string + '\n'
+        )
+        expected_len = len(expected_msg)
 
         self.term.error(msg)
 
         ret = mock_stdout.getvalue()
 
-        self.assertEqual(len(ret), expected_len)
         self.assertEqual(ret, expected_msg)
+        self.assertEqual(len(ret), expected_len)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_fail(self, mock_stdout):
-        width = self.term.get_width()
-        expected_len = width + len(self.red) + len(self.reset) + 1
-
-        status = '[ {}fail{} ]\n'.format(self.red, self.reset)
+        status = '{} '.format(self.red(Signs.FAIL))
         msg = 'foo bar baz'
-        sep = ' ' * (expected_len - len(msg) - len(status))
 
-        expected_msg = msg + sep + status
+        expected_msg = (
+            self.reset('{}{}'.format(status, msg)).styled_string + '\n'
+        )
+        expected_len = len(expected_msg)
 
-        self.term.fail('foo bar baz')
+        self.term.fail(msg)
 
         ret = mock_stdout.getvalue()
 
-        self.assertEqual(len(ret), expected_len)
         self.assertEqual(ret, expected_msg)
+        self.assertEqual(len(ret), expected_len)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_info(self, mock_stdout):
-        width = self.term.get_width()
-        expected_len = width + len(self.cyan) + len(self.reset) + 1
-
-        status = '[ {}info{} ]\n'.format(self.cyan, self.reset)
+        status = '{} '.format(self.cyan(Signs.INFO))
         msg = 'foo bar'
-        sep = ' ' * (expected_len - len(msg) - len(status))
 
-        expected_msg = msg + sep + status
+        expected_msg = (
+            self.reset('{}{}'.format(status, msg)).styled_string + '\n'
+        )
+        expected_len = len(expected_msg)
 
-        self.term.info('foo bar')
+        self.term.info(msg)
 
         ret = mock_stdout.getvalue()
 
-        self.assertEqual(len(ret), expected_len)
         self.assertEqual(ret, expected_msg)
+        self.assertEqual(len(ret), expected_len)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_bold_info(self, mock_stdout):
+        status = '{} '.format(self.cyan(Signs.INFO))
+        msg = 'bold foo bar'
+
+        expected_msg = (
+            self.bold('{}{}'.format(status, msg)).styled_string + '\n'
+        )
+        expected_len = len(expected_msg)
+
+        self.term.bold_info(msg)
+
+        ret = mock_stdout.getvalue()
+
+        self.assertEqual(ret, expected_msg)
+        self.assertEqual(len(ret), expected_len)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_ok(self, mock_stdout):
-        width = self.term.get_width()
-        expected_len = width + len(self.green) + len(self.reset) + 1
-
-        status = '[ {}ok{} ]\n'.format(self.green, self.reset)
+        status = '{} '.format(self.green(Signs.OK))
         msg = 'foo bar'
-        sep = ' ' * (expected_len - len(msg) - len(status))
-        expected_msg = msg + sep + status
 
-        self.term.ok('foo bar')
+        expected_msg = (
+            self.reset('{}{}'.format(status, msg)).styled_string + '\n'
+        )
+        expected_len = len(expected_msg)
+
+        self.term.ok(msg)
 
         ret = mock_stdout.getvalue()
 
-        self.assertEqual(len(ret), expected_len)
         self.assertEqual(ret, expected_msg)
+        self.assertEqual(len(ret), expected_len)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_warning(self, mock_stdout):
-        width = self.term.get_width()
-        expected_len = width + len(self.yellow) + len(self.reset) + 1
-
         msg = 'foo bar'
 
-        status = '[ {}warning{} ]\n'.format(self.yellow, self.reset)
-        sep = ' ' * (expected_len - len(msg) - len(status))
+        status = '{} '.format(self.yellow(Signs.WARNING))
 
-        expected_msg = msg + sep + status
+        expected_msg = (
+            self.reset('{}{}'.format(status, msg)).styled_string + '\n'
+        )
+        expected_len = len(expected_msg)
 
         self.term.warning(msg)
 
         ret = mock_stdout.getvalue()
 
-        self.assertEqual(len(ret), expected_len)
         self.assertEqual(ret, expected_msg)
+        self.assertEqual(len(ret), expected_len)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_print(self, mock_stdout):
-        term = Terminal()
+        expected_msg = self.reset('  foo bar').styled_string + '\n'
 
-        expected_msg = 'foo bar\n'
-
-        term.print('foo bar')
+        self.term.print('foo bar')
 
         ret = mock_stdout.getvalue()
 
@@ -147,13 +157,11 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_add_indent(self, mock_stdout):
-        term = Terminal()
-
         i = 6
-        expected_msg = ' ' * i + 'foo\n'
+        expected_msg = self.reset(' ' * i + 'foo').styled_string + '\n'
 
-        term.add_indent(i)
-        term.print('foo')
+        self.term.add_indent(i - 2)
+        self.term.print('foo')
 
         ret = mock_stdout.getvalue()
 
@@ -165,10 +173,41 @@ class TerminalTestCase(unittest.TestCase):
         mock_stdout.seek(0)
 
         j = 4
-        expected_msg = ' ' * (i + j) + 'bar\n'
+        expected_msg = self.reset(' ' * (i + j) + 'bar').styled_string + '\n'
 
-        term.add_indent(j)
-        term.print('bar')
+        self.term.add_indent(j)
+        self.term.print('bar')
+
+        ret = mock_stdout.getvalue()
+
+        self.assertEqual(len(ret), len(expected_msg))
+        self.assertEqual(ret, expected_msg)
+
+        # clear the buffer
+        mock_stdout.truncate(0)
+        mock_stdout.seek(0)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_reset_indent(self, mock_stdout):
+        i = 6
+        expected_msg = self.reset(' ' * i + 'foo').styled_string + '\n'
+
+        self.term.add_indent(i - 2)
+        self.term.print('foo')
+
+        ret = mock_stdout.getvalue()
+
+        self.assertEqual(len(ret), len(expected_msg))
+        self.assertEqual(ret, expected_msg)
+
+        # clear the buffer
+        mock_stdout.truncate(0)
+        mock_stdout.seek(0)
+
+        expected_msg = self.reset('  bar').styled_string + '\n'
+
+        self.term.reset_indent()
+        self.term.print('bar')
 
         ret = mock_stdout.getvalue()
 
@@ -177,12 +216,10 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_with_indent(self, mock_stdout):
-        term = Terminal()
+        expected_msg = self.reset('    foo').styled_string + '\n'
 
-        expected_msg = '  foo\n'
-
-        with term.indent(2):
-            term.print('foo')
+        with self.term.indent(2):
+            self.term.print('foo')
 
             ret = mock_stdout.getvalue()
 
@@ -193,14 +230,37 @@ class TerminalTestCase(unittest.TestCase):
         mock_stdout.truncate(0)
         mock_stdout.seek(0)
 
-        term.print('bar')
-
-        expected_msg = 'bar\n'
+        expected_msg = self.reset('  bar').styled_string + '\n'
+        self.term.print('bar')
 
         ret = mock_stdout.getvalue()
 
         self.assertEqual(len(ret), len(expected_msg))
         self.assertEqual(ret, expected_msg)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_long_msg(self, mock_stdout):
+        long_msg = (
+            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, '
+            'sed diam nonumy eirmod tempor invidunt ut labore et dolore magna'
+            ' aliquyam erat, sed diam voluptua.'
+        )
+        expected_msg = (
+            self.reset(
+                '  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, '
+                'sed diam nonumy eirmo\n  d tempor invidunt ut labore et'
+                ' dolore magna aliquyam erat, sed diam voluptua.'
+            ).styled_string
+            + '\n'
+        )
+        expected_len = len(expected_msg)
+
+        self.term.print(long_msg)
+
+        ret = mock_stdout.getvalue()
+
+        self.assertEqual(ret, expected_msg)
+        self.assertEqual(len(ret), expected_len)
 
 
 if __name__ == '__main__':

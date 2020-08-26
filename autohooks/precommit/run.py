@@ -100,17 +100,17 @@ def run() -> int:
     if plugins.is_dir():
         sys.path.append(plugins_dir_name)
 
-    term.print('autohooks => pre-commit')
+    term.bold_info('autohooks => pre-commit')
 
     with autohooks_module_path(), term.indent():
         for name in config.get_pre_commit_script_names():
-            term.print('Running {}'.format(name))
+            term.info('Running {}'.format(name))
 
             with term.indent():
                 try:
                     plugin = load_plugin(name)
                     if not has_precommit_function(plugin):
-                        term.error(
+                        term.fail(
                             'No precommit function found in plugin {}. '
                             'Your autohooks settings may be invalid.'.format(
                                 name
