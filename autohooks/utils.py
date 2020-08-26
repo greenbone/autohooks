@@ -38,7 +38,7 @@ def exec_git(*args: str, ignore_errors: bool = False) -> str:
     except subprocess.CalledProcessError as e:
         if ignore_errors:
             return ''
-        raise GitError(e.returncode, e.cmd, e.output, e.stderr)
+        raise GitError(e.returncode, e.cmd, e.output, e.stderr) from None
 
 
 def get_git_directory_path() -> Path:
@@ -50,7 +50,7 @@ def get_git_directory_path() -> Path:
         print(
             'could not determine .git directory. {}'.format(e.output.decode())
         )
-        raise e
+        raise e from None
 
     if pwd and not pwd in git_dir:
         git_dir_path = Path(pwd) / git_dir

@@ -50,7 +50,7 @@ def _get_git_toplevel_path():
                 e.output.decode()
             )
         )
-        raise e
+        raise e from None
     return Path(git_dir).resolve()
 
 

@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Major style changes: Moved from textual status at the end of a line to an symbolic status in front of the text. [#66](https://github.com/greenbone/autohooks/pull/66)
+
 ### Changed
 
 ### Fixed
