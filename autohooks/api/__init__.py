@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+import colorful as cf
 
 from autohooks.terminal import Terminal
 
@@ -25,6 +26,7 @@ __all__ = [
     'error',
     'fail',
     'info',
+    'bold_info',
     'ok',
     'out',
     'warning',
@@ -49,6 +51,10 @@ def warning(message: str) -> None:
 
 def info(message: str) -> None:
     __term.info(message)
+
+
+def bold_info(message: str) -> None:
+    __term.bold_info(message)
 
 
 def out(message: str):
