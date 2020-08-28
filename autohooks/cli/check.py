@@ -87,7 +87,9 @@ def check_pre_commit_hook(
 
 
 def check_config(
-    term: Terminal, pyproject_toml: Path, pre_commit_hook: PreCommitHook,
+    term: Terminal,
+    pyproject_toml: Path,
+    pre_commit_hook: PreCommitHook,
 ) -> None:
     if not pyproject_toml.exists():
         term.error(

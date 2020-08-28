@@ -55,7 +55,7 @@ tomlkit = "^0.5.11"
 pylint = "^2.5.3"
 autohooks-plugin-pylint = "^1.2.0"
 autohooks-plugin-black = {version = "^1.2.0", python = "^3.6"}
-black = {version = "19.10b0", python = "^3.6"}
+black = {version = "20.8b1", python = "^3.6"}
 rope = "^0.17.0"
 pontos = {version = "^0.3.0", python = "^3.7"}
 

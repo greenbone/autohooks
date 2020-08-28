@@ -30,7 +30,9 @@ DESCRIPTION = 'autohooks - Manage git hooks'
 def main():
     parser = argparse.ArgumentParser(description=DESCRIPTION)
     parser.add_argument(
-        '--version', action='version', version='%(prog)s {}'.format(version),
+        '--version',
+        action='version',
+        version='%(prog)s {}'.format(version),
     )
 
     subparsers = parser.add_subparsers(dest='command')
