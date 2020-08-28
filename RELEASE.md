@@ -25,8 +25,6 @@ first time.
 
 * Create an account at [Test PyPI](https://packaging.python.org/guides/using-testpypi/).
 
-* Create an account at [PyPI](https://pypi.org/).
-
 * Create a pypi configuration file `~/.pypirc` with the following content (Note:
   `<username>` must be replaced):
 
@@ -43,13 +41,28 @@ first time.
   repository = https://test.pypi.org/legacy/
   username = <username>
 
-## Prepare testing the Release
+## Create a GitHub Token for uploading the release files
 
-* Fetch upstream changes and create release branch
+This step is only necessary if the token has to be created for the for time or
+if it has been lost.
+
+* Open Github Settings at https://github.com/settings/tokens
+* Create a new token
+* Copy token and store it carefully
+* Export token in your current shell
 
   ```sh
+  export GITHUB_TOKEN=<token>
+  ```
+
+## Prepare testing the to be release version
+
+* Fetch upstream changes
+
+  ```sh
+  git remote add upstream git@github.com:greenbone/autohooks.git
   git fetch upstream
-  git checkout -b create-new-release upstream/master
+  git rebase update/master
   ```
 
 * Get the current version number
@@ -105,64 +118,37 @@ first time.
 
 ## Prepare the Release
 
-* Determine new release version number
-
-  If the output is something like  `2.2.3.dev1` or `2.2.3a1`, the new version
-  should be `2.2.3`.
-
-* Update to new version number (`<new-version>` must be replaced by the version
-  from the last step)
+* Run pontos-release prepare
 
   ```sh
-  cd path/to/git/clone/of/autohooks
-  poetry run python -m pontos.version update <new-version>
+  poetry run pontos-release --release-version <version> --next-release-version <dev-version> --project autohooks --space greenbone --git-signing-key <your-public-gpg-key> --git-remote-name upstream prepare
   ```
 
-* Update the `CHANGELOG.md` file:
-  * Change `[unreleased]` to new release version.
-  * Add a release date.
-  * Update reference to Github diff.
-  * Remove empty sub sections like *Deprecated*.
+* Check git log and tag
 
-* Create a git commit:
+  ```
+  git log -p
 
-  ```sh
-  git add .
-  git commit -m "Prepare release <version>"
+  # is the changelog correct?
+  # does the version look right?
+  # does the tag point to the correct commit?
   ```
 
-## Performing the Release on GitHub
+* If something did go wrong delete the tag, revert the commits and remove the
+  temporary file for the release changelog
 
-* Create a pull request (PR) for the earlier commit:
-
-  ```sh
-  git push origin
   ```
-  Open GitHub and create a PR against <https://github.com/greenbone/autohooks>
-
-* Update after PR is merged
-
-  ```sh
-  git fetch upstream
-  git rebase upstream/master master
+  git tag -d v<version>
+  git reset <last-commit-id-before-running-pontos-release> --hard
+  rm .release.txt.md
   ```
 
-* Create a git tag
+## Create the Release
+
+* Run pontos-release release
 
   ```sh
-  git tag v<version>
-  ```
-
-  or even signed with your gpg key
-
-  ```sh
-  git tag -s v<version>
-  ```
-
-* Push tag to GitHub
-
-  ```sh
-  git push --tags upstream
+  poetry run pontos-release --release-version <version> --next-release-version <dev-version> --project autohooks --space greenbone --git-signing-key <your-public-gpg-key> --git-remote-name upstream release
   ```
 
 ## Uploading to the 'real' PyPI
@@ -171,31 +157,8 @@ first time.
 
 * Check if new version is available at <https://pypi.org/project/autohooks>
 
-## Bumping `master` Branch to the Next Version
+## Check the Release
 
-* Update to a Development Version
+* Check the Github release:
 
-  The next version should contain an incremented minor version and a dev suffix
-  e.g. 2.3.0.dev1
-
-  ```sh
-  poetry run python -m pontos.version update <next-dev-version>
-  ```
-
-* Create a commit
-
-  ```sh
-  git commit -m "Update version after <version> release"
-  ```
-
-* Push changes to GitHub
-
-  ```sh
-  git push upstream
-  ```
-
-## Announcing the Release
-
-* Create a Github release:
-
-   See https://help.github.com/articles/creating-releases/
+   See https://github.com/greenbone/autohooks/releases
