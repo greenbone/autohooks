@@ -60,6 +60,7 @@ if it has been lost.
 * Fetch upstream changes
 
   ```sh
+  git remote add upstream git@github.com:greenbone/autohooks.git
   git fetch upstream
   git rebase update/master
   ```
