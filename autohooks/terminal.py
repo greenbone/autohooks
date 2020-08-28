@@ -54,7 +54,11 @@ class Terminal:
         return width
 
     def _print_status(
-        self, message: str, status: Signs, color: Callable, style: Callable,
+        self,
+        message: str,
+        status: Signs,
+        color: Callable,
+        style: Callable,
     ) -> None:
         first_line = ''
         output = ''
