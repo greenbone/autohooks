@@ -53,9 +53,10 @@ if it has been lost.
 
   ```sh
   export GITHUB_TOKEN=<token>
+  export GITHUB_NAME=<name>
   ```
 
-## Prepare testing the to be release version
+## Prepare testing the to be released version
 
 * Fetch upstream changes
 
