@@ -24,6 +24,7 @@ class ModeTestCase(unittest.TestCase):
     def test_get_effective_mode(self):
         self.assertEqual(Mode.PIPENV.get_effective_mode(), Mode.PIPENV)
         self.assertEqual(Mode.PYTHONPATH.get_effective_mode(), Mode.PYTHONPATH)
+        self.assertEqual(Mode.PYTHONPATHVENV.get_effective_mode(), Mode.PYTHONPATHVENV)
         self.assertEqual(Mode.POETRY.get_effective_mode(), Mode.POETRY)
         self.assertEqual(Mode.UNDEFINED.get_effective_mode(), Mode.PYTHONPATH)
         self.assertEqual(Mode.UNKNOWN.get_effective_mode(), Mode.PYTHONPATH)
@@ -35,6 +36,10 @@ class ModeTestCase(unittest.TestCase):
     def test_get_pythonpath_mode_from_string(self):
         self.assertEqual(Mode.from_string('pythonpath'), Mode.PYTHONPATH)
         self.assertEqual(Mode.from_string('PYTHONPATH'), Mode.PYTHONPATH)
+
+    def test_get_pythonpathvenv_mode_from_string(self):
+        self.assertEqual(Mode.from_string('pythonpathvenv'), Mode.PYTHONPATHVENV)
+        self.assertEqual(Mode.from_string('PYTHONPATHVENV'), Mode.PYTHONPATHVENV)
 
     def test_get_poetry_mode_from_string(self):
         self.assertEqual(Mode.from_string('poetry'), Mode.POETRY)
@@ -48,6 +53,7 @@ class ModeTestCase(unittest.TestCase):
     def test_string_conversion(self):
         self.assertEqual(str(Mode.PIPENV), 'pipenv')
         self.assertEqual(str(Mode.PYTHONPATH), 'pythonpath')
+        self.assertEqual(str(Mode.PYTHONPATHVENV), 'pythonpathvenv')
         self.assertEqual(str(Mode.POETRY), 'poetry')
         self.assertEqual(str(Mode.UNKNOWN), 'unknown')
         self.assertEqual(str(Mode.UNDEFINED), 'undefined')

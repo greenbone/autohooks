@@ -22,6 +22,7 @@ class Mode(Enum):
     PIPENV = 1
     PYTHONPATH = 2
     POETRY = 3
+    PYTHONPATHVENV = 4
     UNDEFINED = -1
     UNKNOWN = -2
 
@@ -31,6 +32,8 @@ class Mode(Enum):
             return Mode.PIPENV
         if self.value == Mode.POETRY.value:
             return Mode.POETRY
+        if self.value == Mode.PYTHONPATHVENV.value:
+            return Mode.PYTHONPATHVENV
         return Mode.PYTHONPATH
 
     @staticmethod

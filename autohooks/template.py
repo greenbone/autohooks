@@ -17,12 +17,14 @@
 
 from pathlib import Path
 from string import Template
+from sys import executable
 
 from autohooks.settings import Mode
 from autohooks.utils import get_autohooks_directory_path
 
 
 PYTHON3_SHEBANG = '/usr/bin/env python3'
+PY_VENV_SHEBANG = '/usr/bin/env ' + executable
 PIPENV_SHEBANG = '/usr/bin/env -S pipenv run python3'
 POETRY_SHEBANG = '/usr/bin/env -S poetry run python3'
 
@@ -52,6 +54,8 @@ class PreCommitTemplate:
             params['SHEBANG'] = PIPENV_SHEBANG
         elif mode == Mode.POETRY:
             params['SHEBANG'] = POETRY_SHEBANG
+        elif mode == Mode.PYTHONPATHVENV:
+            params['SHEBANG'] = PY_VENV_SHEBANG
         else:
             params['SHEBANG'] = PYTHON3_SHEBANG
 

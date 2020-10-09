@@ -24,6 +24,7 @@ from autohooks.template import (
     PIPENV_SHEBANG,
     POETRY_SHEBANG,
     PYTHON3_SHEBANG,
+    PY_VENV_SHEBANG,
     TEMPLATE_VERSION,
     PreCommitTemplate,
 )
@@ -70,6 +71,8 @@ class PreCommitHook:
 
         if shebang == PYTHON3_SHEBANG:
             return Mode.PYTHONPATH
+        if shebang == PY_VENV_SHEBANG:
+            return Mode.PYTHONPATHVENV
         if shebang == POETRY_SHEBANG:
             return Mode.POETRY
         if shebang == PIPENV_SHEBANG:

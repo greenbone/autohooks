@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]: https://github.com/greenbone/autohooks/compare/v2.2.0...HEAD
 
+## [2.2.1.dev1 - 2020-10-09]
+
+### Added
+
+* New Mode `pythonpathvenv` which writes as shebang with `sys.executable` into the pre-commit hook decoupling autohook execution venv from development venv.
 
 ## [2.2.0] - 2020-08-28
 

@@ -30,6 +30,7 @@ from autohooks.template import (
     PIPENV_SHEBANG,
     POETRY_SHEBANG,
     PYTHON3_SHEBANG,
+    PY_VENV_SHEBANG,
 )
 from autohooks.utils import exec_git
 
@@ -214,6 +215,19 @@ class WriteTestCase(unittest.TestCase):
         args, _kwargs = write_path.write_text.call_args
         text = args[0]
         self.assertRegex(text, '^#!{} *'.format(PYTHON3_SHEBANG))
+
+
+    def test_pythonpathvenv_mode(self):
+        write_path = Mock()
+        pre_commit_hook = PreCommitHook(write_path)
+        pre_commit_hook.write(mode=Mode.PYTHONPATHVENV)
+
+        write_path.chmod.assert_called_with(0o775)
+        self.assertTrue(write_path.write_text.called)
+
+        args, _kwargs = write_path.write_text.call_args
+        text = args[0]
+        self.assertRegex(text, '^#!{} *'.format(PY_VENV_SHEBANG))
 
 
 class StrTestCase(unittest.TestCase):

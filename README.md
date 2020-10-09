@@ -16,6 +16,7 @@ Welcome to **autohooks**!
 - [Requirements](#requirements)
 - [Modes](#modes)
   - [Pythonpath Mode](#pythonpath-mode)
+  - [Pythonpathvenv Mode](#pythonpathvenv-mode)
   - [Pipenv Mode](#pipenv-mode)
   - [Poetry Mode](#poetry-mode)
 - [Installing autohooks](#installing-autohooks)
@@ -96,6 +97,15 @@ environment but activating the environment has to be done manually.
 
 Therefore it is even possible to run different versions of autohooks by
 using the `pythonpath` mode and switching to a virtual environment.
+
+### Pythonpathvenv Mode
+
+With `pythonpathvenv` mode, things are very similar to `pythonpath` mode with the
+exception that the shebang path to the python binary is written in absolute
+path to the python binary which is used to execute `autohooks activate`.
+
+This should enable to use virtually any method of managing your venvs, including
+maintaining a separate venv for the purpose of autohooks management.
 
 ### Pipenv Mode
 
