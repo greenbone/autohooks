@@ -37,7 +37,7 @@ from autohooks.utils import exec_git
 class GitDirTestCase(unittest.TestCase):
     def setUp(self):
         self.tempdir = TemporaryDirectory()
-        self.temp_dir_path = Path(self.tempdir.name)
+        self.temp_dir_path = Path(self.tempdir.name).resolve()
 
         exec_git('-C', str(self.temp_dir_path), 'init')
 
