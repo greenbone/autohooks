@@ -46,7 +46,7 @@ class GitHookDirPathTestCase(unittest.TestCase):
 
             os.environ['PWD'] = str(temp_path)
 
-            git_dir_path = temp_path / '.git'
+            git_dir_path = (temp_path / '.git').resolve()
 
             git_hook_dir_path = get_git_hook_directory_path()
             self.assertEqual(git_hook_dir_path, git_dir_path / 'hooks')
@@ -197,7 +197,7 @@ class GetGitDirectoryPath(unittest.TestCase):
 
         exec_git('-C', str(self.temp_path), 'init')
 
-        self.git_dir_path = self.temp_path / '.git'
+        self.git_dir_path = (self.temp_path / '.git').resolve()
 
         self.assertTrue(self.git_dir_path.exists())
 
@@ -208,7 +208,7 @@ class GetGitDirectoryPath(unittest.TestCase):
         os.environ['PWD'] = str(self.temp_path)
 
         git_dir_path = get_git_directory_path()
-        self.assertEqual(git_dir_path, self.git_dir_path)
+        self.assertEqual(git_dir_path, self.git_dir_path.resolve())
 
     def test_with_subdir(self):
         sub_path = self.temp_path / 'foo'
