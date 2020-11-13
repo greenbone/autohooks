@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2019-2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -19,6 +19,7 @@ import sys
 import colorful as cf
 
 from autohooks.terminal import Terminal
+from autohooks.config import Config
 
 __term = None  # pylint: disable=invalid-name
 
@@ -30,7 +31,12 @@ __all__ = [
     'ok',
     'out',
     'warning',
+    'get_company',
 ]
+
+
+def get_company(config: Config) -> Config:
+    return config.get('tool').get('autohooks').get('company')
 
 
 def ok(message: str) -> None:

@@ -1,5 +1,6 @@
 [tool.autohooks]
 pre-commit = ['foo', 'bar']
+company = "Greenbone"
 
 [tool.poetry]
 name = "foo"

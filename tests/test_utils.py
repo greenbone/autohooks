@@ -46,7 +46,7 @@ class GitHookDirPathTestCase(unittest.TestCase):
 
             os.environ['PWD'] = str(temp_path)
 
-            git_dir_path = temp_path / '.git'
+            git_dir_path = (temp_path / '.git').resolve()
 
             git_hook_dir_path = get_git_hook_directory_path()
             self.assertEqual(git_hook_dir_path, git_dir_path / 'hooks')

@@ -2,6 +2,7 @@
 pre-commit = ['foo', 'bar']
 plugins.foo.bar = 'ipsum'
 plugins.foo.lorem = 'dolor'
+company = 'glurp'
 
 [tool.autohooks.plugins.bar]
 foo = 'bar'
