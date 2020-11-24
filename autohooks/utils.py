@@ -106,7 +106,11 @@ def get_pyproject_toml_path(path: Path = None) -> Path:
     return root / 'pyproject.toml'
 
 
+# pylint: disable=global-statement
 _IS_SPLIT_ENV = None
+
+
+# pylint: enable=global-statement
 
 
 def is_split_env():
