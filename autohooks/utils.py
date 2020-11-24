@@ -106,25 +106,17 @@ def get_pyproject_toml_path(path: Path = None) -> Path:
     return root / 'pyproject.toml'
 
 
-# pylint: disable=global-statement
-_IS_SPLIT_ENV = None
-
-
-# pylint: enable=global-statement
-
-
 def is_split_env():
-    global _IS_SPLIT_ENV
-    if _IS_SPLIT_ENV is None:
-        try:
-            subprocess.run(
-                shlex.split('/usr/bin/env -S echo True'),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                universal_newlines=True,
-                check=True,
-            )
-            _IS_SPLIT_ENV = True
-        except subprocess.CalledProcessError:
-            _IS_SPLIT_ENV = False
-    return _IS_SPLIT_ENV
+    try:
+        subprocess.run(
+            shlex.split('/usr/bin/env -S echo True'),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+            check=True,
+        )
+        is_split = True
+    except subprocess.CalledProcessError:
+        is_split = False
+
+    return is_split
