@@ -21,7 +21,7 @@ from pathlib import Path
 import tomlkit
 
 from autohooks.settings import Mode
-from autohooks.utils import get_pyproject_toml_path
+from autohooks.utils import get_pyproject_toml_path, is_split_env
 
 AUTOHOOKS_SECTION = 'tool.autohooks'
 
@@ -79,10 +79,14 @@ class AutohooksConfig(BaseToolConfig):
             if not mode:
                 return Mode.UNDEFINED
 
-            try:
-                return Mode[mode.upper()]
-            except KeyError:
-                return Mode.UNKNOWN
+            mode = Mode.from_string(mode.upper())
+            is_virtual_env = mode == Mode.PIPENV or mode == Mode.POETRY
+            if is_virtual_env and not is_split_env():
+                if mode == Mode.POETRY:
+                    mode = Mode.POETRY_MULTILINE
+                else:
+                    mode = Mode.PIPENV_MULTILINE
+            return mode
 
         return Mode.UNDEFINED
 

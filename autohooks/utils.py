@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import shlex
 import subprocess
 
 from pathlib import Path
@@ -103,3 +104,23 @@ def get_project_autohooks_plugins_path(path: Path = None) -> Path:
 def get_pyproject_toml_path(path: Path = None) -> Path:
     root = get_project_root_path(path)
     return root / 'pyproject.toml'
+
+
+_is_split_env = None
+
+
+def is_split_env():
+    global _is_split_env
+    if _is_split_env is None:
+        try:
+            subprocess.run(
+                shlex.split('/usr/bin/env -S echo True'),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                universal_newlines=True,
+                check=True,
+            )
+            _is_split_env = True
+        except subprocess.CalledProcessError:
+            _is_split_env = False
+    return _is_split_env

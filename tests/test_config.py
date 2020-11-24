@@ -99,6 +99,36 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
+    def test_get_mode_pipenv_multiline(self):
+        config = AutohooksConfig({'tool': {'autohooks': {'mode': 'pipenv_multiline'}}})
+
+        self.assertTrue(config.has_config())
+        self.assertTrue(config.has_autohooks_config())
+        self.assertTrue(config.is_autohooks_enabled())
+        self.assertEqual(config.get_mode(), Mode.PIPENV_MULTILINE)
+
+        self.assertEqual(len(config.get_pre_commit_script_names()), 0)
+
+    def test_get_mode_poetry(self):
+        config = AutohooksConfig({'tool': {'autohooks': {'mode': 'poetry'}}})
+
+        self.assertTrue(config.has_config())
+        self.assertTrue(config.has_autohooks_config())
+        self.assertTrue(config.is_autohooks_enabled())
+        self.assertEqual(config.get_mode(), Mode.POETRY)
+
+        self.assertEqual(len(config.get_pre_commit_script_names()), 0)
+
+    def test_get_mode_poetry_multiline(self):
+        config = AutohooksConfig({'tool': {'autohooks': {'mode': 'poetry_multiline'}}})
+
+        self.assertTrue(config.has_config())
+        self.assertTrue(config.has_autohooks_config())
+        self.assertTrue(config.is_autohooks_enabled())
+        self.assertEqual(config.get_mode(), Mode.POETRY_MULTILINE)
+
+        self.assertEqual(len(config.get_pre_commit_script_names()), 0)
+
     def test_get_mode_pythonpath(self):
         config = AutohooksConfig(
             {'tool': {'autohooks': {'mode': 'pythonpath'}}}
