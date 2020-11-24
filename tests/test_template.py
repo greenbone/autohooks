@@ -72,6 +72,34 @@ class PreCommitTemplateTestCase(unittest.TestCase):
             "/usr/bin/env -S poetry run python3",
         )
 
+    def test_should_render_mode_pipenv_multiline(self):
+        path = FakeTemplatePath("$SHEBANG")
+        template = PreCommitTemplate(path)
+        self.assertEqual(
+            template.render(mode=Mode.PIPENV_MULTILINE),
+            (
+                "/usr/bin/env sh\n"
+                "\"true\" ''':'\n"
+                "pipenv run python3 \"$0\" \"$@\"\n"
+                "exit \"$?\"\n"
+                "'''"
+            ),
+        )
+
+    def test_should_render_mode_poetry_multiline(self):
+        path = FakeTemplatePath("$SHEBANG")
+        template = PreCommitTemplate(path)
+        self.assertEqual(
+            template.render(mode=Mode.POETRY_MULTILINE),
+            (
+                "/usr/bin/env sh\n"
+                "\"true\" ''':'\n"
+                "poetry run python3 \"$0\" \"$@\"\n"
+                "exit \"$?\"\n"
+                "'''"
+            ),
+        )
+
     def test_should_render_mode_unknown(self):
         path = FakeTemplatePath("$SHEBANG")
         template = PreCommitTemplate(path)

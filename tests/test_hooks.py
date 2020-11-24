@@ -29,6 +29,8 @@ from autohooks.template import (
     PreCommitTemplate,
     PIPENV_SHEBANG,
     POETRY_SHEBANG,
+    PIPENV_MULTILINE_SHEBANG,
+    POETRY_MULTILINE_SHEBANG,
     PYTHON3_SHEBANG,
 )
 from autohooks.utils import exec_git
@@ -170,6 +172,18 @@ class ReadModeTestCase(unittest.TestCase):
         pre_commit_hook = PreCommitHook(path)
 
         self.assertEqual(pre_commit_hook.read_mode(), Mode.POETRY)
+
+    def test_pipenv_multiline_mode(self):
+        path = FakeReadPath("#!{}".format(PIPENV_MULTILINE_SHEBANG))
+        pre_commit_hook = PreCommitHook(path)
+
+        self.assertEqual(pre_commit_hook.read_mode(), Mode.PIPENV_MULTILINE)
+
+    def test_poetry_multiline_mode(self):
+        path = FakeReadPath("#!{}".format(POETRY_MULTILINE_SHEBANG))
+        pre_commit_hook = PreCommitHook(path)
+
+        self.assertEqual(pre_commit_hook.read_mode(), Mode.POETRY_MULTILINE)
 
     def test_pythonpath_mode(self):
         path = FakeReadPath("#!{}".format(PYTHON3_SHEBANG))
