@@ -27,14 +27,14 @@ PIPENV_SHEBANG = '/usr/bin/env -S pipenv run python3'
 POETRY_SHEBANG = '/usr/bin/env -S poetry run python3'
 # For OS's that don't support '/usr/bin/env -S'.
 PIPENV_MULTILINE_SHEBANG = (
-    "/usr/bin/env sh\n"
+    "/bin/sh\n"
     "\"true\" ''':'\n"
     "pipenv run python3 \"$0\" \"$@\"\n"
     "exit \"$?\"\n"
     "'''"
 )
 POETRY_MULTILINE_SHEBANG = (
-    "/usr/bin/env sh\n"
+    "/bin/sh\n"
     "\"true\" ''':'\n"
     "poetry run python3 \"$0\" \"$@\"\n"
     "exit \"$?\"\n"
