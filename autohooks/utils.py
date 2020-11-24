@@ -106,12 +106,12 @@ def get_pyproject_toml_path(path: Path = None) -> Path:
     return root / 'pyproject.toml'
 
 
-_is_split_env = None
+_IS_SPLIT_ENV = None
 
 
 def is_split_env():
-    global _is_split_env
-    if _is_split_env is None:
+    global _IS_SPLIT_ENV
+    if _IS_SPLIT_ENV is None:
         try:
             subprocess.run(
                 shlex.split('/usr/bin/env -S echo True'),
@@ -120,7 +120,7 @@ def is_split_env():
                 universal_newlines=True,
                 check=True,
             )
-            _is_split_env = True
+            _IS_SPLIT_ENV = True
         except subprocess.CalledProcessError:
-            _is_split_env = False
-    return _is_split_env
+            _IS_SPLIT_ENV = False
+    return _IS_SPLIT_ENV
