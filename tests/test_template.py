@@ -78,7 +78,7 @@ class PreCommitTemplateTestCase(unittest.TestCase):
         self.assertEqual(
             template.render(mode=Mode.PIPENV_MULTILINE),
             (
-                "/usr/bin/env sh\n"
+                "/bin/sh\n"
                 "\"true\" ''':'\n"
                 "pipenv run python3 \"$0\" \"$@\"\n"
                 "exit \"$?\"\n"
@@ -92,7 +92,7 @@ class PreCommitTemplateTestCase(unittest.TestCase):
         self.assertEqual(
             template.render(mode=Mode.POETRY_MULTILINE),
             (
-                "/usr/bin/env sh\n"
+                "/bin/sh\n"
                 "\"true\" ''':'\n"
                 "poetry run python3 \"$0\" \"$@\"\n"
                 "exit \"$?\"\n"

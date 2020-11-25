@@ -17,9 +17,7 @@ Welcome to **autohooks**!
 - [Modes](#modes)
   - [Pythonpath Mode](#pythonpath-mode)
   - [Pipenv Mode](#pipenv-mode)
-  - [Pipenv Multi-Line  Mode](#pipenv-multi-line-mode)
   - [Poetry Mode](#poetry-mode)
-  - [Poetry Multi-Line  Mode](#poetry-multi-line-mode)
 - [Installing autohooks](#installing-autohooks)
   - [1. Choosing an autohooks Mode](#1-choosing-an-autohooks-mode)
   - [2. Installing the autohooks Python Package into the Current Environment](#2-installing-the-autohooks-python-package-into-the-current-environment)
@@ -63,9 +61,7 @@ Currently five modes for using autohooks are supported:
 
 * `pythonpath`
 * `pipenv`
-* `pipenv_mutiline`
 * `poetry`
-* `poetry_mutiline`
 
 These modes handle how autohooks, the plugins and their dependencies are loaded
 during git hook execution.
@@ -73,6 +69,18 @@ during git hook execution.
 If no mode is specified in the [`pyproject.toml` config file](#configure-mode-and-plugins-to-be-run)
 and no mode is set during [activation](#activating-the-git-hooks), autohooks
 will use the [pythonpath mode](#pythonpath-mode) by default.
+
+`poetry` or `pipenv` modes leverage the `/usr/bin/env` command using the
+`--split-string` (`-S`) option. If `autohooks` detects that it is
+running on an OS where `/usr/bin/env` is yet to support _split_strings_
+(notably ubuntu < 19.x), `autohooks` will automatically change to an
+internally chosen `poetry_multiline`/`pipenv_mutliline` mode. The
+'multiline' modes *should not* be user-configured options; setting your
+project to use `poetry` or `pipenv`allows team members the greatest
+latitude to use an OS of their choice yet leverage the sane
+`/usr/bin/env --split-string` if possible. Though `poetry_multiline`
+would generally work for all, it is very confusing sorcery.
+([Multiline shebang explained](https://rosettacode.org/wiki/Multiline_shebang#Python))
 
 ### Pythonpath Mode
 
@@ -102,40 +110,12 @@ installation is deterministic and reliable between different developer setups.
 In contrast to the `pythonpath` mode the activation of the virtual environment
 provided by [pipenv] is done automatically in the background.
 
-*NOTE:* If `pipenv` mode is configured on an OS that has a
-`/usr/bin/env` command that does not support the `-S` split string
-option, `autohooks` will automatically change to `pipenv_multiline`
-mode.
-
-### Pipenv Multi-Line Mode
-
-Identical behavior to [pipenv mode](#pipenv-mode). By using
-`pipenv__multiline` mode, the virtual environment will be activated
-automatically for an `/usr/bin/env` command that does not support the
-`-S` split string option when executing the autohooks based git commit
-hook.
-
 ### Poetry Mode
 
 Like with the [pipenv mode](#pipenv-mode), it is possible to run autohooks in a
 dedicated environment controlled by [poetry]. By using the `poetry` mode the
 virtual environment will be activated automatically in the background when
 executing the autohooks based git commit hook.
-
-Using the `poetry` mode is highly recommended.
-
-*NOTE:* If `poetry` mode is configured on an OS that has a
-`/usr/bin/env` command that does not support the `-S` split string
-option, `autohooks` will automatically change to `poetry_multiline`
-mode.
-
-### Poetry Multi-Line Mode
-
-Identical behavior to [poetry mode](#poetry-mode). By using
-`poetry__multiline` mode, the virtual environment will be activated
-automatically for an `/usr/bin/env` command that does not support the
-`-S` split string option when executing the autohooks based git commit
-hook.
 
 Using the `poetry` mode is highly recommended.
 
