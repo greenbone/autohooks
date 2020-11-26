@@ -53,8 +53,6 @@ def main():
             str(Mode.PYTHONPATH),
             str(Mode.PIPENV),
             str(Mode.POETRY),
-            str(Mode.PIPENV_MULTILINE),
-            str(Mode.POETRY_MULTILINE),
         ],
         help='Mode for loading autohooks during hook execution. Either load '
         'autohooks from the PYTHON_PATH, via pipenv or via poetry.',
