@@ -57,7 +57,7 @@ autohooks supports Python 3.5+. For development Python 3.6+ is required.
 
 ## Modes
 
-Currently five modes for using autohooks are supported:
+Currently three modes for using autohooks are supported:
 
 * `pythonpath`
 * `pipenv`
