@@ -17,8 +17,6 @@
 
 from pathlib import Path
 import re
-from re import Match
-from typing import Optional
 
 from autohooks.settings import Mode
 from autohooks.template import (
@@ -88,7 +86,7 @@ class PreCommitHook:
         return Mode.UNKNOWN
 
     def read_version(self) -> int:
-        matches: Optional[Match] = re.search(
+        matches = re.search(
             r'{\s*version\s*=\s*?(\d+)\s*}$', self.pre_commit_hook, re.MULTILINE
         )
         if not matches:
