@@ -16,8 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from pathlib import Path
-
-import tomlkit
+import re
+from re import Match
+from typing import Optional
 
 from autohooks.settings import Mode
 from autohooks.template import (
@@ -38,7 +39,7 @@ def get_pre_commit_hook_path():
 
 
 class PreCommitHook:
-    def __init__(self, pre_commit_hook_path: Path = None):
+    def __init__(self, pre_commit_hook_path: Path = None) -> None:
         self._pre_commit_hook = None
 
         if pre_commit_hook_path is None:
@@ -87,22 +88,15 @@ class PreCommitHook:
         return Mode.UNKNOWN
 
     def read_version(self) -> int:
-        lines = self.pre_commit_hook.split('\n')
-        if len(lines) < 2:
+        matches: Optional[Match] = re.search(
+            r'{\s*version\s*=\s*?(\d+)\s*}$', self.pre_commit_hook, re.MULTILINE
+        )
+        if not matches:
             return -1
 
-        try:
-            parsed = tomlkit.loads(lines[1][1:])
-        except tomlkit.exceptions.TOMLKitError:
-            return -1
+        return int(matches.group(1))
 
-        try:
-            meta = parsed['meta']
-            return int(meta['version'])
-        except KeyError:
-            return -1
-
-    def write(self, *, mode: Mode):
+    def write(self, *, mode: Mode) -> None:
         template = PreCommitTemplate()
         pre_commit_hook = template.render(mode=mode)
 

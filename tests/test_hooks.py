@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import tempfile
 import unittest
 
 from unittest.mock import Mock
@@ -32,6 +33,7 @@ from autohooks.template import (
     PIPENV_MULTILINE_SHEBANG,
     POETRY_MULTILINE_SHEBANG,
     PYTHON3_SHEBANG,
+    TEMPLATE_VERSION,
 )
 from autohooks.utils import exec_git
 
@@ -47,10 +49,13 @@ class GitDirTestCase(unittest.TestCase):
 
         self.assertTrue(self.git_dir_path.exists())
 
+        self.original_pwd = os.environ['PWD']
+
         os.environ['PWD'] = str(self.temp_dir_path)
 
     def tearDown(self):
         self.tempdir.cleanup()
+        os.environ['PWD'] = self.original_pwd
 
 
 class GetPreCommitHookPathTestCase(GitDirTestCase):
@@ -124,19 +129,19 @@ class IsCurrentAutohooksPreCommitHook(unittest.TestCase):
 
 class ReadVersionTestCase(unittest.TestCase):
     def test_read_version(self):
-        path = FakeReadPath("\n# meta = {version=123}")
-        pre_commit_hook = PreCommitHook(path)
+        template = PreCommitTemplate()
+        with tempfile.TemporaryDirectory() as tempdir:
+            tmp_hook_path = Path(tempdir) / 'pre-commit-test'
+            # Find version using all shebang modes
+            for mode in [m for m in Mode if m.value > 0]:
+                with open(tmp_hook_path, 'w') as tmpfile:
+                    tmpfile.write(template.render(mode=mode))
+                pre_commit_hook = PreCommitHook(tmp_hook_path)
 
-        self.assertEqual(pre_commit_hook.read_version(), 123)
+            self.assertEqual(TEMPLATE_VERSION, pre_commit_hook.read_version())
 
     def test_empty_content(self):
         path = FakeReadPath("")
-        pre_commit_hook = PreCommitHook(path)
-
-        self.assertEqual(pre_commit_hook.read_version(), -1)
-
-    def test_no_toml(self):
-        path = FakeReadPath("\n# \n")
         pre_commit_hook = PreCommitHook(path)
 
         self.assertEqual(pre_commit_hook.read_version(), -1)
