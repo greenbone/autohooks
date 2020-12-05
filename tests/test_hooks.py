@@ -49,13 +49,10 @@ class GitDirTestCase(unittest.TestCase):
 
         self.assertTrue(self.git_dir_path.exists())
 
-        self.original_pwd = os.environ['PWD']
-
         os.environ['PWD'] = str(self.temp_dir_path)
 
     def tearDown(self):
         self.tempdir.cleanup()
-        os.environ['PWD'] = self.original_pwd
 
 
 class GetPreCommitHookPathTestCase(GitDirTestCase):

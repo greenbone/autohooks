@@ -39,7 +39,6 @@ class GitHookDirPathTestCase(unittest.TestCase):
         self.assertEqual(git_hook_dir_path, path / 'hooks')
 
     def test_with_env_pwd(self):
-        original_pwd = os.environ['PWD']
         with TemporaryDirectory() as f:
             temp_path = Path(f)
 
@@ -51,7 +50,6 @@ class GitHookDirPathTestCase(unittest.TestCase):
 
             git_hook_dir_path = get_git_hook_directory_path()
             self.assertEqual(git_hook_dir_path, git_dir_path / 'hooks')
-        os.environ['PWD'] = original_pwd
 
 
 class IsProjectRootTestCase(unittest.TestCase):
