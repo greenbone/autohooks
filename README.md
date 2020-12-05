@@ -53,13 +53,6 @@ by supporting different modes.
 
 ## Requirements
 
-autohooks uses `/usr/bin/env` with the `-S` argument to support
-[pipenv](#pythonpath-mode) and [poetry](#poetry-mode) modes. The `-S` argument
-got introduced with coreutils [8.30 (2018-07-01)](https://github.com/coreutils/coreutils/blob/master/NEWS#L241).
-This version is available in Debian Buster and since Ubuntu 19.04.
-
-If you are using an older distribution not providing coreutils 8.30 or newer please choose the [python path mode](#pythonpath-mode).
-
 autohooks supports Python 3.5+. For development Python 3.6+ is required.
 
 ## Modes
@@ -76,6 +69,18 @@ during git hook execution.
 If no mode is specified in the [`pyproject.toml` config file](#configure-mode-and-plugins-to-be-run)
 and no mode is set during [activation](#activating-the-git-hooks), autohooks
 will use the [pythonpath mode](#pythonpath-mode) by default.
+
+`poetry` or `pipenv` modes leverage the `/usr/bin/env` command using the
+`--split-string` (`-S`) option. If `autohooks` detects that it is
+running on an OS where `/usr/bin/env` is yet to support _split_strings_
+(notably ubuntu < 19.x), `autohooks` will automatically change to an
+internally chosen `poetry_multiline`/`pipenv_mutliline` mode. The
+'multiline' modes *should not* be user-configured options; setting your
+project to use `poetry` or `pipenv`allows team members the greatest
+latitude to use an OS of their choice yet leverage the sane
+`/usr/bin/env --split-string` if possible. Though `poetry_multiline`
+would generally work for all, it is very confusing sorcery.
+([Multiline shebang explained](https://rosettacode.org/wiki/Multiline_shebang#Python))
 
 ### Pythonpath Mode
 

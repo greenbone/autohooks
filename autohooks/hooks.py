@@ -16,14 +16,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from pathlib import Path
-
-import tomlkit
+import re
 
 from autohooks.settings import Mode
 from autohooks.template import (
     PIPENV_SHEBANG,
     POETRY_SHEBANG,
     PYTHON3_SHEBANG,
+    POETRY_MULTILINE_SHEBANG,
+    PIPENV_MULTILINE_SHEBANG,
     TEMPLATE_VERSION,
     PreCommitTemplate,
 )
@@ -36,7 +37,7 @@ def get_pre_commit_hook_path():
 
 
 class PreCommitHook:
-    def __init__(self, pre_commit_hook_path: Path = None):
+    def __init__(self, pre_commit_hook_path: Path = None) -> None:
         self._pre_commit_hook = None
 
         if pre_commit_hook_path is None:
@@ -75,25 +76,25 @@ class PreCommitHook:
         if shebang == PIPENV_SHEBANG:
             return Mode.PIPENV
 
+        shebang = "{}\n{}".format(lines[0][2:], "\n".join(lines[1:5]))
+        if shebang == POETRY_MULTILINE_SHEBANG:
+            return Mode.POETRY_MULTILINE
+
+        if shebang == PIPENV_MULTILINE_SHEBANG:
+            return Mode.PIPENV_MULTILINE
+
         return Mode.UNKNOWN
 
     def read_version(self) -> int:
-        lines = self.pre_commit_hook.split('\n')
-        if len(lines) < 2:
+        matches = re.search(
+            r'{\s*version\s*=\s*?(\d+)\s*}$', self.pre_commit_hook, re.MULTILINE
+        )
+        if not matches:
             return -1
 
-        try:
-            parsed = tomlkit.loads(lines[1][1:])
-        except tomlkit.exceptions.TOMLKitError:
-            return -1
+        return int(matches.group(1))
 
-        try:
-            meta = parsed['meta']
-            return int(meta['version'])
-        except KeyError:
-            return -1
-
-    def write(self, *, mode: Mode):
+    def write(self, *, mode: Mode) -> None:
         template = PreCommitTemplate()
         pre_commit_hook = template.render(mode=mode)
 

@@ -25,6 +25,21 @@ from autohooks.utils import get_autohooks_directory_path
 PYTHON3_SHEBANG = '/usr/bin/env python3'
 PIPENV_SHEBANG = '/usr/bin/env -S pipenv run python3'
 POETRY_SHEBANG = '/usr/bin/env -S poetry run python3'
+# For OS's that don't support '/usr/bin/env -S'.
+PIPENV_MULTILINE_SHEBANG = (
+    "/bin/sh\n"
+    "\"true\" ''':'\n"
+    "pipenv run python3 \"$0\" \"$@\"\n"
+    "exit \"$?\"\n"
+    "'''"
+)
+POETRY_MULTILINE_SHEBANG = (
+    "/bin/sh\n"
+    "\"true\" ''':'\n"
+    "poetry run python3 \"$0\" \"$@\"\n"
+    "exit \"$?\"\n"
+    "'''"
+)
 
 TEMPLATE_VERSION = 1
 
@@ -52,6 +67,10 @@ class PreCommitTemplate:
             params['SHEBANG'] = PIPENV_SHEBANG
         elif mode == Mode.POETRY:
             params['SHEBANG'] = POETRY_SHEBANG
+        elif mode == Mode.PIPENV_MULTILINE:
+            params['SHEBANG'] = PIPENV_MULTILINE_SHEBANG
+        elif mode == Mode.POETRY_MULTILINE:
+            params['SHEBANG'] = POETRY_MULTILINE_SHEBANG
         else:
             params['SHEBANG'] = PYTHON3_SHEBANG
 
