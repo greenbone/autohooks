@@ -57,7 +57,7 @@ autohooks-plugin-pylint = "^1.2.0"
 autohooks-plugin-black = {version = "^1.2.0", python = "^3.6"}
 black = {version = "20.8b1", python = "^3.6"}
 rope = "^0.18.0"
-pontos = {version = "^0.3.0", python = "^3.7"}
+pontos = {version = "^0.3.1", python = "^3.7"}
 
 [tool.poetry.scripts]
 autohooks = "autohooks.cli:main"
