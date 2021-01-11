@@ -53,7 +53,7 @@ by supporting different modes.
 
 ## Requirements
 
-autohooks supports Python 3.5+. For development Python 3.6+ is required.
+autohooks only supports Python 3.7+.
 
 ## Modes
 
