@@ -18,10 +18,9 @@ classifiers=[
   "Environment :: Console",
   "Intended Audience :: Developers",
   "Intended Audience :: System Administrators",
-  "Programming Language :: Python :: 3.5",
-  "Programming Language :: Python :: 3.6",
   "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
   "Operating System :: OS Independent",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: Software Development :: Version Control :: Git",
@@ -46,7 +45,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.5"
+python = "^3.7"
 colorful = "^0.5.4"
 packaging = "^20.3"
 tomlkit = "^0.5.11"
@@ -54,17 +53,17 @@ tomlkit = "^0.5.11"
 [tool.poetry.dev-dependencies]
 pylint = "^2.5.3"
 autohooks-plugin-pylint = "^1.2.0"
-autohooks-plugin-black = {version = "^1.2.0", python = "^3.6"}
-black = {version = "20.8b1", python = "^3.6"}
+autohooks-plugin-black = "^1.2.0"
+black = "20.8b1"
 rope = "^0.18.0"
-pontos = {version = "^0.3.1", python = "^3.7"}
+pontos = "^0.3.1"
 
 [tool.poetry.scripts]
 autohooks = "autohooks.cli:main"
 
 [tool.black]
 line-length = 80
-target-version = ['py35', 'py36', 'py37', 'py38']
+target-version = ['py37', 'py38']
 skip-string-normalization = true
 exclude = '''
 /(

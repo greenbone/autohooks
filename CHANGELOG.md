@@ -7,13 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+* CI tests Python 3.9 now. [#97](https://github.com/greenbone/autohooks/pull/97)
+
 ### Changed
 ### Deprecated
+* Dropped Python 3.5 and Python 3.6 support. Python 3.7+ is required now. [#97](https://github.com/greenbone/autohooks/pull/97)
+
 ### Removed
 ### Fixed
+* Fix split-string (`-S`) to support all operating systems. [#89](https://github.com/greenbone/autohooks/pull/89)
 
 [Unreleased]: https://github.com/greenbone/autohooks/compare/v2.2.0...HEAD
-
 
 ## [2.2.0] - 2020-08-28
 
