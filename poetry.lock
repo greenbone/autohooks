@@ -302,7 +302,7 @@ python-versions = "*"
 version = "1.12.1"
 
 [metadata]
-content-hash = "1ef1517045361c8485e9aa089e37f9f4ba4869af12c3f4892faaa1f4f7624921"
+content-hash = "b29e903dd570d3d53072078dc056d814fd0e625c80164decda52d42565a12171"
 lock-version = "1.1"
 python-versions = "^3.7"
 
