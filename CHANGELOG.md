@@ -14,6 +14,16 @@ $ git clone https://github.com/greenbone/autohooks.git
 $ cd autohooks && git log
 ```
 
+## [Unreleased]
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
+[Unreleased]: https://github.com/greenbone/autohooks/compare/v21.3.0...HEAD
+
+
 ## [21.3.0] - 2021-03-29
 ### Added
 * CI tests Python 3.9 now. [#97](https://github.com/greenbone/autohooks/pull/97)
