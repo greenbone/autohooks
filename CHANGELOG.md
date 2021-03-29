@@ -14,19 +14,17 @@ $ git clone https://github.com/greenbone/autohooks.git
 $ cd autohooks && git log
 ```
 
-## [Unreleased]
+## [21.3.0] - 2021-03-29
 ### Added
 * CI tests Python 3.9 now. [#97](https://github.com/greenbone/autohooks/pull/97)
 
-### Changed
 ### Deprecated
 * Dropped Python 3.5 and Python 3.6 support. Python 3.7+ is required now. [#97](https://github.com/greenbone/autohooks/pull/97)
 
-### Removed
 ### Fixed
 * Fix split-string (`-S`) to support all operating systems. [#89](https://github.com/greenbone/autohooks/pull/89)
 
-[Unreleased]: https://github.com/greenbone/autohooks/compare/v2.2.0...HEAD
+[21.3.0]: https://github.com/greenbone/autohooks/compare/v2.2.0...v21.3.0
 
 ## [2.2.0] - 2020-08-28
 
