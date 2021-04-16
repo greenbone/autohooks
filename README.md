@@ -297,7 +297,7 @@ def get_include(config)
         return DEFAULT_INCLUDE
 
     config = config.get('tool', 'autohooks', 'plugins', 'foo')
-    return config.get_value('include', DEFAULT_INCUDE)
+    return config.get_value('include', DEFAULT_INCLUDE)
 
 
 def precommit(**kwargs):
@@ -357,7 +357,7 @@ def get_include(config)
         return DEFAULT_INCLUDE
 
     config = config.get('tool', 'autohooks', 'plugins', 'bar')
-    return config.get_value('include', DEFAULT_INCUDE)
+    return config.get_value('include', DEFAULT_INCLUDE)
 
 
 def precommit(**kwargs):
