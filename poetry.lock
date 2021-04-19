@@ -239,7 +239,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
 
 [[package]]
 name = "rope"
-version = "0.18.0"
+version = "0.19.0"
 description = "a python refactoring library..."
 category = "dev"
 optional = false
@@ -304,7 +304,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "1de8de367bf71dd36b05063d99dcb9c014cb9e17ecac60380435ccf0e236fc62"
+content-hash = "2aa5f048bfaefc63bebcb27f90611d54f7f51b1872f89b3419e1c8b6ed621243"
 
 [metadata.files]
 appdirs = [
@@ -454,7 +454,7 @@ requests = [
     {file = "requests-2.25.1.tar.gz", hash = "sha256:27973dd4a904a4f13b263a19c866c13b92a39ed1c964655f025f3f8d3d75b804"},
 ]
 rope = [
-    {file = "rope-0.18.0.tar.gz", hash = "sha256:786b5c38c530d4846aa68a42604f61b4e69a493390e3ca11b88df0fbfdc3ed04"},
+    {file = "rope-0.19.0.tar.gz", hash = "sha256:64e6d747532e1f5c8009ec5aae3e5523a5bcedf516f39a750d57d8ed749d90da"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
