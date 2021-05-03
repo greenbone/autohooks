@@ -54,7 +54,7 @@ tomlkit = ">=0.5.11"
 pylint = "^2.8.2"
 autohooks-plugin-pylint = "^1.2.0"
 autohooks-plugin-black = "^1.2.0"
-black = "21.4b0"
+black = "21.4b2"
 rope = "^0.19.0"
 pontos = "^21.4.0"
 
