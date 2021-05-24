@@ -1,0 +1,65 @@
+name: Build and test Python package
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  linting:
+    name: Linting
+    runs-on: 'ubuntu-latest'
+    strategy:
+        matrix:
+          python-version:
+            - 3.7
+            - 3.8
+            - 3.9
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install poetry and dependencies
+        uses: greenbone/actions/poetry@v1
+      - name: Check with black, pylint and pontos.version
+        uses: greenbone/actions/lint-python@v1
+        with:
+          packages: autohooks tests
+
+  test:
+    name: Run all tests
+    runs-on: 'ubuntu-latest'
+    strategy:
+        matrix:
+          python-version:
+            - 3.7
+            - 3.8
+            - 3.9
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install poetry and dependencies
+        uses: greenbone/actions/poetry@v1
+      - name: Run unit tests
+        run: poetry run python -m unittest
+
+  codecov:
+    name: Upload coverage to codecov.io
+    needs: test
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install poetry and dependencies
+        uses: greenbone/actions/poetry@v1
+      - name: Calculate and upload coverage to codecov.io
+        uses: greenbone/actions/coverage-python@v1
