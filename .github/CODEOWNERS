@@ -1,11 +1,2 @@
 # default reviewers
-*                 @bjoernricks
-
-# pylint config
-.pylintrc         @bjoernricks @greenbone/qm
-
-# circle config
-.circleci         @greenbone/gm
-
-# coverage config
-.coveragerc       @greenbone/qm
+*                 @greenbone/autohooks-maintainers
