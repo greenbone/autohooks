@@ -154,7 +154,8 @@ if it has been lost.
 
 ## Uploading to the 'real' PyPI
 
-* Uploading to PyPI is done automatically by pushing a git tag via CircleCI
+* Uploading to PyPI is done automatically after creating a release via GitHub
+  Actions
 
 * Check if new version is available at <https://pypi.org/project/autohooks>
 
