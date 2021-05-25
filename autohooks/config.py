@@ -34,7 +34,7 @@ class Config:
         config_dict = self._config_dict
 
         for key in keys:
-            config_dict = config_dict.get(key, {})
+            config_dict = config_dict.get(key, {}).copy()
 
         return Config(config_dict)
 

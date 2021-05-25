@@ -20,6 +20,7 @@ $ cd autohooks && git log
 ### Deprecated
 ### Removed
 ### Fixed
+* Fix getting a value from the config with tomlkit >= 0.7.1 [#132](https://github.com/greenbone/autohooks/pull/132)
 
 [Unreleased]: https://github.com/greenbone/autohooks/compare/v21.3.0...HEAD
 
