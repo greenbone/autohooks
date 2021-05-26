@@ -3,6 +3,7 @@
 # Autohooks <!-- omit in toc -->
 
 [![PyPI release](https://img.shields.io/pypi/v/autohooks.svg)](https://pypi.org/project/autohooks/)
+[![Build and test Python package](https://github.com/greenbone/autohooks/actions/workflows/ci-python.yml/badge.svg)](https://github.com/greenbone/autohooks/actions/workflows/ci-python.yml)
 
 Library for managing and writing [git hooks](https://git-scm.com/docs/githooks)
 in Python.
