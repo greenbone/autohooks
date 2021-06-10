@@ -1,0 +1,23 @@
+name: "Help dependabot"
+
+on:
+  pull_request_target:
+    types: [ edited ]
+    branches: [ master ]
+
+jobs:
+  rebase:
+    name: Rebase Dependabot
+    runs-on: 'ubuntu-latest'
+    if: contains( github.event.pull_request.labels.*.name, 'dependencies')
+    steps:
+      - name: GitHub Script
+        uses: actions/github-script@v4.0.2
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '@dependabot rebase'
+            })
