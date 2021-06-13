@@ -1,0 +1,37 @@
+name: Release Python package with pontos
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  build-and-release:
+    env:
+      GITHUB_USER: ${{ secrets.GREENBONE_BOT }}
+      GITHUB_MAIL: ${{ secrets.GREENBONE_BOT_MAIL }}
+      GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
+    name: Build and release with pontos
+    # If the label 'make release' is set. If PR is closed because of an merge
+    if: contains( github.event.pull_request.labels.*.name, 'make release') && github.event.pull_request.merged == true
+    runs-on: 'ubuntu-latest'
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install poetry and dependencies
+      uses: greenbone/actions/poetry@v1
+    - name: Tell git who I am
+      run: |
+        git config --global user.name "${{ env.GITHUB_USER }}"
+        git config --global user.email "${{ env.GITHUB_MAIL }}"
+        git remote set-url origin https://${{ env.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+    - name: Prepare release with pontos
+      run: |
+        poetry run pontos-release prepare --calendar
+    - name: Release with pontos
+      run: |
+        poetry run pontos-release release
