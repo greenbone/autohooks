@@ -14,6 +14,16 @@ $ git clone https://github.com/greenbone/autohooks.git
 $ cd autohooks && git log
 ```
 
+## [Unreleased]
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
+[Unreleased]: https://github.com/greenbone/autohooks/compare/v21.6.0...HEAD
+
+
 ## [21.6.0] - 2021-06-13
 ### Fixed
 * Fix getting a value from the config with tomlkit >= 0.7.1 [#132](https://github.com/greenbone/autohooks/pull/132)
