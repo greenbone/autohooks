@@ -17,7 +17,7 @@ $ cd autohooks && git log
 ## [Unreleased]
 ### Added
 ### Changed
-* Using `os.getcwd()` instead of `os.environ['PWD']`, to make autohooks more reliable for windows. [#165](https://github.com/greenbone/autohooks/pull/165)
+* Using `Path.cwd()` instead of `os.environ['PWD']`, to make autohooks more reliable for windows. [#165](https://github.com/greenbone/autohooks/pull/165)
 
 ### Deprecated
 ### Removed
