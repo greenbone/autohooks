@@ -10,6 +10,9 @@ jobs:
       GITHUB_USER: ${{ secrets.GREENBONE_BOT }}
       GITHUB_MAIL: ${{ secrets.GREENBONE_BOT_MAIL }}
       GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
+      GPG_KEY: ${{ secrets.GPG_KEY }}
+      GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
+      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     name: Build and release with pontos
     # If the label 'make release' is set. If PR is closed because of an merge
     if: contains( github.event.pull_request.labels.*.name, 'make release') && github.event.pull_request.merged == true
@@ -28,10 +31,27 @@ jobs:
       run: |
         git config --global user.name "${{ env.GITHUB_USER }}"
         git config --global user.email "${{ env.GITHUB_MAIL }}"
-        git remote set-url origin https://${{ env.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        git remote set-url origin \
+          https://${{ env.GITHUB_TOKEN }}@github.com/${{ github.repository }}
     - name: Prepare release with pontos
       run: |
         poetry run pontos-release prepare --calendar
+        echo "VERSION=$(poetry run pontos-version show)" >> $GITHUB_ENV
     - name: Release with pontos
       run: |
         poetry run pontos-release release
+    - name: Import key from secrets
+      run: |
+        echo -e "${{ env.GPG_KEY }}" >> tmp.file
+        gpg                                        \
+          --pinentry-mode loopback                 \
+          --passphrase ${{ env.GPG_PASSPHRASE }}   \
+          --import tmp.file
+        rm tmp.file
+    - name: Sign with pontos-release sign
+      run: |
+        echo "Signing assets for ${{env.VERSION}}"
+        poetry run pontos-release sign             \
+          --signing-key ${{ env.GPG_FINGERPRINT }} \
+          --passphrase ${{ env.GPG_PASSPHRASE }}   \
+          --release-version ${{ env.VERSION }}
