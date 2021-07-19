@@ -43,7 +43,7 @@ def exec_git(*args: str, ignore_errors: bool = False) -> str:
 
 
 def get_git_directory_path() -> Path:
-    pwd = os.environ['PWD']
+    pwd = os.getcwd()
 
     try:
         git_dir = exec_git('-C', pwd, 'rev-parse', '--git-dir').rstrip()
@@ -82,7 +82,7 @@ def is_project_root(path: Path) -> bool:
 
 def get_project_root_path(path: Path = None) -> Path:
     if path is None:
-        path = Path(os.environ['PWD'])
+        path = Path(os.getcwd())
 
     path.resolve()
 
