@@ -44,7 +44,7 @@ class GitHookDirPathTestCase(unittest.TestCase):
 
             exec_git('-C', str(temp_path), 'init')
 
-            os.environ['PWD'] = str(temp_path)
+            os.chdir(str(temp_path))
 
             git_dir_path = (temp_path / '.git').resolve()
 
@@ -96,7 +96,7 @@ class IsProjectRootTestCase(unittest.TestCase):
 class GetProjectRootPath(unittest.TestCase):
     def setUp(self):
         self.tempdir = TemporaryDirectory()
-        self.temp_path = Path(self.tempdir.name)
+        self.temp_path = Path(self.tempdir.name).resolve()
 
     def tearDown(self):
         self.tempdir.cleanup()
@@ -130,7 +130,7 @@ class GetProjectRootPath(unittest.TestCase):
         sub_path = self.temp_path / 'foo'
         sub_path.mkdir()
 
-        os.environ['PWD'] = str(sub_path)
+        os.chdir(str(self.temp_path))
 
         root_path = get_project_root_path()
 
@@ -140,7 +140,7 @@ class GetProjectRootPath(unittest.TestCase):
 class GetProjectAutohooksPluginsPathTestCase(unittest.TestCase):
     def setUp(self):
         self.tempdir = TemporaryDirectory()
-        self.temp_path = Path(self.tempdir.name)
+        self.temp_path = Path(self.tempdir.name).resolve()
 
         setup_py = self.temp_path / 'setup.py'
         setup_py.touch()
@@ -156,7 +156,7 @@ class GetProjectAutohooksPluginsPathTestCase(unittest.TestCase):
         self.assertEqual(autohooks_plugins_path, self.temp_path / '.autohooks')
 
     def test_with_env_pwd(self):
-        os.environ['PWD'] = str(self.temp_path)
+        os.chdir(str(self.temp_path))
 
         autohooks_plugins_path = get_project_autohooks_plugins_path()
         self.assertEqual(autohooks_plugins_path, self.temp_path / '.autohooks')
@@ -165,7 +165,7 @@ class GetProjectAutohooksPluginsPathTestCase(unittest.TestCase):
 class GetPyProjectTomlPathTestCase(unittest.TestCase):
     def setUp(self):
         self.tempdir = TemporaryDirectory()
-        self.temp_path = Path(self.tempdir.name)
+        self.temp_path = Path(self.tempdir.name).resolve()
 
     def tearDown(self):
         self.tempdir.cleanup()
@@ -181,7 +181,7 @@ class GetPyProjectTomlPathTestCase(unittest.TestCase):
         self.assertEqual(pyproject_toml_path, self.temp_path / 'pyproject.toml')
 
     def test_with_env_pwd(self):
-        os.environ['PWD'] = str(self.temp_path)
+        os.chdir(str(self.temp_path))
 
         setup_py = self.temp_path / 'setup.py'
         setup_py.touch()
@@ -193,7 +193,7 @@ class GetPyProjectTomlPathTestCase(unittest.TestCase):
 class GetGitDirectoryPath(unittest.TestCase):
     def setUp(self):
         self.tempdir = TemporaryDirectory()
-        self.temp_path = Path(self.tempdir.name)
+        self.temp_path = Path(self.tempdir.name).resolve()
 
         exec_git('-C', str(self.temp_path), 'init')
 
@@ -205,7 +205,7 @@ class GetGitDirectoryPath(unittest.TestCase):
         self.tempdir.cleanup()
 
     def test_with_root_dir(self):
-        os.environ['PWD'] = str(self.temp_path)
+        os.chdir(str(self.temp_path))
 
         git_dir_path = get_git_directory_path()
         self.assertEqual(git_dir_path, self.git_dir_path.resolve())
@@ -214,7 +214,7 @@ class GetGitDirectoryPath(unittest.TestCase):
         sub_path = self.temp_path / 'foo'
         sub_path.mkdir()
 
-        os.environ['PWD'] = str(sub_path)
+        os.chdir(str(self.temp_path))
 
         git_dir_path = get_git_directory_path()
         self.assertEqual(git_dir_path, self.git_dir_path)
