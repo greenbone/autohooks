@@ -14,6 +14,16 @@ $ git clone https://github.com/greenbone/autohooks.git
 $ cd autohooks && git log
 ```
 
+## [Unreleased]
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
+[Unreleased]: https://github.com/greenbone/autohooks/compare/v21.7.0...HEAD
+
+
 ## [21.7.0] - 2021-07-19
 ### Changed
 * Using `Path.cwd()` instead of `os.environ['PWD']`, to make autohooks more reliable for windows. [#165](https://github.com/greenbone/autohooks/pull/165)
