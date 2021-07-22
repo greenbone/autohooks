@@ -49,7 +49,7 @@ class GitDirTestCase(unittest.TestCase):
 
         self.assertTrue(self.git_dir_path.exists())
 
-        os.environ['PWD'] = str(self.temp_dir_path)
+        os.chdir(str(self.temp_dir_path))
 
     def tearDown(self):
         self.tempdir.cleanup()

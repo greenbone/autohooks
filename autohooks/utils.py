@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import shlex
 import subprocess
 
@@ -43,7 +42,7 @@ def exec_git(*args: str, ignore_errors: bool = False) -> str:
 
 
 def get_git_directory_path() -> Path:
-    pwd = os.environ['PWD']
+    pwd = Path.cwd()
 
     try:
         git_dir = exec_git('-C', pwd, 'rev-parse', '--git-dir').rstrip()
@@ -53,7 +52,7 @@ def get_git_directory_path() -> Path:
         )
         raise e from None
 
-    if pwd and not pwd in git_dir:
+    if pwd and str(pwd) not in git_dir:
         git_dir_path = Path(pwd) / git_dir
     else:
         git_dir_path = Path(git_dir)
@@ -82,7 +81,7 @@ def is_project_root(path: Path) -> bool:
 
 def get_project_root_path(path: Path = None) -> Path:
     if path is None:
-        path = Path(os.environ['PWD'])
+        path = Path.cwd()
 
     path.resolve()
 
