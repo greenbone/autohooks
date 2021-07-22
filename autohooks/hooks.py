@@ -57,7 +57,12 @@ class PreCommitHook:
 
     def is_autohooks_pre_commit_hook(self) -> bool:
         lines = self.pre_commit_hook.split('\n')
-        return len(lines) > 5 and "autohooks.precommit" in self.pre_commit_hook
+        # seems to be false-positive ...
+        return (
+            len(lines) > 5
+            and "autohooks.precommit"
+            in self.pre_commit_hook  # pylint: disable=E1135
+        )
 
     def is_current_autohooks_pre_commit_hook(self) -> bool:
         return self.read_version() == TEMPLATE_VERSION
