@@ -51,7 +51,7 @@ packaging = "^20.3"
 tomlkit = ">=0.5.11"
 
 [tool.poetry.dev-dependencies]
-pylint = "^2.9.5"
+pylint = "^2.9.6"
 autohooks-plugin-pylint = "^21.6.0"
 autohooks-plugin-black = "^21.7.1"
 black = "21.6b0"
