@@ -22,7 +22,7 @@ wrapt = ">=1.11,<1.13"
 
 [[package]]
 name = "autohooks-plugin-black"
-version = "21.7.0"
+version = "21.7.1"
 description = "An autohooks plugin for python code formatting via black"
 category = "dev"
 optional = false
@@ -30,7 +30,7 @@ python-versions = ">=3.6.2,<4.0"
 
 [package.dependencies]
 autohooks = ">=2.2.0"
-black = {version = ">=20.8b1,<=21.6b0", markers = "python_version >= \"3.6\" and python_version < \"4.0\""}
+black = {version = ">=20.8b1,<=21.7b0", markers = "python_version >= \"3.6\" and python_version < \"4.0\""}
 
 [[package]]
 name = "autohooks-plugin-pylint"
@@ -342,7 +342,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "4420f5854149191df14e57376e55abdc51563b914b19d5f7a6627dcaaf56559e"
+content-hash = "1d2cc7e38973a7cdc4b6ebbbb38bf61365798a32498630fe620d260a71c4e407"
 
 [metadata.files]
 appdirs = [
@@ -354,8 +354,8 @@ astroid = [
     {file = "astroid-2.6.5.tar.gz", hash = "sha256:83e494b02d75d07d4e347b27c066fd791c0c74fc96c613d1ea3de0c82c48168f"},
 ]
 autohooks-plugin-black = [
-    {file = "autohooks-plugin-black-21.7.0.tar.gz", hash = "sha256:22205b557d0077588d062c95091c438aba2802952b1c419ae69d9a4b32121580"},
-    {file = "autohooks_plugin_black-21.7.0-py3-none-any.whl", hash = "sha256:238a1f48bbe058991b3ba6ae7b36e348fd1dcbbc8ee89b418afc4499fa9a137f"},
+    {file = "autohooks-plugin-black-21.7.1.tar.gz", hash = "sha256:e4df68d9bac84e33688fc4881243a874a3eac49fad8bcede36bd5167899d4f01"},
+    {file = "autohooks_plugin_black-21.7.1-py3-none-any.whl", hash = "sha256:74f615a753e365c6c5f259a884eb3e277f339e6b71a24d31158ce19a41cb28aa"},
 ]
 autohooks-plugin-pylint = [
     {file = "autohooks-plugin-pylint-21.6.0.tar.gz", hash = "sha256:6f1a486f19c8012618fecd9eaa985f5da3ef5c954b32d823323439547b947302"},
