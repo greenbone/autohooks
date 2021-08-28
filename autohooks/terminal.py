@@ -27,11 +27,11 @@ TERMINAL_SIZE_FALLBACK = (80, 24)  # use a small standard size as fallback
 
 
 class Signs(Enum):
-    FAIL = u'\N{HEAVY MULTIPLICATION X}'
-    ERROR = u'\N{MULTIPLICATION SIGN}'
-    WARNING = u'\N{WARNING SIGN}'
-    OK = u'\N{CHECK MARK}'
-    INFO = u'\N{INFORMATION SOURCE}'
+    FAIL = '\N{HEAVY MULTIPLICATION X}'
+    ERROR = '\N{MULTIPLICATION SIGN}'
+    WARNING = '\N{WARNING SIGN}'
+    OK = '\N{CHECK MARK}'
+    INFO = '\N{INFORMATION SOURCE}'
     NONE = ' '
 
     def __str__(self):
