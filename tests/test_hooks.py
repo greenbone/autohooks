@@ -131,7 +131,7 @@ class ReadVersionTestCase(unittest.TestCase):
             tmp_hook_path = Path(tempdir) / 'pre-commit-test'
             # Find version using all shebang modes
             for mode in [m for m in Mode if m.value > 0]:
-                with open(str(tmp_hook_path), 'w') as tmpfile:
+                with open(str(tmp_hook_path), 'w', encoding='utf-8') as tmpfile:
                     tmpfile.write(template.render(mode=mode))
                 pre_commit_hook = PreCommitHook(tmp_hook_path)
 
