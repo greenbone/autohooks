@@ -35,7 +35,7 @@ class Signs(Enum):
     NONE = ' '
 
     def __str__(self):
-        return '{}'.format(self.value)
+        return f'{self.value}'
 
 
 STATUS_LEN = 2
@@ -66,7 +66,7 @@ class Terminal:
         if status == Signs.NONE:
             first_line += '  '
         else:
-            first_line += '{} '.format(color(status))
+            first_line += f'{color(status)} '
         if self._indent > 0:
             first_line += ' ' * self._indent
         usable_width = width - STATUS_LEN - self._indent
@@ -74,8 +74,8 @@ class Terminal:
             part_line = ' ' * (self._indent + STATUS_LEN)
             part = message[:usable_width]
             message = message[usable_width:]
-            output += '{}{}\n'.format(part_line, part)
-        output += '{}{}'.format(first_line, message)
+            output += f'{part_line}{part}\n'
+        output += f'{first_line}{message}'
         print(style(output))
 
     @contextmanager

@@ -33,9 +33,8 @@ def install_hooks(term: Terminal, args: Namespace) -> None:
 
     if pre_commit_hook.exists() and not args.force:
         term.ok(
-            'autohooks pre-commit hook is already installed at {}.'.format(
-                str(pre_commit_hook)
-            )
+            'autohooks pre-commit hook is already'
+            f' installed at {str(pre_commit_hook)}.'
         )
         with term.indent():
             term.print()
@@ -50,9 +49,8 @@ def install_hooks(term: Terminal, args: Namespace) -> None:
     else:
         if not config.is_autohooks_enabled():
             term.warning(
-                'autohooks is not enabled in your {} file. '
-                'Run \'autohooks check\' for more '
-                'details.'.format(str(pyproject_toml))
+                f'autohooks is not enabled in your {str(pyproject_toml)} '
+                'file. Run \'autohooks check\' for more details.'
             )
 
         if args.mode:
@@ -63,7 +61,6 @@ def install_hooks(term: Terminal, args: Namespace) -> None:
         pre_commit_hook.write(mode=mode)
 
         term.ok(
-            'autohooks pre-commit hook installed at {} using {} mode.'.format(
-                str(pre_commit_hook), str(mode.get_effective_mode())
-            )
+            f'autohooks pre-commit hook installed at {str(pre_commit_hook)}'
+            f' using {str(mode.get_effective_mode())} mode.'
         )

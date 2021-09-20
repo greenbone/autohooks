@@ -45,11 +45,7 @@ def _get_git_toplevel_path():
     try:
         git_dir = exec_git('rev-parse', '--show-toplevel').rstrip()
     except subprocess.CalledProcessError as e:
-        print(
-            'could not determine toplevel directory. {}'.format(
-                e.output.decode()
-            )
-        )
+        print('could not determine toplevel directory. {e.output.decode()}')
         raise e from None
     return Path(git_dir).resolve()
 
@@ -83,12 +79,10 @@ class StatusEntry:
             self.path = Path(filename)
 
     def __str__(self) -> str:
-        return '{}{} {}'.format(
-            self.index.value, self.working_tree.value, str(self.path)
-        )
+        return f'{self.index.value}{self.working_tree.value} {str(self.path)}'
 
     def __repr__(self) -> str:
-        return '<StatusEntry {}>'.format(str(self))
+        return f'<StatusEntry {str(self)}>'
 
     def absolute_path(self) -> Path:
         if self.root_path:
@@ -105,7 +99,7 @@ def _parse_status(output: str) -> Generator[str, None, None]:
     while output_list:
         line = output_list.pop(0)
         if line[0] == Status.RENAMED.value:
-            yield '{}\0{}'.format(line, output_list.pop(0))
+            yield f'{line}\0{output_list.pop(0)}'
         else:
             yield line
 

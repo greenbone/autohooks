@@ -316,10 +316,10 @@ def precommit(**kwargs):
         for file in files:
             status = subprocess.call(['foolinter', str(file)])
             if status:
-                fail('Could not validate {}'.format(str(file)))
+                fail('Could not validate {str(file)}')
                 failed = True
             else:
-                ok('Validated {}'.format(str(file)))
+                ok('Validated {str(file)}')
 
         return 1 if failed else 0
 ```
@@ -375,7 +375,7 @@ def precommit(**kwargs):
         for file in files:
             # run formatter and raise exception if it fails
             subprocess.run(['barformatter', str(file)], check=True)
-            ok('Formatted {}'.format(str(file)))
+            ok('Formatted {str(file)}')
 
         return 0
 ```

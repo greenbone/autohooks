@@ -23,9 +23,9 @@ from pathlib import Path
 
 class GitError(subprocess.CalledProcessError):
     def __str__(self) -> str:
-        return "Git command '%s' returned non-zero exit status %d" % (
-            self.cmd,
-            self.returncode,
+        return (
+            f"Git command '{self.cmd}' returned "
+            f"non-zero exit status {str(self.returncode)}"
         )
 
 
@@ -47,9 +47,7 @@ def get_git_directory_path() -> Path:
     try:
         git_dir = exec_git('-C', pwd, 'rev-parse', '--git-dir').rstrip()
     except subprocess.CalledProcessError as e:
-        print(
-            'could not determine .git directory. {}'.format(e.output.decode())
-        )
+        print(f'could not determine .git directory. {e.output.decode()}')
         raise e from None
 
     if pwd and str(pwd) not in git_dir:

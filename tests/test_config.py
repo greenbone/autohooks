@@ -183,8 +183,10 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         autohooksconfig = load_config_from_pyproject_toml(config_path)
         self.assertTrue(autohooksconfig.has_config())
+        self.assertTrue(autohooksconfig.has_autohooks_config())
 
         config = autohooksconfig.get_config()
+
         self.assertEqual(
             config.get('tool')
             .get('autohooks')
