@@ -32,7 +32,7 @@ def main():
     parser.add_argument(
         '--version',
         action='version',
-        version='%(prog)s {}'.format(version),
+        version=f'%(prog)s {version}',
     )
 
     subparsers = parser.add_subparsers(dest='command')

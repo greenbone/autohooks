@@ -73,10 +73,8 @@ def check_hook_is_current(
 def check_hook_mode(term: Terminal, config_mode: Mode, hook_mode: Mode) -> None:
     if config_mode.get_effective_mode() != hook_mode.get_effective_mode():
         term.warning(
-            'autohooks mode "{}" in pre-commit hook differs from '
-            'mode "{}" in pyproject.toml file.'.format(
-                str(hook_mode), str(config_mode)
-            )
+            f'autohooks mode "{str(hook_mode)}" in pre-commit hook differs '
+            f'from mode "{str(config_mode)}" in pyproject.toml file.'
         )
 
 
@@ -104,17 +102,15 @@ def run() -> int:
 
     with autohooks_module_path(), term.indent():
         for name in config.get_pre_commit_script_names():
-            term.info('Running {}'.format(name))
+            term.info(f'Running {name}')
 
             with term.indent():
                 try:
                     plugin = load_plugin(name)
                     if not has_precommit_function(plugin):
                         term.fail(
-                            'No precommit function found in plugin {}. '
-                            'Your autohooks settings may be invalid.'.format(
-                                name
-                            )
+                            f'No precommit function found in plugin {name}. '
+                            'Your autohooks settings may be invalid.'
                         )
                         return 1
 
@@ -123,7 +119,7 @@ def run() -> int:
                     else:
                         term.warning(
                             'precommit function without kwargs is deprecated. '
-                            'Please update {} to a newer version.'.format(name)
+                            f'Please update {name} to a newer version.'
                         )
                         retval = plugin.precommit()
 
@@ -133,13 +129,13 @@ def run() -> int:
                 except ImportError as e:
                     term.error(
                         'An error occurred while importing pre-commit '
-                        'hook {}. {}.'.format(name, e)
+                        f'hook {name}. {e}.'
                     )
                     return 1
                 except Exception as e:  # pylint: disable=broad-except
                     term.error(
                         'An error occurred while running pre-commit '
-                        'hook {}. {}.'.format(name, e)
+                        f'hook {name}. {e}.'
                     )
                     return 1
 

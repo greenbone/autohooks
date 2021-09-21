@@ -81,7 +81,8 @@ class PreCommitHook:
         if shebang == PIPENV_SHEBANG:
             return Mode.PIPENV
 
-        shebang = "{}\n{}".format(lines[0][2:], "\n".join(lines[1:5]))
+        shebang = f"{lines[0][2:]}\n"
+        shebang += '\n'.join(lines[1:5])
         if shebang == POETRY_MULTILINE_SHEBANG:
             return Mode.POETRY_MULTILINE
 

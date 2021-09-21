@@ -164,31 +164,31 @@ class ReadModeTestCase(unittest.TestCase):
         self.assertEqual(pre_commit_hook.read_mode(), Mode.UNKNOWN)
 
     def test_pipenv_mode(self):
-        path = FakeReadPath("#!{}".format(PIPENV_SHEBANG))
+        path = FakeReadPath(f"#!{PIPENV_SHEBANG}")
         pre_commit_hook = PreCommitHook(path)
 
         self.assertEqual(pre_commit_hook.read_mode(), Mode.PIPENV)
 
     def test_poetry_mode(self):
-        path = FakeReadPath("#!{}".format(POETRY_SHEBANG))
+        path = FakeReadPath(f"#!{POETRY_SHEBANG}")
         pre_commit_hook = PreCommitHook(path)
 
         self.assertEqual(pre_commit_hook.read_mode(), Mode.POETRY)
 
     def test_pipenv_multiline_mode(self):
-        path = FakeReadPath("#!{}".format(PIPENV_MULTILINE_SHEBANG))
+        path = FakeReadPath(f"#!{PIPENV_MULTILINE_SHEBANG}")
         pre_commit_hook = PreCommitHook(path)
 
         self.assertEqual(pre_commit_hook.read_mode(), Mode.PIPENV_MULTILINE)
 
     def test_poetry_multiline_mode(self):
-        path = FakeReadPath("#!{}".format(POETRY_MULTILINE_SHEBANG))
+        path = FakeReadPath(f"#!{POETRY_MULTILINE_SHEBANG}")
         pre_commit_hook = PreCommitHook(path)
 
         self.assertEqual(pre_commit_hook.read_mode(), Mode.POETRY_MULTILINE)
 
     def test_pythonpath_mode(self):
-        path = FakeReadPath("#!{}".format(PYTHON3_SHEBANG))
+        path = FakeReadPath(f"#!{PYTHON3_SHEBANG}")
         pre_commit_hook = PreCommitHook(path)
 
         self.assertEqual(pre_commit_hook.read_mode(), Mode.PYTHONPATH)
@@ -205,7 +205,7 @@ class WriteTestCase(unittest.TestCase):
 
         args, _kwargs = write_path.write_text.call_args
         text = args[0]
-        self.assertRegex(text, '^#!{} *'.format(PIPENV_SHEBANG))
+        self.assertRegex(text, f'^#!{PIPENV_SHEBANG} *')
 
     def test_poetry_mode(self):
         write_path = Mock()
@@ -217,7 +217,7 @@ class WriteTestCase(unittest.TestCase):
 
         args, _kwargs = write_path.write_text.call_args
         text = args[0]
-        self.assertRegex(text, '^#!{} *'.format(POETRY_SHEBANG))
+        self.assertRegex(text, f'^#!{POETRY_SHEBANG} *')
 
     def test_pythonpath_mode(self):
         write_path = Mock()
@@ -229,7 +229,7 @@ class WriteTestCase(unittest.TestCase):
 
         args, _kwargs = write_path.write_text.call_args
         text = args[0]
-        self.assertRegex(text, '^#!{} *'.format(PYTHON3_SHEBANG))
+        self.assertRegex(text, f'^#!{PYTHON3_SHEBANG} *')
 
 
 class StrTestCase(unittest.TestCase):

@@ -43,12 +43,10 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_error(self, mock_stdout):
-        status = '{} '.format(self.red(Signs.ERROR))
+        status = f'{self.red(Signs.ERROR)} '
         msg = 'foo bar'
 
-        expected_msg = (
-            self.reset('{}{}'.format(status, msg)).styled_string + '\n'
-        )
+        expected_msg = self.reset(f'{status}{msg}').styled_string + '\n'
         expected_len = len(expected_msg)
 
         self.term.error(msg)
@@ -60,12 +58,10 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_fail(self, mock_stdout):
-        status = '{} '.format(self.red(Signs.FAIL))
+        status = f'{self.red(Signs.FAIL)} '
         msg = 'foo bar baz'
 
-        expected_msg = (
-            self.reset('{}{}'.format(status, msg)).styled_string + '\n'
-        )
+        expected_msg = self.reset(f'{status}{msg}').styled_string + '\n'
         expected_len = len(expected_msg)
 
         self.term.fail(msg)
@@ -77,12 +73,10 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_info(self, mock_stdout):
-        status = '{} '.format(self.cyan(Signs.INFO))
+        status = f'{self.cyan(Signs.INFO)} '
         msg = 'foo bar'
 
-        expected_msg = (
-            self.reset('{}{}'.format(status, msg)).styled_string + '\n'
-        )
+        expected_msg = self.reset(f'{status}{msg}').styled_string + '\n'
         expected_len = len(expected_msg)
 
         self.term.info(msg)
@@ -94,12 +88,10 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_bold_info(self, mock_stdout):
-        status = '{} '.format(self.cyan(Signs.INFO))
+        status = f'{self.cyan(Signs.INFO)} '
         msg = 'bold foo bar'
 
-        expected_msg = (
-            self.bold('{}{}'.format(status, msg)).styled_string + '\n'
-        )
+        expected_msg = self.bold(f'{status}{msg}').styled_string + '\n'
         expected_len = len(expected_msg)
 
         self.term.bold_info(msg)
@@ -111,12 +103,10 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_ok(self, mock_stdout):
-        status = '{} '.format(self.green(Signs.OK))
+        status = f'{self.green(Signs.OK)} '
         msg = 'foo bar'
 
-        expected_msg = (
-            self.reset('{}{}'.format(status, msg)).styled_string + '\n'
-        )
+        expected_msg = self.reset(f'{status}{msg}').styled_string + '\n'
         expected_len = len(expected_msg)
 
         self.term.ok(msg)
@@ -130,11 +120,9 @@ class TerminalTestCase(unittest.TestCase):
     def test_warning(self, mock_stdout):
         msg = 'foo bar'
 
-        status = '{} '.format(self.yellow(Signs.WARNING))
+        status = f'{self.yellow(Signs.WARNING)} '
 
-        expected_msg = (
-            self.reset('{}{}'.format(status, msg)).styled_string + '\n'
-        )
+        expected_msg = self.reset(f'{status}{msg}').styled_string + '\n'
         expected_len = len(expected_msg)
 
         self.term.warning(msg)
