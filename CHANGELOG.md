@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Calendar Versioning](https://calver.org).
 
 For detailed code changes, please visit
-https://github.com/greenbone/autohooks/commits/master
+https://github.com/greenbone/autohooks/commits/main
 or get the entire source code repository and view log history:
 
 ```sh
@@ -59,7 +59,7 @@ $ cd autohooks && git log
 * Use version handling via [pontos](https://github.com/greenbone/pontos) and
   remove all version handling code again [#57](https://github.com/greenbone/autohooks/pull/57)
 
-[Unrelased]: https://github.com/greenbone/autohooks/compare/v2.1.0...master
+[Unrelased]: https://github.com/greenbone/autohooks/compare/v2.1.0...main
 
 ## [2.1.0] - 2020-04-09
 

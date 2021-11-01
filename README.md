@@ -48,7 +48,7 @@ itself and does not install them in the current environment.
 ## Solution
 
 autohooks is a pure python library that installs a minimal
-[executable git hook](https://github.com/greenbone/autohooks/blob/master/autohooks/precommit/template).
+[executable git hook](https://github.com/greenbone/autohooks/blob/main/autohooks/precommit/template).
 It allows the decision of how to maintain the hook dependencies 
 by supporting different modes.
 
