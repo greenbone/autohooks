@@ -1,14 +1,16 @@
-name: Release Python package with pontos
+name: Manually release Python package with pontos
 
 on:
-  pull_request:
-    types: [closed]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch'
+        required: true
+        default: 'main'
 
 jobs:
   build-and-release:
     name: Build and release with pontos
-    # If the label 'make release' is set. If PR is closed because of an merge
-    if: contains( github.event.pull_request.labels.*.name, 'make release') && github.event.pull_request.merged == true
     runs-on: 'ubuntu-latest'
     steps:
     - name: Release with release action
@@ -16,6 +18,7 @@ jobs:
       with:
         version: 3.8
         conventional-commits: true
+        ref: ${{ github.event.inputs.branch }}
         github-user: ${{ secrets.GREENBONE_BOT }}
         github-user-mail: ${{ secrets.GREENBONE_BOT_MAIL }}
         github-user-token: ${{ secrets.GREENBONE_BOT_TOKEN }}
