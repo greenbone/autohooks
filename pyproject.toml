@@ -56,7 +56,7 @@ autohooks-plugin-pylint = "^21.6.0"
 autohooks-plugin-black = "^21.12.0"
 black = "21.12b0"
 rope = "^0.22.0"
-pontos = "^21.11.0"
+pontos = "^22.1.1"
 
 [tool.poetry.scripts]
 autohooks = "autohooks.cli:main"
