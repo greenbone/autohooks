@@ -20,15 +20,9 @@ from enum import Enum
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from types import TracebackType
-from typing import Any, List, Type, Optional, Generator, Union, TYPE_CHECKING
+from typing import Any, List, Type, Optional, Generator, Union
 
 from autohooks.utils import exec_git, get_project_root_path, GitError
-
-# https://stackoverflow.com/questions/49959656/typing-exit-in-3-5-fails-on-runtime-but-typechecks
-if TYPE_CHECKING:
-    BaseExceptionType = Type[BaseException]
-else:
-    BaseExceptionType = bool  # don't care, as long is it doesn't error
 
 __all__ = [
     'exec_git',
@@ -251,7 +245,7 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
 
     def __exit__(
         self,
-        exc_type: Optional[BaseExceptionType],
+        exc_type: Optional[Type[BaseException]],
         exc_value: Optional[BaseException],
         traceback: Optional[TracebackType],
     ) -> Any:
