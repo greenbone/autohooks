@@ -128,7 +128,6 @@ def is_partially_staged_status(status: StatusEntry) -> bool:
 def get_status(files: List[Union[Path, str]] = None) -> List[StatusEntry]:
     args = [
         'status',
-        '--porcelain=v1',
         '-z',
         '--ignore-submodules',
         '--untracked-files=no',
