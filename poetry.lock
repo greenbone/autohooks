@@ -205,7 +205,7 @@ test = ["appdirs (==1.4.4)", "pytest (>=6)", "pytest-cov (>=2.7)", "pytest-mock 
 
 [[package]]
 name = "pontos"
-version = "22.1.3"
+version = "22.2.1"
 description = "Common utilities and tools maintained by Greenbone Networks"
 category = "dev"
 optional = false
@@ -350,7 +350,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "baa3638ce2516d837e11aa2cb00491017a346d74ec23409a6195c635eaf59450"
+content-hash = "39ff9c81327b0c30d0be4bf39cd95faf8c86141ab4343b6c05586dd3096d96d1"
 
 [metadata.files]
 astroid = [
@@ -482,8 +482,8 @@ platformdirs = [
     {file = "platformdirs-2.4.1.tar.gz", hash = "sha256:440633ddfebcc36264232365d7840a970e75e1018d15b4327d11f91909045fda"},
 ]
 pontos = [
-    {file = "pontos-22.1.3-py3-none-any.whl", hash = "sha256:dad4eed7bfdfaf82b01d35a49cc45c393bad2ba16c579da9c99193674a4735eb"},
-    {file = "pontos-22.1.3.tar.gz", hash = "sha256:8584d58a36b78bcf7d1d4408018b7d019e590ce01400a64ed3845793369ca45f"},
+    {file = "pontos-22.2.1-py3-none-any.whl", hash = "sha256:ee0c979ee36b89f8716e5adab25ccc7c62dfdc4f26896a7a4911a33a538dbb99"},
+    {file = "pontos-22.2.1.tar.gz", hash = "sha256:6e19b8bc30a5da95d2f5ba7fe3c98121dfbe5f06a0c9da2cc1f4598248a07cb5"},
 ]
 pylint = [
     {file = "pylint-2.12.2-py3-none-any.whl", hash = "sha256:daabda3f7ed9d1c60f52d563b1b854632fd90035bcf01443e234d3dc794e3b74"},
