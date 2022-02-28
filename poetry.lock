@@ -265,7 +265,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "rope"
-version = "0.22.0"
+version = "0.23.0"
 description = "a python refactoring library..."
 category = "dev"
 optional = false
@@ -350,7 +350,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "4e054cf1d058886f8f6b91ea8332e45ac8190d102406602bcca83c065273da72"
+content-hash = "3c21ecc12d9fe3fbfc5ba493c01e86c7b2a92ca791af32b66b0317afe8ebaae2"
 
 [metadata.files]
 astroid = [
@@ -498,8 +498,8 @@ requests = [
     {file = "requests-2.27.1.tar.gz", hash = "sha256:68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"},
 ]
 rope = [
-    {file = "rope-0.22.0-py3-none-any.whl", hash = "sha256:2847220bf72ead09b5abe72b1edc9cacff90ab93663ece06913fc97324167870"},
-    {file = "rope-0.22.0.tar.gz", hash = "sha256:b00fbc064a26fc62d7220578a27fd639b2fad57213663cc396c137e92d73f10f"},
+    {file = "rope-0.23.0-py3-none-any.whl", hash = "sha256:edf2ed3c9b35a8814752ffd3ea55b293c791e5087e252461de898e953cf9c146"},
+    {file = "rope-0.23.0.tar.gz", hash = "sha256:f87662c565086d660fc855cc07f37820267876634c3e9e51bddb32ff51547268"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
