@@ -20,15 +20,9 @@ from enum import Enum
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from types import TracebackType
-from typing import Any, List, Type, Optional, Generator, Union, TYPE_CHECKING
+from typing import Any, List, Type, Optional, Generator, Union
 
 from autohooks.utils import exec_git, get_project_root_path, GitError
-
-# https://stackoverflow.com/questions/49959656/typing-exit-in-3-5-fails-on-runtime-but-typechecks
-if TYPE_CHECKING:
-    BaseExceptionType = Type[BaseException]
-else:
-    BaseExceptionType = bool  # don't care, as long is it doesn't error
 
 __all__ = [
     'exec_git',
@@ -105,6 +99,7 @@ def _parse_status(output: str) -> Generator[str, None, None]:
 
 
 def is_staged_status(status: StatusEntry) -> bool:
+    """Returns true, if the status of the given StatusEntry is staged"""
     return (
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
@@ -114,6 +109,16 @@ def is_staged_status(status: StatusEntry) -> bool:
 
 
 def is_partially_staged_status(status: StatusEntry) -> bool:
+    """Returns true, if the status of the given StatusEntry
+    is partially staged
+
+    Arguments:
+    status      A StatusEntry object that contains the filename,
+                path and the git status
+
+    Returns:
+    True if file is partially staged, False else
+    """
     return (
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
@@ -126,9 +131,17 @@ def is_partially_staged_status(status: StatusEntry) -> bool:
 
 
 def get_status(files: List[Union[Path, str]] = None) -> List[StatusEntry]:
+    """execute get status
+
+    Arguments:
+    files       (optional) specify a list of files and exclude all other pathes
+                for the status
+
+    Returns:
+    A list of StatusEntries that contains the status of the specific files
+    """
     args = [
         'status',
-        '--porcelain=v1',
         '-z',
         '--ignore-submodules',
         '--untracked-files=no',
@@ -146,16 +159,38 @@ def get_status(files: List[Union[Path, str]] = None) -> List[StatusEntry]:
 def get_staged_status(
     files: List[Union[Path, str]] = None
 ) -> List[StatusEntry]:
+    """get a list of StatusEntries containing only staged files
+
+    Arguments:
+    files       (optional) specify a list of files and exclude all other pathes
+                for the status
+
+    Returns:
+    A list of StatusEntries with files that are staged
+    """
     status = get_status(files)
     return [s for s in status if is_staged_status(s)]
 
 
 def stage_files_from_status_list(status_list: List[StatusEntry]) -> None:
+    """Add the passed files to staged
+
+    Arguments:
+    status_list     A List of StatusEntries that should be added
+    """
     filenames = [str(s.path) for s in status_list]
     exec_git('add', *filenames)
 
 
 def get_diff(files: List[StatusEntry] = None) -> str:
+    """Get the diff of the passed files
+
+    Arguments:
+    status_list     A List of StatusEntries that should be diffed
+
+    Returns
+    string containing the diff of the given files
+    """
     args = ['--no-pager', 'diff']
 
     if files is not None:
@@ -252,7 +287,7 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
 
     def __exit__(
         self,
-        exc_type: Optional[BaseExceptionType],
+        exc_type: Optional[Type[BaseException]],
         exc_value: Optional[BaseException],
         traceback: Optional[TracebackType],
     ) -> Any:
