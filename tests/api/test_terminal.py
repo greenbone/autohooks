@@ -16,10 +16,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
-
 from unittest.mock import Mock
 
-from autohooks.api import _set_terminal, error, fail, info, ok, out, warning
+from pontos.terminal import _set_terminal
+
+from autohooks.api import error, fail, info, ok, out, warning
 from autohooks.terminal import Terminal
 
 

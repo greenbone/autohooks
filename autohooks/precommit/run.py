@@ -18,13 +18,12 @@
 import importlib
 import inspect
 import sys
-
+from contextlib import contextmanager
 from types import ModuleType
 from typing import Generator
 
-from contextlib import contextmanager
+from pontos.terminal import _set_terminal
 
-from autohooks.api import _set_terminal
 from autohooks.config import load_config_from_pyproject_toml
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode
