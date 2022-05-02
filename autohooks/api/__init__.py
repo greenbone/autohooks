@@ -15,12 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
-import colorful as cf
-
-from autohooks.terminal import Terminal
-
-__term = None  # pylint: disable=invalid-name
+from pontos.terminal import bold_info, error, fail, info, ok, out, warning
 
 __all__ = [
     'error',
@@ -31,36 +26,3 @@ __all__ = [
     'out',
     'warning',
 ]
-
-
-def ok(message: str) -> None:
-    __term.ok(message)
-
-
-def fail(message: str) -> None:
-    __term.fail(message)
-
-
-def error(message: str) -> None:
-    __term.error(message)
-
-
-def warning(message: str) -> None:
-    __term.warning(message)
-
-
-def info(message: str) -> None:
-    __term.info(message)
-
-
-def bold_info(message: str) -> None:
-    __term.bold_info(message)
-
-
-def out(message: str):
-    __term.print(message)
-
-
-def _set_terminal(term: Terminal):
-    global __term  # pylint: disable=global-statement, invalid-name
-    __term = term
