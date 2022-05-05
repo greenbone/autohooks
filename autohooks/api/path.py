@@ -23,7 +23,7 @@ from typing import Iterable
 def is_python_path(path: Path) -> bool:
     if not path:
         return False
-    return path.match('*.py')
+    return path.match("*.py")
 
 
 def match(path: Path, pattern_list: Iterable) -> bool:

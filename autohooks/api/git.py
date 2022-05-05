@@ -24,35 +24,35 @@ from typing import Any, Generator, List, Optional, Type, Union
 from autohooks.utils import GitError, exec_git, get_project_root_path
 
 __all__ = [
-    'exec_git',
-    'get_staged_status',
-    'get_status',
-    'is_partially_staged_status',
-    'is_staged_status',
-    'stage_files_from_status_list',
-    'stash_unstaged_changes',
+    "exec_git",
+    "get_staged_status",
+    "get_status",
+    "is_partially_staged_status",
+    "is_staged_status",
+    "stage_files_from_status_list",
+    "stash_unstaged_changes",
 ]
 
 
 def _get_git_toplevel_path():
     try:
-        git_dir = exec_git('rev-parse', '--show-toplevel').rstrip()
+        git_dir = exec_git("rev-parse", "--show-toplevel").rstrip()
     except subprocess.CalledProcessError as e:
-        print('could not determine toplevel directory. {e.output.decode()}')
+        print("could not determine toplevel directory. {e.output.decode()}")
         raise e from None
     return Path(git_dir).resolve()
 
 
 class Status(Enum):
-    UNMODIFIED = ' '
-    MODIFIED = 'M'
-    ADDED = 'A'
-    DELETED = 'D'
-    RENAMED = 'R'
-    COPIED = 'C'
-    UPDATED = 'U'
-    UNTRACKED = '?'
-    IGNORED = '!'
+    UNMODIFIED = " "
+    MODIFIED = "M"
+    ADDED = "A"
+    DELETED = "D"
+    RENAMED = "R"
+    COPIED = "C"
+    UPDATED = "U"
+    UNTRACKED = "?"
+    IGNORED = "!"
 
 
 class StatusEntry:
@@ -65,17 +65,17 @@ class StatusEntry:
         self.root_path = root_path
 
         if self.index == Status.RENAMED:
-            new_filename, old_filename = filename.split('\0')
+            new_filename, old_filename = filename.split("\0")
             self.path = Path(new_filename)
             self.old_path = Path(old_filename)
         else:
             self.path = Path(filename)
 
     def __str__(self) -> str:
-        return f'{self.index.value}{self.working_tree.value} {str(self.path)}'
+        return f"{self.index.value}{self.working_tree.value} {str(self.path)}"
 
     def __repr__(self) -> str:
-        return f'<StatusEntry {str(self)}>'
+        return f"<StatusEntry {str(self)}>"
 
     def absolute_path(self) -> Path:
         if self.root_path:
@@ -84,15 +84,15 @@ class StatusEntry:
 
 
 def _parse_status(output: str) -> Generator[str, None, None]:
-    output = output.rstrip('\0')
+    output = output.rstrip("\0")
     if not output:
         return
 
-    output_list = output.split('\0')
+    output_list = output.split("\0")
     while output_list:
         line = output_list.pop(0)
         if line[0] == Status.RENAMED.value:
-            yield f'{line}\0{output_list.pop(0)}'
+            yield f"{line}\0{output_list.pop(0)}"
         else:
             yield line
 
@@ -140,14 +140,14 @@ def get_status(files: List[Union[Path, str]] = None) -> List[StatusEntry]:
     A list of StatusEntries that contains the status of the specific files
     """
     args = [
-        'status',
-        '-z',
-        '--ignore-submodules',
-        '--untracked-files=no',
+        "status",
+        "-z",
+        "--ignore-submodules",
+        "--untracked-files=no",
     ]
 
     if files is not None:
-        args.append('--')
+        args.append("--")
         args.extend([str(f) for f in files])
 
     output = exec_git(*args)
@@ -178,7 +178,7 @@ def stage_files_from_status_list(status_list: List[StatusEntry]) -> None:
     status_list     A List of StatusEntries that should be added
     """
     filenames = [str(s.path) for s in status_list]
-    exec_git('add', *filenames)
+    exec_git("add", *filenames)
 
 
 def get_diff(files: List[StatusEntry] = None) -> str:
@@ -190,42 +190,42 @@ def get_diff(files: List[StatusEntry] = None) -> str:
     Returns
     string containing the diff of the given files
     """
-    args = ['--no-pager', 'diff']
+    args = ["--no-pager", "diff"]
 
     if files is not None:
-        args.append('--')
+        args.append("--")
         args.extend([str(f.absolute_path()) for f in files])
 
     return exec_git(*args)
 
 
 def _write_tree() -> str:
-    return exec_git('write-tree').strip()
+    return exec_git("write-tree").strip()
 
 
 def _read_tree(ref_or_hashid: str) -> None:
-    exec_git('read-tree', ref_or_hashid)
+    exec_git("read-tree", ref_or_hashid)
 
 
 def _checkout_from_index(status_list: List[StatusEntry]) -> None:
     filenames = [str(s.path) for s in status_list]
-    exec_git('checkout-index', '-f', '--', *filenames)
+    exec_git("checkout-index", "-f", "--", *filenames)
 
 
 def _set_ref(name: str, hashid: str) -> None:
-    exec_git('update-ref', name, hashid)
+    exec_git("update-ref", name, hashid)
 
 
 def _get_tree_diff(tree1: str, tree2: str) -> bytes:
     return subprocess.check_output(
         [
-            'git',
-            'diff-tree',
-            '--ignore-submodules',
-            '--binary',
-            '--no-color',
-            '--no-ext-diff',
-            '--unified=0',
+            "git",
+            "diff-tree",
+            "--ignore-submodules",
+            "--binary",
+            "--no-color",
+            "--no-ext-diff",
+            "--unified=0",
             tree1,
             tree2,
         ]
@@ -233,22 +233,22 @@ def _get_tree_diff(tree1: str, tree2: str) -> bytes:
 
 
 def _apply_diff(patch: bytes) -> None:
-    with NamedTemporaryFile(mode='wb', buffering=0) as f:
+    with NamedTemporaryFile(mode="wb", buffering=0) as f:
         f.write(patch)
 
         exec_git(
-            'apply',
-            '-v',
-            '--whitespace=nowarn',
-            '--reject',
-            '--recount',
-            '--unidiff-zero',
+            "apply",
+            "-v",
+            "--whitespace=nowarn",
+            "--reject",
+            "--recount",
+            "--unidiff-zero",
             f.name,
         )
 
 
-INDEX_REF = 'refs/autohooks/index'
-WORKING_REF = 'refs/autohooks/working'
+INDEX_REF = "refs/autohooks/index"
+WORKING_REF = "refs/autohooks/working"
 
 
 class stash_unstaged_changes:  # pylint: disable=invalid-name
@@ -316,11 +316,11 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
                     _apply_diff(patch)
                 except GitError as e:
                     print(
-                        'Found conflicts between plugin and local changes. '
-                        'Plugin changes will be ignored for conflicted hunks.',
+                        "Found conflicts between plugin and local changes. "
+                        "Plugin changes will be ignored for conflicted hunks.",
                         e,
                     )
 
                     rootpath = get_project_root_path()
-                    for path in rootpath.glob('*.rej'):
+                    for path in rootpath.glob("*.rej"):
                         path.unlink()

@@ -33,7 +33,7 @@ from autohooks.utils import get_git_hook_directory_path
 
 def get_pre_commit_hook_path():
     git_hook_dir_path = get_git_hook_directory_path()
-    return git_hook_dir_path / 'pre-commit'
+    return git_hook_dir_path / "pre-commit"
 
 
 class PreCommitHook:
@@ -56,7 +56,7 @@ class PreCommitHook:
         return self.pre_commit_hook_path.exists()
 
     def is_autohooks_pre_commit_hook(self) -> bool:
-        lines = self.pre_commit_hook.split('\n')
+        lines = self.pre_commit_hook.split("\n")
         # seems to be false-positive ...
         return (
             len(lines) > 5
@@ -68,7 +68,7 @@ class PreCommitHook:
         return self.read_version() == TEMPLATE_VERSION
 
     def read_mode(self) -> Mode:
-        lines = self.pre_commit_hook.split('\n')
+        lines = self.pre_commit_hook.split("\n")
         if len(lines) < 1 or len(lines[0]) == 0:
             return Mode.UNDEFINED
 
@@ -82,7 +82,7 @@ class PreCommitHook:
             return Mode.PIPENV
 
         shebang = f"{lines[0][2:]}\n"
-        shebang += '\n'.join(lines[1:5])
+        shebang += "\n".join(lines[1:5])
         if shebang == POETRY_MULTILINE_SHEBANG:
             return Mode.POETRY_MULTILINE
 
@@ -93,7 +93,7 @@ class PreCommitHook:
 
     def read_version(self) -> int:
         matches = re.search(
-            r'{\s*version\s*=\s*?(\d+)\s*}$', self.pre_commit_hook, re.MULTILINE
+            r"{\s*version\s*=\s*?(\d+)\s*}$", self.pre_commit_hook, re.MULTILINE
         )
         if not matches:
             return -1

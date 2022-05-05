@@ -41,9 +41,9 @@ class GitDirTestCase(unittest.TestCase):
         self.tempdir = TemporaryDirectory()
         self.temp_dir_path = Path(self.tempdir.name).resolve()
 
-        exec_git('-C', str(self.temp_dir_path), 'init')
+        exec_git("-C", str(self.temp_dir_path), "init")
 
-        self.git_dir_path = self.temp_dir_path / '.git'
+        self.git_dir_path = self.temp_dir_path / ".git"
 
         self.assertTrue(self.git_dir_path.exists())
 
@@ -59,7 +59,7 @@ class GetPreCommitHookPathTestCase(GitDirTestCase):
 
         self.assertEqual(
             pre_commmit_hook_path,
-            self.temp_dir_path / '.git' / 'hooks' / 'pre-commit',
+            self.temp_dir_path / ".git" / "hooks" / "pre-commit",
         )
 
 
@@ -84,7 +84,7 @@ class FakeReadPath:
 
 class IsAutohooksPreCommitHook(unittest.TestCase):
     def test_other_hook(self):
-        path = FakeReadPath('foo\nbar')
+        path = FakeReadPath("foo\nbar")
         pre_commit_hook = PreCommitHook(path)
 
         self.assertFalse(pre_commit_hook.is_autohooks_pre_commit_hook())
@@ -99,7 +99,7 @@ class IsAutohooksPreCommitHook(unittest.TestCase):
 
 class IsCurrentAutohooksPreCommitHook(unittest.TestCase):
     def test_other_hook(self):
-        path = FakeReadPath('foo\nbar')
+        path = FakeReadPath("foo\nbar")
         pre_commit_hook = PreCommitHook(path)
 
         self.assertFalse(pre_commit_hook.is_current_autohooks_pre_commit_hook())
@@ -114,7 +114,7 @@ class IsCurrentAutohooksPreCommitHook(unittest.TestCase):
     def test_modified_pre_commit_template(self):
         template = PreCommitTemplate()
         rendered = template.render(mode=Mode.PIPENV)
-        lines = rendered.split('\n')
+        lines = rendered.split("\n")
         lines[1] = ""
         path = FakeReadPath("\n".join(lines))
         pre_commit_hook = PreCommitHook(path)
@@ -126,10 +126,10 @@ class ReadVersionTestCase(unittest.TestCase):
     def test_read_version(self):
         template = PreCommitTemplate()
         with tempfile.TemporaryDirectory() as tempdir:
-            tmp_hook_path = Path(tempdir) / 'pre-commit-test'
+            tmp_hook_path = Path(tempdir) / "pre-commit-test"
             # Find version using all shebang modes
             for mode in [m for m in Mode if m.value > 0]:
-                with open(str(tmp_hook_path), 'w', encoding='utf-8') as tmpfile:
+                with open(str(tmp_hook_path), "w", encoding="utf-8") as tmpfile:
                     tmpfile.write(template.render(mode=mode))
                 pre_commit_hook = PreCommitHook(tmp_hook_path)
 
@@ -203,7 +203,7 @@ class WriteTestCase(unittest.TestCase):
 
         args, _kwargs = write_path.write_text.call_args
         text = args[0]
-        self.assertRegex(text, f'^#!{PIPENV_SHEBANG} *')
+        self.assertRegex(text, f"^#!{PIPENV_SHEBANG} *")
 
     def test_poetry_mode(self):
         write_path = Mock()
@@ -215,7 +215,7 @@ class WriteTestCase(unittest.TestCase):
 
         args, _kwargs = write_path.write_text.call_args
         text = args[0]
-        self.assertRegex(text, f'^#!{POETRY_SHEBANG} *')
+        self.assertRegex(text, f"^#!{POETRY_SHEBANG} *")
 
     def test_pythonpath_mode(self):
         write_path = Mock()
@@ -227,7 +227,7 @@ class WriteTestCase(unittest.TestCase):
 
         args, _kwargs = write_path.write_text.call_args
         text = args[0]
-        self.assertRegex(text, f'^#!{PYTHON3_SHEBANG} *')
+        self.assertRegex(text, f"^#!{PYTHON3_SHEBANG} *")
 
 
 class StrTestCase(unittest.TestCase):
@@ -237,9 +237,9 @@ class StrTestCase(unittest.TestCase):
 
         pre_commit_hook = PreCommitHook(path)
 
-        self.assertEqual(str(pre_commit_hook), 'foo')
+        self.assertEqual(str(pre_commit_hook), "foo")
         path.__str__.assert_called_with()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

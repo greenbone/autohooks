@@ -23,41 +23,41 @@ from autohooks.api.path import match
 
 class MatchTestCase(unittest.TestCase):
     def test_match_list(self):
-        patterns = ['*.py', '*.js']
+        patterns = ["*.py", "*.js"]
 
-        self.assertTrue(match(Path('foo.py'), patterns))
-        self.assertTrue(match(Path('foo.js'), patterns))
-        self.assertTrue(match(Path('path/to/foo.py'), patterns))
-        self.assertTrue(match(Path('/root/path/to/foo.py'), patterns))
+        self.assertTrue(match(Path("foo.py"), patterns))
+        self.assertTrue(match(Path("foo.js"), patterns))
+        self.assertTrue(match(Path("path/to/foo.py"), patterns))
+        self.assertTrue(match(Path("/root/path/to/foo.py"), patterns))
 
-        self.assertFalse(match(Path('foo.pyc'), patterns))
-        self.assertFalse(match(Path('foo.c'), patterns))
+        self.assertFalse(match(Path("foo.pyc"), patterns))
+        self.assertFalse(match(Path("foo.c"), patterns))
 
     def test_match_tuple(self):
-        patterns = ('*.py', '*.js')
+        patterns = ("*.py", "*.js")
 
-        self.assertTrue(match(Path('foo.py'), patterns))
-        self.assertTrue(match(Path('foo.js'), patterns))
-        self.assertTrue(match(Path('path/to/foo.py'), patterns))
-        self.assertTrue(match(Path('/root/path/to/foo.py'), patterns))
+        self.assertTrue(match(Path("foo.py"), patterns))
+        self.assertTrue(match(Path("foo.js"), patterns))
+        self.assertTrue(match(Path("path/to/foo.py"), patterns))
+        self.assertTrue(match(Path("/root/path/to/foo.py"), patterns))
 
-        self.assertFalse(match(Path('foo.pyc'), patterns))
-        self.assertFalse(match(Path('foo.c'), patterns))
+        self.assertFalse(match(Path("foo.pyc"), patterns))
+        self.assertFalse(match(Path("foo.c"), patterns))
 
     def test_match_files_in_subdir(self):
-        patterns = ('foo/*.py', 'bar/*.js')
+        patterns = ("foo/*.py", "bar/*.js")
 
-        self.assertFalse(match(Path('foo.py'), patterns))
-        self.assertFalse(match(Path('foo.js'), patterns))
-        self.assertFalse(match(Path('foo.pyc'), patterns))
-        self.assertFalse(match(Path('foo.c'), patterns))
+        self.assertFalse(match(Path("foo.py"), patterns))
+        self.assertFalse(match(Path("foo.js"), patterns))
+        self.assertFalse(match(Path("foo.pyc"), patterns))
+        self.assertFalse(match(Path("foo.c"), patterns))
 
-        self.assertTrue(match(Path('foo/bar.py'), patterns))
-        self.assertTrue(match(Path('bar/foo.js'), patterns))
+        self.assertTrue(match(Path("foo/bar.py"), patterns))
+        self.assertTrue(match(Path("bar/foo.js"), patterns))
 
-        self.assertFalse(match(Path('foo/bar.js'), patterns))
-        self.assertFalse(match(Path('bar/foo.py'), patterns))
+        self.assertFalse(match(Path("foo/bar.js"), patterns))
+        self.assertFalse(match(Path("bar/foo.py"), patterns))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

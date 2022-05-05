@@ -18,11 +18,11 @@
 from pontos.terminal import bold_info, error, fail, info, ok, out, warning
 
 __all__ = [
-    'error',
-    'fail',
-    'info',
-    'bold_info',
-    'ok',
-    'out',
-    'warning',
+    "error",
+    "fail",
+    "info",
+    "bold_info",
+    "ok",
+    "out",
+    "warning",
 ]
