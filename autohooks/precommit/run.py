@@ -50,7 +50,7 @@ def load_plugin(name: str) -> ModuleType:
 
 
 def has_precommit_function(plugin: ModuleType) -> bool:
-    return hasattr(plugin, 'precommit') and inspect.isfunction(plugin.precommit)
+    return hasattr(plugin, "precommit") and inspect.isfunction(plugin.precommit)
 
 
 def has_precommit_parameters(plugin: ModuleType) -> bool:
@@ -63,9 +63,9 @@ def check_hook_is_current(
 ) -> None:
     if not pre_commit_hook.is_current_autohooks_pre_commit_hook():
         term.warning(
-            'autohooks pre-commit hook is outdated. Please run '
-            '\'autohooks activate --force\' to update your pre-commit '
-            'hook.'
+            "autohooks pre-commit hook is outdated. Please run "
+            "'autohooks activate --force' to update your pre-commit "
+            "hook."
         )
 
 
@@ -97,19 +97,19 @@ def run() -> int:
     if plugins.is_dir():
         sys.path.append(plugins_dir_name)
 
-    term.bold_info('autohooks => pre-commit')
+    term.bold_info("autohooks => pre-commit")
 
     with autohooks_module_path(), term.indent():
         for name in config.get_pre_commit_script_names():
-            term.info(f'Running {name}')
+            term.info(f"Running {name}")
 
             with term.indent():
                 try:
                     plugin = load_plugin(name)
                     if not has_precommit_function(plugin):
                         term.fail(
-                            f'No precommit function found in plugin {name}. '
-                            'Your autohooks settings may be invalid.'
+                            f"No precommit function found in plugin {name}. "
+                            "Your autohooks settings may be invalid."
                         )
                         return 1
 
@@ -117,8 +117,8 @@ def run() -> int:
                         retval = plugin.precommit(config=config.get_config())
                     else:
                         term.warning(
-                            'precommit function without kwargs is deprecated. '
-                            f'Please update {name} to a newer version.'
+                            "precommit function without kwargs is deprecated. "
+                            f"Please update {name} to a newer version."
                         )
                         retval = plugin.precommit()
 
@@ -127,14 +127,14 @@ def run() -> int:
 
                 except ImportError as e:
                     term.error(
-                        'An error occurred while importing pre-commit '
-                        f'hook {name}. {e}.'
+                        "An error occurred while importing pre-commit "
+                        f"hook {name}. {e}."
                     )
                     return 1
                 except Exception as e:  # pylint: disable=broad-except
                     term.error(
-                        'An error occurred while running pre-commit '
-                        f'hook {name}. {e}.'
+                        "An error occurred while running pre-commit "
+                        f"hook {name}. {e}."
                     )
                     return 1
 

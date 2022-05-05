@@ -33,22 +33,22 @@ from autohooks.utils import (
 
 class GitHookDirPathTestCase(unittest.TestCase):
     def test_get_git_hook_directory_path(self):
-        path = Path('foo')
+        path = Path("foo")
         git_hook_dir_path = get_git_hook_directory_path(path)
-        self.assertEqual(git_hook_dir_path, path / 'hooks')
+        self.assertEqual(git_hook_dir_path, path / "hooks")
 
     def test_with_env_pwd(self):
         with TemporaryDirectory() as f:
             temp_path = Path(f)
 
-            exec_git('-C', str(temp_path), 'init')
+            exec_git("-C", str(temp_path), "init")
 
             os.chdir(str(temp_path))
 
-            git_dir_path = (temp_path / '.git').resolve()
+            git_dir_path = (temp_path / ".git").resolve()
 
             git_hook_dir_path = get_git_hook_directory_path()
-            self.assertEqual(git_hook_dir_path, git_dir_path / 'hooks')
+            self.assertEqual(git_hook_dir_path, git_dir_path / "hooks")
 
 
 class IsProjectRootTestCase(unittest.TestCase):
@@ -63,14 +63,14 @@ class IsProjectRootTestCase(unittest.TestCase):
         self.assertFalse(is_project_root(self.temp_path))
 
     def test_pyproject_toml(self):
-        pyproject_toml = self.temp_path / 'pyproject.toml'
+        pyproject_toml = self.temp_path / "pyproject.toml"
         pyproject_toml.touch()
 
         self.assertTrue(pyproject_toml.exists())
         self.assertTrue(is_project_root(self.temp_path))
 
     def test_dot_git(self):
-        git_dir = self.temp_path / '.git'
+        git_dir = self.temp_path / ".git"
         git_dir.mkdir()
 
         self.assertTrue(git_dir.exists())
@@ -78,14 +78,14 @@ class IsProjectRootTestCase(unittest.TestCase):
         self.assertTrue(is_project_root(self.temp_path))
 
     def test_setup_py(self):
-        setup_py = self.temp_path / 'setup.py'
+        setup_py = self.temp_path / "setup.py"
         setup_py.touch()
 
         self.assertTrue(setup_py.exists())
         self.assertTrue(is_project_root(self.temp_path))
 
     def test_setup_cfg(self):
-        setup_cfg = self.temp_path / 'setup.cfg'
+        setup_cfg = self.temp_path / "setup.cfg"
         setup_cfg.touch()
 
         self.assertTrue(setup_cfg.exists())
@@ -101,7 +101,7 @@ class GetProjectRootPath(unittest.TestCase):
         self.tempdir.cleanup()
 
     def test_direct_root(self):
-        setup_py = self.temp_path / 'setup.py'
+        setup_py = self.temp_path / "setup.py"
         setup_py.touch()
 
         root_path = get_project_root_path(self.temp_path)
@@ -109,9 +109,9 @@ class GetProjectRootPath(unittest.TestCase):
         self.assertEqual(root_path, self.temp_path)
 
     def test_with_sub_directory(self):
-        sub_path = self.temp_path / 'foo'
+        sub_path = self.temp_path / "foo"
         sub_path.mkdir()
-        setup_py = self.temp_path / 'setup.py'
+        setup_py = self.temp_path / "setup.py"
         setup_py.touch()
 
         root_path = get_project_root_path(sub_path)
@@ -124,9 +124,9 @@ class GetProjectRootPath(unittest.TestCase):
         self.assertEqual(root_path, self.temp_path)
 
     def test_with_env_pwd(self):
-        setup_py = self.temp_path / 'setup.py'
+        setup_py = self.temp_path / "setup.py"
         setup_py.touch()
-        sub_path = self.temp_path / 'foo'
+        sub_path = self.temp_path / "foo"
         sub_path.mkdir()
 
         os.chdir(str(self.temp_path))
@@ -141,24 +141,24 @@ class GetProjectAutohooksPluginsPathTestCase(unittest.TestCase):
         self.tempdir = TemporaryDirectory()
         self.temp_path = Path(self.tempdir.name).resolve()
 
-        setup_py = self.temp_path / 'setup.py'
+        setup_py = self.temp_path / "setup.py"
         setup_py.touch()
 
     def tearDown(self):
         self.tempdir.cleanup()
 
     def test_with_subpath(self):
-        sub_path = self.temp_path / 'foo'
+        sub_path = self.temp_path / "foo"
         sub_path.mkdir()
 
         autohooks_plugins_path = get_project_autohooks_plugins_path(sub_path)
-        self.assertEqual(autohooks_plugins_path, self.temp_path / '.autohooks')
+        self.assertEqual(autohooks_plugins_path, self.temp_path / ".autohooks")
 
     def test_with_env_pwd(self):
         os.chdir(str(self.temp_path))
 
         autohooks_plugins_path = get_project_autohooks_plugins_path()
-        self.assertEqual(autohooks_plugins_path, self.temp_path / '.autohooks')
+        self.assertEqual(autohooks_plugins_path, self.temp_path / ".autohooks")
 
 
 class GetPyProjectTomlPathTestCase(unittest.TestCase):
@@ -170,23 +170,23 @@ class GetPyProjectTomlPathTestCase(unittest.TestCase):
         self.tempdir.cleanup()
 
     def test_with_pyproject_toml_file(self):
-        pyproject_toml_file = self.temp_path / 'pyproject.toml'
+        pyproject_toml_file = self.temp_path / "pyproject.toml"
         pyproject_toml_file.touch()
 
-        sub_path = self.temp_path / 'foo'
+        sub_path = self.temp_path / "foo"
         sub_path.mkdir()
 
         pyproject_toml_path = get_pyproject_toml_path(sub_path)
-        self.assertEqual(pyproject_toml_path, self.temp_path / 'pyproject.toml')
+        self.assertEqual(pyproject_toml_path, self.temp_path / "pyproject.toml")
 
     def test_with_env_pwd(self):
         os.chdir(str(self.temp_path))
 
-        setup_py = self.temp_path / 'setup.py'
+        setup_py = self.temp_path / "setup.py"
         setup_py.touch()
 
         pyproject_toml_path = get_pyproject_toml_path()
-        self.assertEqual(pyproject_toml_path, self.temp_path / 'pyproject.toml')
+        self.assertEqual(pyproject_toml_path, self.temp_path / "pyproject.toml")
 
 
 class GetGitDirectoryPath(unittest.TestCase):
@@ -194,9 +194,9 @@ class GetGitDirectoryPath(unittest.TestCase):
         self.tempdir = TemporaryDirectory()
         self.temp_path = Path(self.tempdir.name).resolve()
 
-        exec_git('-C', str(self.temp_path), 'init')
+        exec_git("-C", str(self.temp_path), "init")
 
-        self.git_dir_path = (self.temp_path / '.git').resolve()
+        self.git_dir_path = (self.temp_path / ".git").resolve()
 
         self.assertTrue(self.git_dir_path.exists())
 
@@ -210,7 +210,7 @@ class GetGitDirectoryPath(unittest.TestCase):
         self.assertEqual(git_dir_path, self.git_dir_path.resolve())
 
     def test_with_subdir(self):
-        sub_path = self.temp_path / 'foo'
+        sub_path = self.temp_path / "foo"
         sub_path.mkdir()
 
         os.chdir(str(self.temp_path))
@@ -219,5 +219,5 @@ class GetGitDirectoryPath(unittest.TestCase):
         self.assertEqual(git_dir_path, self.git_dir_path)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

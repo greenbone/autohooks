@@ -30,13 +30,13 @@ class GitError(subprocess.CalledProcessError):
 
 def exec_git(*args: str, ignore_errors: bool = False) -> str:
     try:
-        cmd_args = ['git']
+        cmd_args = ["git"]
         cmd_args.extend(args)
         output = subprocess.check_output(cmd_args)
         return output.decode()
     except subprocess.CalledProcessError as e:
         if ignore_errors:
-            return ''
+            return ""
         raise GitError(e.returncode, e.cmd, e.output, e.stderr) from None
 
 
@@ -44,9 +44,9 @@ def get_git_directory_path() -> Path:
     pwd = Path.cwd()
 
     try:
-        git_dir = exec_git('-C', pwd, 'rev-parse', '--git-dir').rstrip()
+        git_dir = exec_git("-C", pwd, "rev-parse", "--git-dir").rstrip()
     except subprocess.CalledProcessError as e:
-        print(f'could not determine .git directory. {e.output.decode()}')
+        print(f"could not determine .git directory. {e.output.decode()}")
         raise e from None
 
     if pwd and str(pwd) not in git_dir:
@@ -64,15 +64,15 @@ def get_autohooks_directory_path() -> Path:
 def get_git_hook_directory_path(git_dir_path: Path = None) -> Path:
     if git_dir_path is None:
         git_dir_path = get_git_directory_path()
-    return git_dir_path / 'hooks'
+    return git_dir_path / "hooks"
 
 
 def is_project_root(path: Path) -> bool:
     return (
-        (path / 'pyproject.toml').is_file()
-        or (path / '.git').is_dir()
-        or (path / 'setup.py').is_file()
-        or (path / 'setup.cfg').is_file()
+        (path / "pyproject.toml").is_file()
+        or (path / ".git").is_dir()
+        or (path / "setup.py").is_file()
+        or (path / "setup.cfg").is_file()
     )
 
 
@@ -94,18 +94,18 @@ def get_project_root_path(path: Path = None) -> Path:
 
 def get_project_autohooks_plugins_path(path: Path = None) -> Path:
     root = get_project_root_path(path)
-    return root / '.autohooks'
+    return root / ".autohooks"
 
 
 def get_pyproject_toml_path(path: Path = None) -> Path:
     root = get_project_root_path(path)
-    return root / 'pyproject.toml'
+    return root / "pyproject.toml"
 
 
 def is_split_env():
     try:
         subprocess.run(
-            shlex.split('/usr/bin/env -S echo True'),
+            shlex.split("/usr/bin/env -S echo True"),
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             universal_newlines=True,

@@ -80,8 +80,8 @@ class PreCommitTemplateTestCase(unittest.TestCase):
             (
                 "/bin/sh\n"
                 "\"true\" ''':'\n"
-                "pipenv run python3 \"$0\" \"$@\"\n"
-                "exit \"$?\"\n"
+                'pipenv run python3 "$0" "$@"\n'
+                'exit "$?"\n'
                 "'''"
             ),
         )
@@ -94,8 +94,8 @@ class PreCommitTemplateTestCase(unittest.TestCase):
             (
                 "/bin/sh\n"
                 "\"true\" ''':'\n"
-                "poetry run python3 \"$0\" \"$@\"\n"
-                "exit \"$?\"\n"
+                'poetry run python3 "$0" "$@"\n'
+                'exit "$?"\n'
                 "'''"
             ),
         )
@@ -122,5 +122,5 @@ class GetPreCommitHookTemplatePath(unittest.TestCase):
         self.assertTrue(template_path.is_file())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

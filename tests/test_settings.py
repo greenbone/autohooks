@@ -35,47 +35,47 @@ class ModeTestCase(unittest.TestCase):
         self.assertEqual(Mode.UNKNOWN.get_effective_mode(), Mode.PYTHONPATH)
 
     def test_get_pipenv_mode_from_string(self):
-        self.assertEqual(Mode.from_string('pipenv'), Mode.PIPENV)
-        self.assertEqual(Mode.from_string('PIPENV'), Mode.PIPENV)
+        self.assertEqual(Mode.from_string("pipenv"), Mode.PIPENV)
+        self.assertEqual(Mode.from_string("PIPENV"), Mode.PIPENV)
 
     def test_get_pipenv_multiline_mode_from_string(self):
         self.assertEqual(
-            Mode.from_string('pipenv_multiline'), Mode.PIPENV_MULTILINE
+            Mode.from_string("pipenv_multiline"), Mode.PIPENV_MULTILINE
         )
         self.assertEqual(
-            Mode.from_string('PIPENV_MULTILINE'), Mode.PIPENV_MULTILINE
+            Mode.from_string("PIPENV_MULTILINE"), Mode.PIPENV_MULTILINE
         )
 
     def test_get_pythonpath_mode_from_string(self):
-        self.assertEqual(Mode.from_string('pythonpath'), Mode.PYTHONPATH)
-        self.assertEqual(Mode.from_string('PYTHONPATH'), Mode.PYTHONPATH)
+        self.assertEqual(Mode.from_string("pythonpath"), Mode.PYTHONPATH)
+        self.assertEqual(Mode.from_string("PYTHONPATH"), Mode.PYTHONPATH)
 
     def test_get_poetry_mode_from_string(self):
-        self.assertEqual(Mode.from_string('poetry'), Mode.POETRY)
-        self.assertEqual(Mode.from_string('POETRY'), Mode.POETRY)
+        self.assertEqual(Mode.from_string("poetry"), Mode.POETRY)
+        self.assertEqual(Mode.from_string("POETRY"), Mode.POETRY)
 
     def test_get_poetry_multiline_mode_from_string(self):
         self.assertEqual(
-            Mode.from_string('poetry_multiline'), Mode.POETRY_MULTILINE
+            Mode.from_string("poetry_multiline"), Mode.POETRY_MULTILINE
         )
         self.assertEqual(
-            Mode.from_string('POETRY_MULTILINE'), Mode.POETRY_MULTILINE
+            Mode.from_string("POETRY_MULTILINE"), Mode.POETRY_MULTILINE
         )
 
     def test_get_invalid_mode_from_string(self):
-        self.assertEqual(Mode.from_string('foo'), Mode.UNKNOWN)
+        self.assertEqual(Mode.from_string("foo"), Mode.UNKNOWN)
         self.assertEqual(Mode.from_string(None), Mode.UNDEFINED)
-        self.assertEqual(Mode.from_string(''), Mode.UNDEFINED)
+        self.assertEqual(Mode.from_string(""), Mode.UNDEFINED)
 
     def test_string_conversion(self):
-        self.assertEqual(str(Mode.PIPENV), 'pipenv')
-        self.assertEqual(str(Mode.PIPENV_MULTILINE), 'pipenv_multiline')
-        self.assertEqual(str(Mode.PYTHONPATH), 'pythonpath')
-        self.assertEqual(str(Mode.POETRY_MULTILINE), 'poetry_multiline')
-        self.assertEqual(str(Mode.POETRY), 'poetry')
-        self.assertEqual(str(Mode.UNKNOWN), 'unknown')
-        self.assertEqual(str(Mode.UNDEFINED), 'undefined')
+        self.assertEqual(str(Mode.PIPENV), "pipenv")
+        self.assertEqual(str(Mode.PIPENV_MULTILINE), "pipenv_multiline")
+        self.assertEqual(str(Mode.PYTHONPATH), "pythonpath")
+        self.assertEqual(str(Mode.POETRY_MULTILINE), "poetry_multiline")
+        self.assertEqual(str(Mode.POETRY), "poetry")
+        self.assertEqual(str(Mode.UNKNOWN), "unknown")
+        self.assertEqual(str(Mode.UNDEFINED), "undefined")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

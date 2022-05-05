@@ -23,14 +23,14 @@ import tomlkit
 from autohooks.settings import Mode
 from autohooks.utils import get_pyproject_toml_path, is_split_env
 
-AUTOHOOKS_SECTION = 'tool.autohooks'
+AUTOHOOKS_SECTION = "tool.autohooks"
 
 
 class Config:
     def __init__(self, config_dict: Dict = None) -> None:
         self._config_dict = config_dict or {}
 
-    def get(self, *keys: str) -> 'Config':
+    def get(self, *keys: str) -> "Config":
         config_dict = self._config_dict
 
         for key in keys:
@@ -59,7 +59,7 @@ class BaseToolConfig:
 class AutohooksConfig(BaseToolConfig):
     def __init__(self, config_dict: Dict = None) -> None:
         super().__init__(config_dict)
-        self._autohooks_config = self._config.get('tool').get('autohooks')
+        self._autohooks_config = self._config.get("tool").get("autohooks")
 
     def has_autohooks_config(self) -> bool:
         return not self._autohooks_config.is_empty()
@@ -69,13 +69,13 @@ class AutohooksConfig(BaseToolConfig):
 
     def get_pre_commit_script_names(self) -> List[str]:
         if self.has_autohooks_config():
-            return self._autohooks_config.get_value('pre-commit', [])
+            return self._autohooks_config.get_value("pre-commit", [])
 
         return []
 
     def get_mode(self) -> Mode:
         if self.has_autohooks_config():
-            mode = self._autohooks_config.get_value('mode')
+            mode = self._autohooks_config.get_value("mode")
             if not mode:
                 return Mode.UNDEFINED
 

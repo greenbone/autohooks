@@ -23,41 +23,41 @@ from autohooks.cli.check import check_hooks
 from autohooks.settings import Mode
 from autohooks.terminal import Terminal
 
-DESCRIPTION = 'autohooks - Manage git hooks'
+DESCRIPTION = "autohooks - Manage git hooks"
 
 
 def main():
     parser = argparse.ArgumentParser(description=DESCRIPTION)
     parser.add_argument(
-        '--version',
-        action='version',
-        version=f'%(prog)s {version}',
+        "--version",
+        action="version",
+        version=f"%(prog)s {version}",
     )
 
-    subparsers = parser.add_subparsers(dest='command')
+    subparsers = parser.add_subparsers(dest="command")
     activate_parser = subparsers.add_parser(
-        'activate', help='Activate the pre-commit hook.'
+        "activate", help="Activate the pre-commit hook."
     )
     activate_parser.add_argument(
-        '-f',
-        '--force',
-        action='store_true',
-        help='Force activation of hook even if a hook already exists',
+        "-f",
+        "--force",
+        action="store_true",
+        help="Force activation of hook even if a hook already exists",
     )
     activate_parser.add_argument(
-        '-m',
-        '--mode',
-        dest='mode',
+        "-m",
+        "--mode",
+        dest="mode",
         choices=[
             str(Mode.PYTHONPATH),
             str(Mode.PIPENV),
             str(Mode.POETRY),
         ],
-        help='Mode for loading autohooks during hook execution. Either load '
-        'autohooks from the PYTHON_PATH, via pipenv or via poetry.',
+        help="Mode for loading autohooks during hook execution. Either load "
+        "autohooks from the PYTHON_PATH, via pipenv or via poetry.",
     )
 
-    subparsers.add_parser('check', help='Check installed pre-commit hook')
+    subparsers.add_parser("check", help="Check installed pre-commit hook")
 
     args = parser.parse_args()
 
@@ -65,9 +65,9 @@ def main():
         parser.print_usage()
 
     term = Terminal()
-    if args.command == 'activate':
+    if args.command == "activate":
         install_hooks(term, args)
-    elif args.command == 'check':
+    elif args.command == "check":
         check_hooks(term)
 
 

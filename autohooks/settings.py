@@ -40,7 +40,7 @@ class Mode(Enum):
         return Mode.PYTHONPATH
 
     @staticmethod
-    def from_string(modestring: str) -> 'Mode':
+    def from_string(modestring: str) -> "Mode":
         if not modestring:
             return Mode.UNDEFINED
 
