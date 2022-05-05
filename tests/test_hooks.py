@@ -18,22 +18,20 @@
 import os
 import tempfile
 import unittest
-
-from unittest.mock import Mock
-
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest.mock import Mock
 
 from autohooks.hooks import PreCommitHook, get_pre_commit_hook_path
 from autohooks.settings import Mode
 from autohooks.template import (
-    PreCommitTemplate,
-    PIPENV_SHEBANG,
-    POETRY_SHEBANG,
     PIPENV_MULTILINE_SHEBANG,
+    PIPENV_SHEBANG,
     POETRY_MULTILINE_SHEBANG,
+    POETRY_SHEBANG,
     PYTHON3_SHEBANG,
     TEMPLATE_VERSION,
+    PreCommitTemplate,
 )
 from autohooks.utils import exec_git
 

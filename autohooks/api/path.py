@@ -16,9 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import fnmatch
-
-from typing import Iterable
 from pathlib import Path
+from typing import Iterable
 
 
 def is_python_path(path: Path) -> bool:

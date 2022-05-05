@@ -18,8 +18,8 @@
 from argparse import Namespace
 
 from autohooks.config import (
-    load_config_from_pyproject_toml,
     get_pyproject_toml_path,
+    load_config_from_pyproject_toml,
 )
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode

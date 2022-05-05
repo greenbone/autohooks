@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Any, Dict, List, Union
 from pathlib import Path
+from typing import Any, Dict, List, Union
 
 import tomlkit
 

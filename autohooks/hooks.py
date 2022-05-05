@@ -15,16 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from pathlib import Path
 import re
+from pathlib import Path
 
 from autohooks.settings import Mode
 from autohooks.template import (
+    PIPENV_MULTILINE_SHEBANG,
     PIPENV_SHEBANG,
+    POETRY_MULTILINE_SHEBANG,
     POETRY_SHEBANG,
     PYTHON3_SHEBANG,
-    POETRY_MULTILINE_SHEBANG,
-    PIPENV_MULTILINE_SHEBANG,
     TEMPLATE_VERSION,
     PreCommitTemplate,
 )
