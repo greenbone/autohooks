@@ -19,7 +19,7 @@ from enum import Enum
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from types import TracebackType
-from typing import Any, Generator, List, Optional, Type, Union
+from typing import Any, Iterable, Iterator, List, Optional, Type, Union
 
 from autohooks.utils import GitError, exec_git, get_project_root_path
 
@@ -83,7 +83,7 @@ class StatusEntry:
         return self.path.resolve()
 
 
-def _parse_status(output: str) -> Generator[str, None, None]:
+def _parse_status(output: str) -> Iterator[str]:
     output = output.rstrip("\0")
     if not output:
         return
@@ -129,7 +129,7 @@ def is_partially_staged_status(status: StatusEntry) -> bool:
     )
 
 
-def get_status(files: List[Union[Path, str]] = None) -> List[StatusEntry]:
+def get_status(files: Iterable[Union[Path, str]] = None) -> List[StatusEntry]:
     """execute get status
 
     Arguments:
@@ -156,7 +156,7 @@ def get_status(files: List[Union[Path, str]] = None) -> List[StatusEntry]:
 
 
 def get_staged_status(
-    files: List[Union[Path, str]] = None
+    files: Iterable[Union[Path, str]] = None
 ) -> List[StatusEntry]:
     """get a list of StatusEntries containing only staged files
 
@@ -171,7 +171,7 @@ def get_staged_status(
     return [s for s in status if is_staged_status(s)]
 
 
-def stage_files_from_status_list(status_list: List[StatusEntry]) -> None:
+def stage_files_from_status_list(status_list: Iterable[StatusEntry]) -> None:
     """Add the passed files to staged
 
     Arguments:
@@ -181,7 +181,7 @@ def stage_files_from_status_list(status_list: List[StatusEntry]) -> None:
     exec_git("add", *filenames)
 
 
-def get_diff(files: List[StatusEntry] = None) -> str:
+def get_diff(files: Iterable[StatusEntry] = None) -> str:
     """Get the diff of the passed files
 
     Arguments:
@@ -207,7 +207,7 @@ def _read_tree(ref_or_hashid: str) -> None:
     exec_git("read-tree", ref_or_hashid)
 
 
-def _checkout_from_index(status_list: List[StatusEntry]) -> None:
+def _checkout_from_index(status_list: Iterable[StatusEntry]) -> None:
     filenames = [str(s.path) for s in status_list]
     exec_git("checkout-index", "-f", "--", *filenames)
 
@@ -252,7 +252,7 @@ WORKING_REF = "refs/autohooks/working"
 
 
 class stash_unstaged_changes:  # pylint: disable=invalid-name
-    def __init__(self, status_list: List[StatusEntry]) -> None:
+    def __init__(self, status_list: Iterable[StatusEntry]) -> None:
         self.partially_staged = [
             s for s in status_list if is_partially_staged_status(s)
         ]
