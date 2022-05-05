@@ -23,12 +23,14 @@ class DiffTestCase(GitTestCase):
     def test_get_diff_from_status(self):
         with tempgitdir() as tmpdir:
             test_file = tmpdir / "foo.txt"
-            test_file.write_text("Lorem\nipsum\ndolor\nsit\namet")
+            test_file.write_text(
+                "Lorem\nipsum\ndolor\nsit\namet", encoding="utf8"
+            )
 
             git_add(test_file)
             git_commit()
 
-            test_file.write_text("ipsum\ndolor\nsit\namet")
+            test_file.write_text("ipsum\ndolor\nsit\namet", encoding="utf8")
             status = StatusEntry("M  foo.txt", tmpdir)
             diff = get_diff((status,))
 
@@ -44,12 +46,14 @@ class DiffTestCase(GitTestCase):
     def test_get_diff(self):
         with tempgitdir() as tmpdir:
             test_file = tmpdir / "foo.txt"
-            test_file.write_text("Lorem\nipsum\ndolor\nsit\namet")
+            test_file.write_text(
+                "Lorem\nipsum\ndolor\nsit\namet", encoding="utf8"
+            )
 
             git_add(test_file)
             git_commit()
 
-            test_file.write_text("ipsum\ndolor\nsit\namet")
+            test_file.write_text("ipsum\ndolor\nsit\namet", encoding="utf8")
             diff = get_diff()
 
             expected_diff = """--- a/foo.txt

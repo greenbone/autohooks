@@ -31,15 +31,15 @@ from . import GitTestCase, git_add, git_commit, git_mv, git_rm, tempgitdir
 
 def init_test_repo(tmpdir: Path):
     tracked_file = tmpdir / "foo.json"
-    tracked_file.write_text("sed diam nonumy eirmod")
+    tracked_file.write_text("sed diam nonumy eirmod", encoding="utf8")
     changed_file = tmpdir / "bar.json"
     changed_file.touch()
     staged_changed_file = tmpdir / "ipsum.json"
     staged_changed_file.write_text("tempor invidunt ut labore")
     removed_file = tmpdir / "lorem.json"
-    removed_file.write_text("consetetur sadipscing elitr")
+    removed_file.write_text("consetetur sadipscing elitr", encoding="utf8")
     renamed_file = tmpdir / "foo.md"
-    renamed_file.write_text("et dolore magna aliquyam erat")
+    renamed_file.write_text("et dolore magna aliquyam erat", encoding="utf8")
 
     git_add(
         tracked_file,
@@ -50,8 +50,8 @@ def init_test_repo(tmpdir: Path):
     )
     git_commit()
 
-    changed_file.write_text("Lorem Ipsum")
-    staged_changed_file.write_text("Lorem Ipsum")
+    changed_file.write_text("Lorem Ipsum", encoding="utf8")
+    staged_changed_file.write_text("Lorem Ipsum", encoding="utf8")
 
     added_file = tmpdir / "foo.txt"
     added_file.touch()
@@ -61,9 +61,9 @@ def init_test_repo(tmpdir: Path):
 
     git_add(added_file, staged_changed_file, added_modified_file)
 
-    staged_changed_file.write_text("Dolor sit")
+    staged_changed_file.write_text("Dolor sit", encoding="utf8")
 
-    added_modified_file.write_text("Lorem Ipsum")
+    added_modified_file.write_text("Lorem Ipsum", encoding="utf8")
 
     git_mv(renamed_file, tmpdir / "foo.rst")
 
