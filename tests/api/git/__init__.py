@@ -39,6 +39,8 @@ def tempgitdir() -> Generator[Path, None, None]:
     temppath = Path(tempdir.name)
     os.chdir(str(temppath))
     exec_git("init", "-b", "main")
+    exec_git("config", "--local", "user.email", "max.mustermann@example.com")
+    exec_git("config", "--local", "user.name", "Max Mustermann")
     yield temppath
     tempdir.cleanup()
     os.chdir(str(cwd))
