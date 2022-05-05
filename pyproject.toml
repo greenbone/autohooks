@@ -83,7 +83,11 @@ exclude = '''
 '''
 
 [tool.autohooks]
-pre-commit = ['autohooks.plugins.black', 'autohooks.plugins.pylint']
+pre-commit = [
+  'autohooks.plugins.isort',
+  'autohooks.plugins.black',
+  'autohooks.plugins.pylint',
+]
 mode = "poetry"
 
 [tool.pontos.version]
