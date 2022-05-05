@@ -52,10 +52,12 @@ tomlkit = ">=0.5.11"
 pontos = "^22.4.0"
 
 [tool.poetry.dev-dependencies]
-pylint = "^2.13.7"
-autohooks-plugin-pylint = "^21.6.0"
 autohooks-plugin-black = "^21.12.0"
+autohooks-plugin-pylint = "^21.6.0"
+autohooks-plugin-isort = "^22.3.0"
 black = "22.3.0"
+isort = "^5.10.1"
+pylint = "^2.13.7"
 rope = "^1.0.0"
 
 [tool.poetry.scripts]
