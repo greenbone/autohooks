@@ -37,11 +37,11 @@ def tempgitdir() -> Generator[Path, None, None]:
     cwd = Path.cwd()
     tempdir = tempfile.TemporaryDirectory()
     temppath = Path(tempdir.name)
-    os.chdir(temppath)
+    os.chdir(str(temppath))
     exec_git("init")
     yield temppath
     tempdir.cleanup()
-    os.chdir(cwd)
+    os.chdir(str(cwd))
 
 
 def git_add(*paths: Path) -> None:
