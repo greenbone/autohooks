@@ -18,13 +18,12 @@
 # pylint: disable=invalid-name, protected-access
 
 import unittest
-
 from io import StringIO
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import colorful as cf
 
-from autohooks.terminal import Terminal, Signs
+from autohooks.terminal import Signs, Terminal
 
 
 class TerminalTestCase(unittest.TestCase):

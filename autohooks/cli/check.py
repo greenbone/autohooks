@@ -18,22 +18,18 @@
 from pathlib import Path
 
 from autohooks.config import (
+    AUTOHOOKS_SECTION,
     get_pyproject_toml_path,
     load_config_from_pyproject_toml,
-    AUTOHOOKS_SECTION,
 )
-
 from autohooks.hooks import PreCommitHook
-
 from autohooks.precommit.run import (
     autohooks_module_path,
-    load_plugin,
     has_precommit_function,
     has_precommit_parameters,
+    load_plugin,
 )
-
 from autohooks.settings import Mode
-
 from autohooks.terminal import Terminal
 
 

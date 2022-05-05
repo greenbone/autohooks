@@ -15,14 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import subprocess
-
 from enum import Enum
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from types import TracebackType
-from typing import Any, List, Type, Optional, Generator, Union
+from typing import Any, Generator, List, Optional, Type, Union
 
-from autohooks.utils import exec_git, get_project_root_path, GitError
+from autohooks.utils import GitError, exec_git, get_project_root_path
 
 __all__ = [
     'exec_git',

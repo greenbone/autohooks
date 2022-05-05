@@ -17,18 +17,17 @@
 
 import os
 import unittest
-
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from autohooks.utils import (
     exec_git,
-    get_git_hook_directory_path,
-    is_project_root,
-    get_project_root_path,
-    get_project_autohooks_plugins_path,
-    get_pyproject_toml_path,
     get_git_directory_path,
+    get_git_hook_directory_path,
+    get_project_autohooks_plugins_path,
+    get_project_root_path,
+    get_pyproject_toml_path,
+    is_project_root,
 )
 
 

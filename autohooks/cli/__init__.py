@@ -17,12 +17,11 @@
 
 import argparse
 
-from autohooks.terminal import Terminal
-from autohooks.settings import Mode
 from autohooks.__version__ import __version__ as version
-
 from autohooks.cli.activate import install_hooks
 from autohooks.cli.check import check_hooks
+from autohooks.settings import Mode
+from autohooks.terminal import Terminal
 
 DESCRIPTION = 'autohooks - Manage git hooks'
 
