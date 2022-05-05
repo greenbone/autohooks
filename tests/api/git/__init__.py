@@ -38,7 +38,7 @@ def tempgitdir() -> Generator[Path, None, None]:
     tempdir = tempfile.TemporaryDirectory()
     temppath = Path(tempdir.name)
     os.chdir(str(temppath))
-    exec_git("init")
+    exec_git("init", "-b", "main")
     yield temppath
     tempdir.cleanup()
     os.chdir(str(cwd))
