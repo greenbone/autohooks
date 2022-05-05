@@ -17,7 +17,12 @@
 
 from pathlib import Path
 
-from autohooks.api.git import Status, get_status
+from autohooks.api.git import (
+    Status,
+    get_status,
+    is_partially_staged_status,
+    is_staged_status,
+)
 
 from . import GitTestCase, git_add, git_commit, git_mv, git_rm, tempgitdir
 
@@ -170,3 +175,47 @@ class GetStatusTestCase(GitTestCase):
             self.assertEqual(
                 renamed_file_status.working_tree, Status.UNMODIFIED
             )
+
+    def test_is_staged_status(self):
+        with tempgitdir() as tmpdir:
+            init_test_repo(tmpdir)
+
+            status = get_status()
+
+            changed_file_status = status[0]
+            renamed_file_status = status[1]
+            added_file_status = status[2]
+            staged_changed_file_status = status[3]
+            added_modifed_file_status = status[4]
+            removed_file_status = status[5]
+
+            self.assertFalse(is_staged_status(changed_file_status))
+            self.assertTrue(is_staged_status(renamed_file_status))
+            self.assertTrue(is_staged_status(added_file_status))
+            self.assertTrue(is_staged_status(staged_changed_file_status))
+            self.assertTrue(is_staged_status(added_modifed_file_status))
+            self.assertFalse(is_staged_status(removed_file_status))
+
+    def test_is_partially_staged_status(self):
+        with tempgitdir() as tmpdir:
+            init_test_repo(tmpdir)
+
+            status = get_status()
+
+            changed_file_status = status[0]
+            renamed_file_status = status[1]
+            added_file_status = status[2]
+            staged_changed_file_status = status[3]
+            added_modifed_file_status = status[4]
+            removed_file_status = status[5]
+
+            self.assertFalse(is_partially_staged_status(changed_file_status))
+            self.assertFalse(is_partially_staged_status(renamed_file_status))
+            self.assertFalse(is_partially_staged_status(added_file_status))
+            self.assertTrue(
+                is_partially_staged_status(staged_changed_file_status)
+            )
+            self.assertTrue(
+                is_partially_staged_status(added_modifed_file_status)
+            )
+            self.assertFalse(is_partially_staged_status(removed_file_status))
