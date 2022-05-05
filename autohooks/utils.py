@@ -32,8 +32,10 @@ def exec_git(*args: str, ignore_errors: bool = False) -> str:
     try:
         cmd_args = ["git"]
         cmd_args.extend(args)
-        output = subprocess.check_output(cmd_args)
-        return output.decode()
+        process = subprocess.run(
+            cmd_args, check=True, capture_output=True, text=True
+        )
+        return process.stdout
     except subprocess.CalledProcessError as e:
         if ignore_errors:
             return ""
