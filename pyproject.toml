@@ -86,3 +86,7 @@ mode = "poetry"
 
 [tool.pontos.version]
 version-module-file = "autohooks/__version__.py"
+
+[tool.isort]
+profile = "black"
+line_length = 80
