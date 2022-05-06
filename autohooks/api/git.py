@@ -98,7 +98,15 @@ def _parse_status(output: str) -> Iterator[str]:
 
 
 def is_staged_status(status: StatusEntry) -> bool:
-    """Returns true, if the status of the given StatusEntry is staged"""
+    """Returns true, if the status of the given StatusEntry is staged
+
+    Arguments:
+        status: A StatusEntry object that contains the filename,
+                path and the git status
+
+    Returns:
+        True if file is staged, False else
+    """
     return (
         status.index != Status.UNMODIFIED
         and status.index != Status.UNTRACKED
@@ -112,11 +120,11 @@ def is_partially_staged_status(status: StatusEntry) -> bool:
     is partially staged
 
     Arguments:
-    status      A StatusEntry object that contains the filename,
+        status: A StatusEntry object that contains the filename,
                 path and the git status
 
     Returns:
-    True if file is partially staged, False else
+        True if file is partially staged, False else
     """
     return (
         status.index != Status.UNMODIFIED
@@ -130,14 +138,14 @@ def is_partially_staged_status(status: StatusEntry) -> bool:
 
 
 def get_status(files: Iterable[Union[Path, str]] = None) -> List[StatusEntry]:
-    """execute get status
+    """Get information about the current git status
 
     Arguments:
-    files       (optional) specify a list of files and exclude all other pathes
-                for the status
+        files: (optional) specify a list of files and exclude all other pathes
+               for the status
 
     Returns:
-    A list of StatusEntries that contains the status of the specific files
+        A list of StatusEntries that contains the status of the specific files
     """
     args = [
         "status",
@@ -158,14 +166,14 @@ def get_status(files: Iterable[Union[Path, str]] = None) -> List[StatusEntry]:
 def get_staged_status(
     files: Iterable[Union[Path, str]] = None
 ) -> List[StatusEntry]:
-    """get a list of StatusEntries containing only staged files
+    """Get a list of StatusEntries containing only staged files
 
     Arguments:
-    files       (optional) specify a list of files and exclude all other pathes
-                for the status
+        files: (optional) specify a list of files and exclude all other pathes
+               for the status
 
     Returns:
-    A list of StatusEntries with files that are staged
+        A list of StatusEntries with files that are staged
     """
     status = get_status(files)
     return [s for s in status if is_staged_status(s)]
@@ -175,7 +183,7 @@ def stage_files_from_status_list(status_list: Iterable[StatusEntry]) -> None:
     """Add the passed files to staged
 
     Arguments:
-    status_list     A List of StatusEntries that should be added
+        status_list: A List of StatusEntries that should be added
     """
     filenames = [str(s.path) for s in status_list]
     exec_git("add", *filenames)
@@ -185,10 +193,10 @@ def get_diff(files: Iterable[StatusEntry] = None) -> str:
     """Get the diff of the passed files
 
     Arguments:
-    status_list     A List of StatusEntries that should be diffed
+        status_list: A List of StatusEntries that should be diffed
 
-    Returns
-    string containing the diff of the given files
+    Returns:
+        string containing the diff of the given files
     """
     args = ["--no-pager", "diff"]
 
@@ -200,23 +208,55 @@ def get_diff(files: Iterable[StatusEntry] = None) -> str:
 
 
 def _write_tree() -> str:
+    """
+    Create a tree object from the current index
+
+    Returns:
+        The name of the new tree object
+    """
     return exec_git("write-tree").strip()
 
 
 def _read_tree(ref_or_hashid: str) -> None:
+    """
+    Loads (reads) tree information into the index
+
+    Arguments:
+        ref_or_hashid: Git hash or ref to load into the index
+    """
     exec_git("read-tree", ref_or_hashid)
 
 
 def _checkout_from_index(status_list: Iterable[StatusEntry]) -> None:
+    """
+    Copy all files listed from the index to the working directory
+
+    Arguments:
+        status_list: Iterable of status entries containing files that should be
+        checked out into the working directory
+    """
     filenames = [str(s.path) for s in status_list]
     exec_git("checkout-index", "-f", "--", *filenames)
 
 
 def _set_ref(name: str, hashid: str) -> None:
+    """
+    Create a git ref for a hash
+
+    Arguments:
+        name: Name of the reference to be created
+        hashid: Hash that the reference should point to
+    """
     exec_git("update-ref", name, hashid)
 
 
 def _get_tree_diff(tree1: str, tree2: str) -> bytes:
+    """
+    Calculate a diff between two tree objects
+
+    Returns:
+        The diff as bytes
+    """
     return subprocess.check_output(
         [
             "git",
@@ -266,7 +306,7 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
         stage_files_from_status_list(self.partially_staged)
         # save index as working tree
         self.working_tree = _write_tree()
-        # add ref to be able to restore working tee manually
+        # add ref to be able to restore working tree manually
         _set_ref(WORKING_REF, self.working_tree)
 
         # restore index without working tree changes
