@@ -14,8 +14,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import os
 import subprocess
 from enum import Enum
+from os import PathLike
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from types import TracebackType
@@ -82,6 +84,9 @@ class StatusEntry:
             return (self.root_path / self.path).resolve()
         return self.path.resolve()
 
+    def __fspath__(self):
+        return self.path.__fspath__()
+
 
 def _parse_status(output: str) -> Iterator[str]:
     output = output.rstrip("\0")
@@ -137,7 +142,9 @@ def is_partially_staged_status(status: StatusEntry) -> bool:
     )
 
 
-def get_status(files: Iterable[Union[Path, str]] = None) -> List[StatusEntry]:
+def get_status(
+    files: Iterable[Union[PathLike, str]] = None
+) -> List[StatusEntry]:
     """Get information about the current git status
 
     Arguments:
@@ -156,7 +163,7 @@ def get_status(files: Iterable[Union[Path, str]] = None) -> List[StatusEntry]:
 
     if files is not None:
         args.append("--")
-        args.extend([str(f) for f in files])
+        args.extend([os.fspath(f) for f in files])
 
     output = exec_git(*args)
     root_path = _get_git_toplevel_path()
@@ -164,7 +171,7 @@ def get_status(files: Iterable[Union[Path, str]] = None) -> List[StatusEntry]:
 
 
 def get_staged_status(
-    files: Iterable[Union[Path, str]] = None
+    files: Iterable[Union[PathLike, str]] = None
 ) -> List[StatusEntry]:
     """Get a list of StatusEntries containing only staged files
 
@@ -227,7 +234,7 @@ def _read_tree(ref_or_hashid: str) -> None:
     exec_git("read-tree", ref_or_hashid)
 
 
-def _checkout_from_index(status_list: Iterable[StatusEntry]) -> None:
+def _checkout_from_index(status_list: Iterable[PathLike]) -> None:
     """
     Copy all files listed from the index to the working directory
 
@@ -235,7 +242,7 @@ def _checkout_from_index(status_list: Iterable[StatusEntry]) -> None:
         status_list: Iterable of status entries containing files that should be
         checked out into the working directory
     """
-    filenames = [str(s.path) for s in status_list]
+    filenames = [os.fspath(s) for s in status_list]
     exec_git("checkout-index", "-f", "--", *filenames)
 
 
@@ -292,7 +299,8 @@ WORKING_REF = "refs/autohooks/working"
 
 
 class stash_unstaged_changes:  # pylint: disable=invalid-name
-    def __init__(self, status_list: Iterable[StatusEntry]) -> None:
+    def __init__(self, files: Iterable[PathLike]) -> None:
+        status_list = get_status(files)
         self.partially_staged = [
             s for s in status_list if is_partially_staged_status(s)
         ]
