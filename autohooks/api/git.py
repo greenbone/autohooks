@@ -21,7 +21,7 @@ from os import PathLike
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from types import TracebackType
-from typing import Any, Iterable, Iterator, List, Optional, Type, Union
+from typing import Any, Iterable, Iterator, List, Optional, Type
 
 from autohooks.utils import GitError, exec_git, get_project_root_path
 
@@ -142,9 +142,7 @@ def is_partially_staged_status(status: StatusEntry) -> bool:
     )
 
 
-def get_status(
-    files: Iterable[Union[PathLike, str]] = None
-) -> List[StatusEntry]:
+def get_status(files: Optional[Iterable[PathLike]] = None) -> List[StatusEntry]:
     """Get information about the current git status
 
     Arguments:
@@ -171,7 +169,7 @@ def get_status(
 
 
 def get_staged_status(
-    files: Iterable[Union[PathLike, str]] = None
+    files: Optional[Iterable[PathLike]] = None,
 ) -> List[StatusEntry]:
     """Get a list of StatusEntries containing only staged files
 
@@ -196,7 +194,7 @@ def stage_files_from_status_list(status_list: Iterable[StatusEntry]) -> None:
     exec_git("add", *filenames)
 
 
-def get_diff(files: Iterable[StatusEntry] = None) -> str:
+def get_diff(files: Optional[Iterable[StatusEntry]] = None) -> str:
     """Get the diff of the passed files
 
     Arguments:
@@ -299,7 +297,7 @@ WORKING_REF = "refs/autohooks/working"
 
 
 class stash_unstaged_changes:  # pylint: disable=invalid-name
-    def __init__(self, files: Iterable[PathLike]) -> None:
+    def __init__(self, files: Optional[Iterable[PathLike]] = None) -> None:
         status_list = get_status(files)
         self.partially_staged = [
             s for s in status_list if is_partially_staged_status(s)
