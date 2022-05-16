@@ -331,7 +331,7 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
         # add ref to be able to restore index manually
         _set_ref(INDEX_REF, self.index)
         # add changes from files to index
-        stage_files_from_status_list(self.partially_staged)
+        stage_files(self.partially_staged)
         # save index as working tree
         self.working_tree = _write_tree()
         # add ref to be able to restore working tree manually
