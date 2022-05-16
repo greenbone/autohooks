@@ -149,7 +149,7 @@ class StashUnstagedChangesTestCase(GitTestCase):
 
             git_add(file1)
 
-            file1.write_text(content2)
+            file1.write_text(content2, encoding="utf8")
 
             stash = stash_unstaged_changes()
             with stash:
@@ -170,7 +170,7 @@ class StashUnstagedChangesTestCase(GitTestCase):
 
             git_add(file1)
 
-            file1.write_text(content2)
+            file1.write_text(content2, encoding="utf8")
 
             stash = stash_unstaged_changes()
             with stash:
@@ -195,7 +195,7 @@ class StashUnstagedChangesTestCase(GitTestCase):
 
             git_add(file1)
 
-            file1.write_text(content2)
+            file1.write_text(content2, encoding="utf8")
 
             stash = stash_unstaged_changes()
             with stash:
