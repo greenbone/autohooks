@@ -34,7 +34,6 @@ def temdir() -> Generator[Path, None, None]:
 
 @contextmanager
 def tempgitdir() -> Generator[Path, None, None]:
-    cwd = Path.cwd()
     tempdir = tempfile.TemporaryDirectory()
     temppath = Path(tempdir.name)
     os.chdir(str(temppath))
@@ -43,7 +42,6 @@ def tempgitdir() -> Generator[Path, None, None]:
     exec_git("config", "--local", "user.name", "Max Mustermann")
     yield temppath
     tempdir.cleanup()
-    os.chdir(str(cwd))
 
 
 def git_add(*paths: Path) -> None:
