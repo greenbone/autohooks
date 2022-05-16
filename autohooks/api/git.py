@@ -31,8 +31,10 @@ __all__ = [
     "get_status",
     "is_partially_staged_status",
     "is_staged_status",
-    "stage_files_from_status_list",
+    "stage_files",
     "stash_unstaged_changes",
+    "Status",
+    "StatusEntry",
 ]
 
 
