@@ -308,6 +308,15 @@ WORKING_REF = "refs/autohooks/working"
 
 
 class stash_unstaged_changes:  # pylint: disable=invalid-name
+    """
+    A context manager that stashes changes on tracked files that are not added
+    to the index. The stashed changes are restored when the context manager
+    exits.
+
+    with stash_unstaged_changes():
+        do_something()
+    """
+
     def __init__(self, files: Optional[Iterable[PathLike]] = None) -> None:
         status_list = get_status(files)
         self.partially_staged = [
