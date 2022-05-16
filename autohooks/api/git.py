@@ -185,12 +185,23 @@ def get_staged_status(
 
 
 def stage_files_from_status_list(status_list: Iterable[StatusEntry]) -> None:
-    """Add the passed files to staged
+    """Add the passed files from the status list to git staging index
+
+    Deprecated. Please use stage_files instead.
 
     Arguments:
         status_list: A List of StatusEntries that should be added
     """
-    filenames = [str(s.path) for s in status_list]
+    stage_files(status_list)
+
+
+def stage_files(files: Iterable[PathLike]) -> None:
+    """Add the passed files to git staging index
+
+    Arguments:
+        files: A List of files to add to the index
+    """
+    filenames = [os.fspath(f) for f in files]
     exec_git("add", *filenames)
 
 
