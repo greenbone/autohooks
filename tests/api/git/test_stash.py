@@ -15,34 +15,32 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import random
-
 from autohooks.api.git import Status, get_status, stash_unstaged_changes
 
-from . import GitTestCase, git_add, tempgitdir
+from . import GitTestCase, git_add, randbytes, tempgitdir
 
 
 class StashUnstagedChangesTestCase(GitTestCase):
     def test_no_working_files(self):
         with tempgitdir() as tmpdir:
             file1 = tmpdir / "foo.txt"
-            file1.write_bytes(random.randbytes(20))
+            file1.write_bytes(randbytes(20))
 
-            # git_add(file1)
+            git_add(file1)
 
-            # stash = stash_unstaged_changes()
-            # with stash:
-            #     self.assertEqual(len(stash.partially_staged), 0)
+            stash = stash_unstaged_changes()
+            with stash:
+                self.assertEqual(len(stash.partially_staged), 0)
 
     def test_staged_with_working_files(self):
         with tempgitdir() as tmpdir:
             file1 = tmpdir / "foo.txt"
-            file1.write_bytes(random.randbytes(20))
+            file1.write_bytes(randbytes(20))
 
             git_add(file1)
 
             file1 = tmpdir / "bar.txt"
-            file1.write_bytes(random.randbytes(20))
+            file1.write_bytes(randbytes(20))
 
             stash = stash_unstaged_changes()
             with stash:
@@ -51,11 +49,11 @@ class StashUnstagedChangesTestCase(GitTestCase):
     def test_partiall_staged_files(self):
         with tempgitdir() as tmpdir:
             file1 = tmpdir / "foo.txt"
-            file1.write_bytes(random.randbytes(20))
+            file1.write_bytes(randbytes(20))
 
             git_add(file1)
 
-            file1.write_bytes(random.randbytes(20))
+            file1.write_bytes(randbytes(20))
 
             status = get_status()
             self.assertEqual(status[0].index, Status.ADDED)
@@ -76,11 +74,11 @@ class StashUnstagedChangesTestCase(GitTestCase):
     def test_partiall_staged_files_with_error(self):
         with tempgitdir() as tmpdir:
             file1 = tmpdir / "foo.txt"
-            file1.write_bytes(random.randbytes(20))
+            file1.write_bytes(randbytes(20))
 
             git_add(file1)
 
-            content = random.randbytes(20)
+            content = randbytes(20)
             file1.write_bytes(content)
 
             status = get_status()
@@ -108,11 +106,11 @@ class StashUnstagedChangesTestCase(GitTestCase):
     def test_partiall_staged_files_with_error_and_changed_content(self):
         with tempgitdir() as tmpdir:
             file1 = tmpdir / "foo.txt"
-            file1.write_bytes(random.randbytes(20))
+            file1.write_bytes(randbytes(20))
 
             git_add(file1)
 
-            content = random.randbytes(20)
+            content = randbytes(20)
             file1.write_bytes(content)
 
             status = get_status()
@@ -129,7 +127,7 @@ class StashUnstagedChangesTestCase(GitTestCase):
                     self.assertEqual(status[0].index, Status.ADDED)
                     self.assertEqual(status[0].working_tree, Status.UNMODIFIED)
 
-                    content2 = random.randbytes(20)
+                    content2 = randbytes(20)
                     file1.write_bytes(content2)
 
                     raise ValueError("An error ocurred!")
@@ -140,7 +138,7 @@ class StashUnstagedChangesTestCase(GitTestCase):
 
             self.assertEqual(content, file1.read_bytes())
 
-    def test_formatting_plugin_with_untacked_change(self):
+    def test_formatting_plugin_with_untracked_change(self):
         with tempgitdir() as tmpdir:
             content = "Lorem Ipsum"
             content2 = "Lorem Ipsum\nDolor Sit"
