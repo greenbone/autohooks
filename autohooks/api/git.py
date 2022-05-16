@@ -333,6 +333,7 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
         # add changes from files to index
         stage_files(self.partially_staged)
         # save index as working tree
+        # unstaged changes are stored in the working tree now
         self.working_tree = _write_tree()
         # add ref to be able to restore working tree manually
         _set_ref(WORKING_REF, self.working_tree)
@@ -367,18 +368,23 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
             self.restore_working_tree()
             _read_tree(self.index)
         else:
-            # save formatting changes
-            formatted_tree = _write_tree()
+            # save possible changes made to the index
+            changed_tree = _write_tree()
 
             self.restore_working_tree()
 
             # restore index
-            # formatted_tree will be the same as index if no changes are applied
-            _read_tree(formatted_tree)
+            _read_tree(changed_tree)
 
-            if formatted_tree != self.index:
-                # create diff between index and formatted_tree
-                patch = _get_tree_diff(self.index, formatted_tree)
+            # create and apply diff between index before running the plugin and
+            # changes made by the plugin if some changes have been applied and
+            # staged.
+            # changed_tree will be the same as index if no changes are applied.
+            # changed_tree may be the same as the working tree. in that case no
+            # further action is needed.
+            if changed_tree != self.index and changed_tree != self.working_tree:
+                # create diff between working tree and changed tree
+                patch = _get_tree_diff(self.index, changed_tree)
                 try:
                     # apply diff to working tree
                     _apply_diff(patch)
