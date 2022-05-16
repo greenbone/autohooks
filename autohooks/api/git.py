@@ -243,15 +243,15 @@ def _read_tree(ref_or_hashid: str) -> None:
     exec_git("read-tree", ref_or_hashid)
 
 
-def _checkout_from_index(status_list: Iterable[PathLike]) -> None:
+def _checkout_from_index(files: Iterable[PathLike]) -> None:
     """
     Copy all files listed from the index to the working directory
 
     Arguments:
-        status_list: Iterable of status entries containing files that should be
-        checked out into the working directory
+        files: Iterable of files that should be checked out into the working
+               directory
     """
-    filenames = [os.fspath(s) for s in status_list]
+    filenames = [os.fspath(s) for s in files]
     exec_git("checkout-index", "-f", "--", *filenames)
 
 
