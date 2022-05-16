@@ -57,7 +57,7 @@ autohooks-plugin-pylint = "^21.6.0"
 autohooks-plugin-isort = "^22.3.0"
 black = "22.3.0"
 isort = "^5.10.1"
-pylint = "^2.13.7"
+pylint = "^2.13.9"
 rope = "^1.0.0"
 
 [tool.poetry.scripts]
