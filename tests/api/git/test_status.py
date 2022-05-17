@@ -22,6 +22,7 @@ from pathlib import Path
 from autohooks.api.git import (
     Status,
     StatusEntry,
+    get_staged_status,
     get_status,
     is_partially_staged_status,
     is_staged_status,
@@ -226,6 +227,80 @@ class GetStatusTestCase(GitTestCase):
             self.assertEqual(
                 renamed_file_status.working_tree, Status.UNMODIFIED
             )
+
+
+class GetStagedStatusTestCase(GitTestCase):
+    def test_get_staged_status(self):
+        with tempgitdir() as tmpdir:
+            (
+                _tracked_file,
+                _changed_file,
+                added_file,
+                staged_changed_file,
+                added_modifed_file,
+                _removed_file,
+                renamed_file,
+                _untracked_file,
+            ) = init_test_repo(tmpdir)
+
+            status = get_staged_status()
+            self.assertEqual(len(status), 4)
+
+            renamed_file_status = status[0]
+            added_file_status = status[1]
+            staged_changed_file_status = status[2]
+            added_modifed_file_status = status[3]
+
+            self.assertEqual(
+                renamed_file_status.old_path.absolute(), renamed_file
+            )
+            self.assertEqual(renamed_file_status.index, Status.RENAMED)
+            self.assertEqual(
+                renamed_file_status.working_tree, Status.UNMODIFIED
+            )
+
+            self.assertEqual(added_file_status.absolute_path(), added_file)
+            self.assertEqual(added_file_status.index, Status.ADDED)
+            self.assertEqual(added_file_status.working_tree, Status.UNMODIFIED)
+
+            self.assertEqual(
+                staged_changed_file_status.absolute_path(), staged_changed_file
+            )
+            self.assertEqual(staged_changed_file_status.index, Status.MODIFIED)
+            self.assertEqual(
+                staged_changed_file_status.working_tree, Status.MODIFIED
+            )
+
+            self.assertEqual(
+                added_modifed_file_status.absolute_path(), added_modifed_file
+            )
+            self.assertEqual(added_modifed_file_status.index, Status.ADDED)
+            self.assertEqual(
+                added_modifed_file_status.working_tree, Status.MODIFIED
+            )
+
+    def test_get_status_for_files(self):
+        with tempgitdir() as tmpdir:
+            (
+                _tracked_file,
+                _changed_file,
+                added_file,
+                _staged_changed_file,
+                _added_modifed_file,
+                _removed_file,
+                renamed_file,
+                _untracked_file,
+            ) = init_test_repo(tmpdir)
+
+            status = get_staged_status((added_file, renamed_file))
+
+            self.assertEqual(len(status), 1)
+
+            added_file_status = status[0]
+
+            self.assertEqual(added_file_status.absolute_path(), added_file)
+            self.assertEqual(added_file_status.index, Status.ADDED)
+            self.assertEqual(added_file_status.working_tree, Status.UNMODIFIED)
 
 
 class IsStagedStatusTestCase(unittest.TestCase):
