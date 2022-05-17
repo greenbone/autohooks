@@ -16,9 +16,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import subprocess
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest.mock import MagicMock, patch
 
 from autohooks.utils import (
     GitError,
@@ -29,6 +31,7 @@ from autohooks.utils import (
     get_project_root_path,
     get_pyproject_toml_path,
     is_project_root,
+    is_split_env,
 )
 from tests import tempdir
 
@@ -245,6 +248,33 @@ class GetGitDirectoryPath(unittest.TestCase):
     def test_no_git_directory(self):
         with tempdir(change_into=True), self.assertRaises(GitError):
             get_git_directory_path()
+
+
+class IsSplitEnvTestCase(unittest.TestCase):
+    @patch("subprocess.run")
+    def test_is_split_env(self, subprocess_mock: MagicMock):
+        self.assertTrue(is_split_env())
+
+        subprocess_mock.assert_called_once_with(
+            ["/usr/bin/env", "-S", "echo", "True"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+            check=True,
+        )
+
+    @patch("subprocess.run")
+    def test_is_not_split_env(self, subprocess_mock: MagicMock):
+        subprocess_mock.side_effect = subprocess.CalledProcessError(1, ["foo"])
+        self.assertFalse(is_split_env())
+
+        subprocess_mock.assert_called_once_with(
+            ["/usr/bin/env", "-S", "echo", "True"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+            check=True,
+        )
 
 
 if __name__ == "__main__":
