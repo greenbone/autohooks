@@ -3,6 +3,7 @@
 
 [![PyPI release](https://img.shields.io/pypi/v/autohooks.svg)](https://pypi.org/project/autohooks/)
 [![Build and test Python package](https://github.com/greenbone/autohooks/actions/workflows/ci-python.yml/badge.svg)](https://github.com/greenbone/autohooks/actions/workflows/ci-python.yml)
+[![codecov](https://codecov.io/gh/greenbone/autohooks/branch/main/graph/badge.svg?token=9IX7ucaFwj)](https://codecov.io/gh/greenbone/autohooks)
 
 Library for managing and writing [git hooks](https://git-scm.com/docs/githooks)
 in Python.
