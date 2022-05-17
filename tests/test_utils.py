@@ -242,6 +242,10 @@ class GetGitDirectoryPath(unittest.TestCase):
         git_dir_path = get_git_directory_path()
         self.assertEqual(git_dir_path, self.git_dir_path)
 
+    def test_no_git_directory(self):
+        with tempdir(change_into=True), self.assertRaises(GitError):
+            get_git_directory_path()
+
 
 if __name__ == "__main__":
     unittest.main()
