@@ -27,8 +27,9 @@ from autohooks.api.git import (
     is_partially_staged_status,
     is_staged_status,
 )
+from tests import tempgitdir
 
-from . import GitTestCase, git_add, git_commit, git_mv, git_rm, tempgitdir
+from . import GitTestCase, git_add, git_commit, git_mv, git_rm
 
 
 def init_test_repo(tmpdir: Path):

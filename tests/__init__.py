@@ -22,6 +22,8 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator
 
+from autohooks.utils import exec_git
+
 
 @contextmanager
 def tempdir(change_into=False) -> Generator[Path, None, None]:
@@ -31,5 +33,21 @@ def tempdir(change_into=False) -> Generator[Path, None, None]:
         os.chdir(temp_dir.name)
 
     yield Path(temp_dir.name)
+
+    temp_dir.cleanup()
+
+
+@contextmanager
+def tempgitdir() -> Generator[Path, None, None]:
+    temp_dir = tempfile.TemporaryDirectory()
+    temp_path = Path(temp_dir.name)
+
+    os.chdir(str(temp_path))
+
+    exec_git("init", "-b", "main")
+    exec_git("config", "--local", "user.email", "max.mustermann@example.com")
+    exec_git("config", "--local", "user.name", "Max Mustermann")
+
+    yield temp_path
 
     temp_dir.cleanup()

@@ -16,7 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from autohooks.api.git import StatusEntry, get_diff
-from tests.api.git import GitTestCase, git_add, git_commit, tempgitdir
+from tests import tempgitdir
+from tests.api.git import GitTestCase, git_add, git_commit
 
 
 class DiffTestCase(GitTestCase):
