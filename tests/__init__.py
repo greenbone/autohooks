@@ -15,3 +15,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import os
+import tempfile
+from contextlib import contextmanager
+from pathlib import Path
+from typing import Generator
+
+
+@contextmanager
+def tempdir(change_into=False) -> Generator[Path, None, None]:
+    temp_dir = tempfile.TemporaryDirectory()
+
+    if change_into:
+        os.chdir(temp_dir.name)
+
+    yield Path(temp_dir.name)
+
+    temp_dir.cleanup()

@@ -33,13 +33,6 @@ def randbytes(n: int) -> bytes:  # pylint: disable=invalid-name
 
 
 @contextmanager
-def temdir() -> Generator[Path, None, None]:
-    tempdir = tempfile.TemporaryDirectory()
-    yield Path(tempdir.name)
-    tempdir.cleanup()
-
-
-@contextmanager
 def tempgitdir() -> Generator[Path, None, None]:
     tempdir = tempfile.TemporaryDirectory()
     temppath = Path(tempdir.name)
