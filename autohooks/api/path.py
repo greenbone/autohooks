@@ -16,6 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import fnmatch
+import os
+from os import PathLike
 from pathlib import Path
 from typing import Iterable
 
@@ -26,7 +28,7 @@ def is_python_path(path: Path) -> bool:
     return path.match("*.py")
 
 
-def match(path: Path, pattern_list: Iterable) -> bool:
+def match(path: PathLike, pattern_list: Iterable) -> bool:
     """
     Check if a Path matches to one of the patterns
 
@@ -42,6 +44,6 @@ def match(path: Path, pattern_list: Iterable) -> bool:
         Boolean: True if path matches a pattern of the list
     """
     for pattern in pattern_list:
-        if fnmatch.fnmatch(str(path), pattern):
+        if fnmatch.fnmatch(os.fspath(path), pattern):
             return True
     return False

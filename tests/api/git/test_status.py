@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import unittest
 from pathlib import Path
 
@@ -126,6 +127,10 @@ class StatusEntryTestCase(unittest.TestCase):
         self.assertEqual(status.index, Status.IGNORED)
         self.assertEqual(status.working_tree, Status.UNTRACKED)
         self.assertEqual(status.path, Path("foo.txt"))
+
+    def test_pathlike(self):
+        status = StatusEntry("MM foo.txt")
+        self.assertEqual(os.fspath(status), "foo.txt")
 
 
 class GetStatusTestCase(GitTestCase):

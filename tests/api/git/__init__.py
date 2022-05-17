@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import random
 import tempfile
 import unittest
 from contextlib import contextmanager
@@ -23,6 +24,12 @@ from pathlib import Path
 from typing import Generator
 
 from autohooks.utils import exec_git
+
+
+def randbytes(n: int) -> bytes:  # pylint: disable=invalid-name
+    if hasattr(random, "randbytes"):
+        return random.randbytes(n)
+    return random.getrandbits(n * 8).to_bytes(n, "little")
 
 
 @contextmanager
@@ -34,7 +41,6 @@ def temdir() -> Generator[Path, None, None]:
 
 @contextmanager
 def tempgitdir() -> Generator[Path, None, None]:
-    cwd = Path.cwd()
     tempdir = tempfile.TemporaryDirectory()
     temppath = Path(tempdir.name)
     os.chdir(str(temppath))
@@ -43,7 +49,6 @@ def tempgitdir() -> Generator[Path, None, None]:
     exec_git("config", "--local", "user.name", "Max Mustermann")
     yield temppath
     tempdir.cleanup()
-    os.chdir(str(cwd))
 
 
 def git_add(*paths: Path) -> None:
