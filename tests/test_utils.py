@@ -21,6 +21,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from autohooks.utils import (
+    GitError,
     exec_git,
     get_git_directory_path,
     get_git_hook_directory_path,
@@ -29,6 +30,29 @@ from autohooks.utils import (
     get_pyproject_toml_path,
     is_project_root,
 )
+from tests import tempdir
+
+
+class ExecGitTestCase(unittest.TestCase):
+    def test_exec_fail(self):
+        with tempdir(change_into=True), self.assertRaisesRegex(
+            GitError,
+            r"Git command '\['git', 'foo'\]' returned non-zero exit "
+            "status 1",
+        ) as err:
+            exec_git("foo")
+
+        exception = err.exception
+        self.assertEqual(exception.cmd, ["git", "foo"])
+        self.assertEqual(exception.returncode, 1)
+
+    def test_exec_ignore_error(self):
+        with tempdir(change_into=True):
+            self.assertEqual(exec_git("foo", ignore_errors=True), "")
+
+    def test_exec_success(self):
+        with tempdir(change_into=True):
+            exec_git("init")
 
 
 class GitHookDirPathTestCase(unittest.TestCase):
