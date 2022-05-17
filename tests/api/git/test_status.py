@@ -227,6 +227,8 @@ class GetStatusTestCase(GitTestCase):
                 renamed_file_status.working_tree, Status.UNMODIFIED
             )
 
+
+class IsStagedStatusTestCase(unittest.TestCase):
     def test_is_staged_status(self):
         with tempgitdir() as tmpdir:
             init_test_repo(tmpdir)
@@ -247,6 +249,8 @@ class GetStatusTestCase(GitTestCase):
             self.assertTrue(is_staged_status(added_modifed_file_status))
             self.assertFalse(is_staged_status(removed_file_status))
 
+
+class IsPartiallyStagedStatusTestCase(unittest.TestCase):
     def test_is_partially_staged_status(self):
         with tempgitdir() as tmpdir:
             init_test_repo(tmpdir)
