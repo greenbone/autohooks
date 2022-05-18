@@ -18,9 +18,10 @@
 import unittest
 from unittest.mock import MagicMock, call
 
-from autohooks.cli.check import check_hooks
-from autohooks.hooks import PreCommitHook
+from autohooks.cli.check import check_hooks, check_pre_commit_hook
+from autohooks.hooks import PreCommitHook, get_pre_commit_hook_path
 from autohooks.settings import Mode
+from autohooks.template import POETRY_SHEBANG, TEMPLATE_VERSION
 from tests import tempgitdir
 
 
@@ -112,4 +113,130 @@ def precommit(*args):
         )
         term.warning.assert_not_called()
         term.info.assert_called_once_with('Using autohooks mode "poetry".')
+        term.error.assert_not_called()
+
+
+class CheckPreCommitHookTestCase(unittest.TestCase):
+    def test_no_precommit_hook(self):
+        term = MagicMock()
+
+        with tempgitdir():
+            pre_commit_hook = PreCommitHook()
+
+            check_pre_commit_hook(term, pre_commit_hook)
+
+        term.ok.assert_not_called()
+        term.warning.assert_not_called()
+        term.info.assert_not_called()
+        term.error.assert_called_once_with(
+            "autohooks pre-commit hook not active. Please run "
+            "'autohooks activate'."
+        )
+
+    def test_no_autohooks_precommit_hook(self):
+        term = MagicMock()
+
+        with tempgitdir():
+            pre_commit_hook_path = get_pre_commit_hook_path()
+            pre_commit_hook_path.write_text(
+                '#!/bin/sh\necho "Hello World\n"', encoding="utf8"
+            )
+            pre_commit_hook = PreCommitHook()
+
+            check_pre_commit_hook(term, pre_commit_hook)
+
+        term.ok.assert_not_called()
+        term.warning.assert_not_called()
+        term.info.assert_not_called()
+        term.error.assert_called_once_with(
+            "autohooks pre-commit hook is not active. But a different "
+            f"pre-commit hook has been found at {pre_commit_hook_path}."
+        )
+
+    def test_outdated_precommit_hook(self):
+        term = MagicMock()
+
+        with tempgitdir():
+            pre_commit_hook_path = get_pre_commit_hook_path()
+            pre_commit_hook_path.write_text(
+                f"""{POETRY_SHEBANG}
+
+import sys
+
+try:
+    from autohooks.precommit import run
+    sys.exit(run())
+except ImportError:
+    pass
+            """,
+                encoding="utf8",
+            )
+            pre_commit_hook = PreCommitHook()
+
+            check_pre_commit_hook(term, pre_commit_hook)
+
+        term.ok.assert_called_once_with("autohooks pre-commit hook is active.")
+        term.warning.assert_called_once_with(
+            "autohooks pre-commit hook is outdated. Please run "
+            "'autohooks activate --force' to update your pre-commit "
+            "hook."
+        )
+        term.info.assert_not_called()
+        term.error.assert_not_called()
+
+    def test_unknown_mode(self):
+        term = MagicMock()
+
+        with tempgitdir():
+            pre_commit_hook_path = get_pre_commit_hook_path()
+            pre_commit_hook_path.write_text(
+                f"""#!/bin/sh
+# meta = {{ version = {TEMPLATE_VERSION} }}
+
+import sys
+
+try:
+    from autohooks.precommit import run
+    sys.exit(run())
+except ImportError:
+    pass
+            """,
+                encoding="utf8",
+            )
+            pre_commit_hook = PreCommitHook()
+
+            check_pre_commit_hook(term, pre_commit_hook)
+
+        self.assertEqual(term.ok.call_count, 2)
+        term.ok.assert_has_calls(
+            (
+                call("autohooks pre-commit hook is active."),
+                call("autohooks pre-commit hook is up-to-date."),
+            )
+        )
+        term.warning.assert_called_once_with(
+            f"Unknown autohooks mode in {pre_commit_hook}. "
+            f'Falling back to "pythonpath" mode.'
+        )
+        term.info.assert_not_called()
+        term.error.assert_not_called()
+
+    def test_is_active(self):
+        term = MagicMock()
+
+        with tempgitdir():
+            pre_commit_hook = PreCommitHook()
+            pre_commit_hook.write(mode=Mode.POETRY)
+
+            check_pre_commit_hook(term, pre_commit_hook)
+
+        self.assertEqual(term.ok.call_count, 2)
+        term.ok.assert_has_calls(
+            (
+                call("autohooks pre-commit hook is active."),
+                call("autohooks pre-commit hook is up-to-date."),
+            )
+        )
+        term.warning.assert_not_called()
+        term.info.assert_not_called()
         term.error.assert_not_called()
