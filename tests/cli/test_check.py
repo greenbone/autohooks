@@ -159,7 +159,7 @@ class CheckPreCommitHookTestCase(unittest.TestCase):
         with tempgitdir():
             pre_commit_hook_path = get_pre_commit_hook_path()
             pre_commit_hook_path.write_text(
-                f"""{POETRY_SHEBANG}
+                f"""!#{POETRY_SHEBANG}
 
 import sys
 
