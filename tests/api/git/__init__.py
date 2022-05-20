@@ -32,25 +32,6 @@ def randbytes(n: int) -> bytes:  # pylint: disable=invalid-name
     return random.getrandbits(n * 8).to_bytes(n, "little")
 
 
-@contextmanager
-def temdir() -> Generator[Path, None, None]:
-    tempdir = tempfile.TemporaryDirectory()
-    yield Path(tempdir.name)
-    tempdir.cleanup()
-
-
-@contextmanager
-def tempgitdir() -> Generator[Path, None, None]:
-    tempdir = tempfile.TemporaryDirectory()
-    temppath = Path(tempdir.name)
-    os.chdir(str(temppath))
-    exec_git("init", "-b", "main")
-    exec_git("config", "--local", "user.email", "max.mustermann@example.com")
-    exec_git("config", "--local", "user.name", "Max Mustermann")
-    yield temppath
-    tempdir.cleanup()
-
-
 def git_add(*paths: Path) -> None:
     exec_git("add", *paths)
 

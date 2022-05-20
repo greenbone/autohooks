@@ -108,7 +108,7 @@ def check_config(
                     f"Unknown autohooks mode in {str(pyproject_toml)}."
                 )
 
-            if (
+            elif (
                 config_mode.get_effective_mode()
                 != hook_mode.get_effective_mode()
             ):

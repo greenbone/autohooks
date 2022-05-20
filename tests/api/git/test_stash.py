@@ -16,8 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from autohooks.api.git import Status, get_status, stash_unstaged_changes
+from tests import tempgitdir
 
-from . import GitTestCase, git_add, randbytes, tempgitdir
+from . import GitTestCase, git_add, randbytes
 
 
 class StashUnstagedChangesTestCase(GitTestCase):

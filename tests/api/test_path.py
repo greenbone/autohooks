@@ -79,6 +79,9 @@ class IsPythonPathTestCase(unittest.TestCase):
         self.assertFalse(is_python_path(Path("foo/bar/baz.pyc")))
         self.assertFalse(is_python_path(Path("foo/bar/baz.py.txt")))
         self.assertFalse(is_python_path(Path("foo/bar/python.txt")))
+        self.assertFalse(is_python_path(None))
+        self.assertFalse(is_python_path(""))
+        self.assertFalse(is_python_path(Path()))
 
 
 if __name__ == "__main__":
