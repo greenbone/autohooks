@@ -14,15 +14,15 @@ wrapt = ">=1.11,<2"
 
 [[package]]
 name = "autohooks-plugin-black"
-version = "21.12.0"
+version = "22.7.0"
 description = "An autohooks plugin for python code formatting via black"
 category = "dev"
 optional = false
-python-versions = ">=3.7.0,<4.0"
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-autohooks = ">=21.6.0,<22.0.0"
-black = ">=20.8,<=23.0.0b0"
+autohooks = ">=21.6.0"
+black = ">=20.8"
 
 [[package]]
 name = "autohooks-plugin-isort"
@@ -369,7 +369,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "bea20a7d7a39cf61590f19fe32a79177564887d72e3c3e1909fec89eb643a890"
+content-hash = "c7a38740929967391370b0915287f7407fdc3a4fed2572c049f1d4f25f67eaab"
 
 [metadata.files]
 astroid = [
@@ -377,8 +377,8 @@ astroid = [
     {file = "astroid-2.11.6.tar.gz", hash = "sha256:4f933d0bf5e408b03a6feb5d23793740c27e07340605f236496cd6ce552043d6"},
 ]
 autohooks-plugin-black = [
-    {file = "autohooks-plugin-black-21.12.0.tar.gz", hash = "sha256:8808fa5d2c7a7b7e66023784d43c210169121998c2f88ac30c71e1b7e5a84a1d"},
-    {file = "autohooks_plugin_black-21.12.0-py3-none-any.whl", hash = "sha256:39f30256243164c88a9082f726c2d27e8b12560ff5529e2ceaa131367b698d7b"},
+    {file = "autohooks-plugin-black-22.7.0.tar.gz", hash = "sha256:39193d8a85df4d0d80b920b1b8b5cf6d257ad502364d0c0bf5c7ff0717b14091"},
+    {file = "autohooks_plugin_black-22.7.0-py3-none-any.whl", hash = "sha256:a420e1e351346e4326aba5d68db2a8c953742ea859e07dd27df6d1957e4a879b"},
 ]
 autohooks-plugin-isort = [
     {file = "autohooks_plugin_isort-22.3.0-py3-none-any.whl", hash = "sha256:4b85ee96a501d6cb29c005dca44dc4638d0b548a0302e8bbfa1bea0fad7d3f40"},
