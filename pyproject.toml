@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "autohooks"
-version = "21.7.1.dev1"
+version = "22.7.0"
 description = "Library for managing git hooks"
 authors = ["Greenbone Networks GmbH <info@greenbone.net>"]
 license = "GPL-3.0-or-later"
