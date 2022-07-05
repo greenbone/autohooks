@@ -13,7 +13,7 @@ homepage = "https://github.com/greenbone/autohooks"
 repository = "https://github.com/greenbone/autohooks"
 classifiers=[
   # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
-  "Development Status :: 4 - Beta",
+  "Development Status :: 5 - Production/Stable",
   "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",  # pylint: disable=line-too-long
   "Environment :: Console",
   "Intended Audience :: Developers",
