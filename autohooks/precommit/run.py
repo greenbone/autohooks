@@ -22,12 +22,10 @@ from contextlib import contextmanager
 from types import ModuleType
 from typing import Generator
 
-from pontos.terminal import _set_terminal
-
 from autohooks.config import load_config_from_pyproject_toml
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode
-from autohooks.terminal import Terminal
+from autohooks.terminal import Terminal, _set_terminal
 from autohooks.utils import get_project_autohooks_plugins_path
 
 
