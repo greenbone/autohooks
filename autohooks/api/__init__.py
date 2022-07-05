@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from pontos.terminal import bold_info, error, fail, info, ok, out, warning
+from autohooks.terminal import bold_info, error, fail, info, ok, out, warning
 
 __all__ = [
     "error",

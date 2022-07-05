@@ -18,10 +18,8 @@
 import unittest
 from unittest.mock import Mock
 
-from pontos.terminal import _set_terminal
-
 from autohooks.api import error, fail, info, ok, out, warning
-from autohooks.terminal import Terminal
+from autohooks.terminal import Terminal, _set_terminal
 
 
 class TerminalOutputApiTestCase(unittest.TestCase):
