@@ -15,7 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from pontos.terminal.terminal import Signs, Terminal
+from typing import Optional
+
+from pontos.terminal.terminal import ConsoleTerminal as Terminal
+from pontos.terminal.terminal import Signs
 
 __all__ = (
     "Terminal",
@@ -64,7 +67,7 @@ def overwrite(message: str, new_line: bool = False):
     __term.print_overwrite(message, new_line=new_line)
 
 
-def _set_terminal(term: Terminal) -> Terminal:
+def _set_terminal(term: Optional[Terminal] = None) -> Terminal:
     global __term  # pylint: disable=global-statement, invalid-name
     if not term:
         __term = Terminal()
