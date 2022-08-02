@@ -17,8 +17,8 @@ Welcome to **autohooks**!
 - [Requirements](#requirements)
 - [Modes](#modes)
   - [Pythonpath Mode](#pythonpath-mode)
-  - [Pipenv Mode](#pipenv-mode)
   - [Poetry Mode](#poetry-mode)
+  - [Pipenv Mode](#pipenv-mode)
 - [Installing autohooks](#installing-autohooks)
   - [1. Choosing an autohooks Mode](#1-choosing-an-autohooks-mode)
   - [2. Installing the autohooks Python Package into the Current Environment](#2-installing-the-autohooks-python-package-into-the-current-environment)
@@ -34,7 +34,7 @@ Welcome to **autohooks**!
 
 ## Why?
 
-Several outstanding libraries for managing and executing git hooks exist already. 
+Several outstanding libraries for managing and executing git hooks exist already.
 To name a few: [husky](https://github.com/typicode/husky),
 [lint-staged](https://github.com/okonet/lint-staged),
 [precise-commits](https://github.com/nrwl/precise-commits) or
@@ -49,7 +49,7 @@ itself and does not install them in the current environment.
 
 autohooks is a pure python library that installs a minimal
 [executable git hook](https://github.com/greenbone/autohooks/blob/main/autohooks/precommit/template).
-It allows the decision of how to maintain the hook dependencies 
+It allows the decision of how to maintain the hook dependencies
 by supporting different modes.
 
 ## Requirements
@@ -61,8 +61,8 @@ Python 3.7+ is required for autohooks.
 Currently three modes for using autohooks are supported:
 
 * `pythonpath`
-* `pipenv`
 * `poetry`
+* `pipenv`
 
 These modes handle how autohooks, the plugins and their dependencies are loaded
 during git hook execution.
@@ -89,9 +89,9 @@ In the `pythonpath` mode, the user has to install autohooks, the desired
 plugins and their dependencies into the [PYTHONPATH](https://docs.python.org/3/library/sys.html#sys.path)
 manually.
 
-This can be achieved by running `pip install --user autohooks ...` to put them
+This can be achieved by running `python3 -m pip install --user autohooks ...` to put them
 into the installation directory of the [current user](https://docs.python.org/3/library/site.html#site.USER_SITE)
-or with `pip install authooks ...` for a system wide installation.
+or with `python3 -m pip install autohooks ...` for a system wide installation.
 
 Alternatively, a [virtual environment](https://packaging.python.org/tutorials/installing-packages/#creating-and-using-virtual-environments)
 could be used separating the installation from the global and user wide
@@ -103,14 +103,6 @@ environment but activating the environment has to be done manually.
 Therefore it is even possible to run different versions of autohooks by
 using the `pythonpath` mode and switching to a virtual environment.
 
-### Pipenv Mode
-
-In the `pipenv` mode [pipenv] is used to run autohooks in a dedicated virtual
-environment. Pipenv uses a lock file to install exact versions. Therefore the
-installation is deterministic and reliable between different developer setups.
-In contrast to the `pythonpath` mode the activation of the virtual environment
-provided by [pipenv] is done automatically in the background.
-
 ### Poetry Mode
 
 Like with the [pipenv mode](#pipenv-mode), it is possible to run autohooks in a
@@ -119,6 +111,14 @@ virtual environment will be activated automatically in the background when
 executing the autohooks based git commit hook.
 
 Using the `poetry` mode is highly recommended.
+
+### Pipenv Mode
+
+In the `pipenv` mode [pipenv] is used to run autohooks in a dedicated virtual
+environment. Pipenv uses a lock file to install exact versions. Therefore the
+installation is deterministic and reliable between different developer setups.
+In contrast to the `pythonpath` mode the activation of the virtual environment
+provided by [pipenv] is done automatically in the background.
 
 ## Installing autohooks
 
@@ -221,14 +221,18 @@ The activation can always be verified by running `autohooks check`.
 
 * Python code linting via [pylint](https://github.com/greenbone/autohooks-plugin-pylint)
 
+* Python code linting via [flake8](https://github.com/greenbone/autohooks-plugin-flake8)
+
 * Python import sorting via [isort](https://github.com/greenbone/autohooks-plugin-isort)
+
+* Running tests via [pytest](https://github.com/greenbone/autohooks-plugin-pytest/)
 
 ## Howto: Writing a Plugin
 
 Plugins need to be available in the
 [Python import path](https://docs.python.org/3/reference/import.html). The
 easiest way to achieve this is uploading a plugin to [PyPI](https://pypi.org/)
-and installing it via [pip] or [pipenv].
+and installing it via [pip] or [poetry].
 
 Alternatively, a plugin can also be put into a *.autohooks* directory in the root
 directory of the git repository where the hooks should be executed.
@@ -236,13 +240,13 @@ directory of the git repository where the hooks should be executed.
 An autohooks plugin is a Python module which provides a **precommit** function.
 The function must accept arbitrary keywords because the keywords are likely to
 change in future. Therefore using **\*\*kwargs** is highly recommended.
-Currently only a *config* keyword argument is passed to the precommit function.
+Currently *config* and *report_progress* keyword arguments are passed to the
+precommit function.
 
 Example:
 
 ```python3
-def precommit(**kwargs):
-    config = kwargs.get('config')
+def precommit(config=None, report_progress=None, **kwargs):
 ```
 
 The config can be used to receive settings from the *pyproject.toml* file, e.g.,
