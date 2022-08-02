@@ -17,7 +17,7 @@
 
 from typing import Optional
 
-from pontos.terminal.terminal import ConsoleTerminal as Terminal
+from pontos.terminal.rich import RichTerminal as Terminal
 from pontos.terminal.terminal import Signs
 
 __all__ = (

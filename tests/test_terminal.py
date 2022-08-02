@@ -17,36 +17,26 @@
 
 # pylint: disable=invalid-name, protected-access
 
+import os
 import unittest
 from io import StringIO
-from unittest.mock import MagicMock, patch
-
-import colorful as cf
+from unittest.mock import patch
 
 from autohooks.terminal import Signs, Terminal
 
 
 class TerminalTestCase(unittest.TestCase):
     def setUp(self):
+        os.environ["NO_COLOR"] = "1"
+        os.environ["TERM"] = "unknown"
         self.maxDiff = 180
-        # getting the bash-color-codes from the colorful module
-        self.red = cf.red
-        self.green = cf.green
-        self.yellow = cf.yellow
-        self.cyan = cf.cyan
-        self.white = cf.white
-        self.reset = cf.reset
-        self.bold = cf.bold
-        # every colors second value is the reset value ...
         self.term = Terminal()
-        self.term.get_width = MagicMock(return_value=80)
 
     @patch("sys.stdout", new_callable=StringIO)
     def test_error(self, mock_stdout):
-        status = f"{self.red(Signs.ERROR)} "
         msg = "foo bar"
 
-        expected_msg = self.reset(f"{status}{msg}").styled_string + "\n"
+        expected_msg = f" {Signs.ERROR} {msg}\n"
 
         self.term.error(msg)
 
@@ -56,10 +46,9 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch("sys.stdout", new_callable=StringIO)
     def test_fail(self, mock_stdout):
-        status = f"{self.red(Signs.FAIL)} "
         msg = "foo bar baz"
 
-        expected_msg = self.reset(f"{status}{msg}").styled_string + "\n"
+        expected_msg = f" {Signs.FAIL} {msg}\n"
 
         self.term.fail(msg)
 
@@ -69,10 +58,9 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch("sys.stdout", new_callable=StringIO)
     def test_info(self, mock_stdout):
-        status = f"{self.cyan(Signs.INFO)} "
         msg = "foo bar"
 
-        expected_msg = self.reset(f"{status}{msg}").styled_string + "\n"
+        expected_msg = f" {Signs.INFO} {msg}\n"
 
         self.term.info(msg)
 
@@ -82,10 +70,9 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch("sys.stdout", new_callable=StringIO)
     def test_bold_info(self, mock_stdout):
-        status = f"{self.cyan(Signs.INFO)} "
         msg = "bold foo bar"
 
-        expected_msg = self.bold(f"{status}{msg}").styled_string + "\n"
+        expected_msg = f" {Signs.INFO} bold foo bar\n"
 
         self.term.bold_info(msg)
 
@@ -95,10 +82,9 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch("sys.stdout", new_callable=StringIO)
     def test_ok(self, mock_stdout):
-        status = f"{self.green(Signs.OK)} "
         msg = "foo bar"
 
-        expected_msg = self.reset(f"{status}{msg}").styled_string + "\n"
+        expected_msg = f" {Signs.OK} {msg}\n"
 
         self.term.ok(msg)
 
@@ -110,9 +96,7 @@ class TerminalTestCase(unittest.TestCase):
     def test_warning(self, mock_stdout):
         msg = "foo bar"
 
-        status = f"{self.yellow(Signs.WARNING)} "
-
-        expected_msg = self.reset(f"{status}{msg}").styled_string + "\n"
+        expected_msg = f" {Signs.WARNING} {msg}\n"
 
         self.term.warning(msg)
 
@@ -122,9 +106,7 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch("sys.stdout", new_callable=StringIO)
     def test_print(self, mock_stdout):
-        status = f"{self.white(Signs.NONE)} "
-        expected_msg = self.reset(f"{status}foo bar").styled_string + "\n"
-
+        expected_msg = " foo bar\n"
         self.term.print("foo bar")
 
         ret = mock_stdout.getvalue()
@@ -133,8 +115,7 @@ class TerminalTestCase(unittest.TestCase):
 
     @patch("sys.stdout", new_callable=StringIO)
     def test_with_indent(self, mock_stdout):
-        status = f"{self.white(Signs.NONE)} "
-        expected_msg = self.reset(f"{status}  foo").styled_string + "\n"
+        expected_msg = "   foo\n"
 
         with self.term.indent(2):
             self.term.print("foo")
@@ -147,31 +128,8 @@ class TerminalTestCase(unittest.TestCase):
         mock_stdout.truncate(0)
         mock_stdout.seek(0)
 
-        expected_msg = self.reset(f"{status}bar").styled_string + "\n"
+        expected_msg = " bar\n"
         self.term.print("bar")
-
-        ret = mock_stdout.getvalue()
-
-        self.assertEqual(ret, expected_msg)
-
-    @patch("sys.stdout", new_callable=StringIO)
-    def test_long_msg(self, mock_stdout):
-        status = f"{self.white(Signs.NONE)} "
-        long_msg = (
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
-            "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna"
-            " aliquyam erat, sed diam voluptua."
-        )
-        expected_msg = (
-            self.reset(
-                f"{status}"
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, "
-                "sed diam nonumy eirmo\n  d tempor invidunt ut labore et"
-                " dolore magna aliquyam erat, sed diam voluptua."
-            ).styled_string
-            + "\n"
-        )
-        self.term.print(long_msg)
 
         ret = mock_stdout.getvalue()
 
