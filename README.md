@@ -270,6 +270,19 @@ def precommit(**kwargs):
     return 0
 ```
 
+The report_progress can be used since autohooks 22.8.0 to display a progress bar
+when running a plugin.
+
+```python3
+def precommit(report_progress, **kwargs):
+    report_progress.init(len(files))
+
+    for file in files:
+      check_file(file)
+      report_progress.update()
+
+    return 0
+```
 With autohooks it is possible to write all kinds of plugins. Most common are
 plugins for linting and formatting.
 
