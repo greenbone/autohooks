@@ -16,7 +16,7 @@ jobs:
     - name: Release with release action
       uses: greenbone/actions/release-python@v1
       with:
-        version: 3.8
+        version: 3.9
         conventional-commits: true
         ref: ${{ github.event.inputs.branch }}
         github-user: ${{ secrets.GREENBONE_BOT }}
