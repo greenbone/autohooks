@@ -17,11 +17,15 @@
 
 from typing import Optional
 
-from pontos.terminal.terminal import ConsoleTerminal as Terminal
+from pontos.terminal.rich import RichTerminal as Terminal
 from pontos.terminal.terminal import Signs
+from rich.progress import BarColumn
+from rich.progress import Progress as RichProgress
+from rich.progress import SpinnerColumn, TaskProgressColumn, TextColumn
 
 __all__ = (
     "Terminal",
+    "Progress",
     "Signs",
     "bold_info",
     "error",
@@ -74,3 +78,18 @@ def _set_terminal(term: Optional[Terminal] = None) -> Terminal:
     else:
         __term = term
     return __term
+
+
+class Progress(RichProgress):
+    def __init__(self, terminal: Terminal) -> None:
+        super().__init__(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            TaskProgressColumn(),
+            console=terminal._console,
+            transient=True,
+        )
+
+    def finish_task(self, task_id):
+        self.update(task_id, total=1, advance=1)

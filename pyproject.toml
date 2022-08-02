@@ -47,9 +47,9 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-colorful = "^0.5.4"
 tomlkit = ">=0.5.11"
-pontos = "^22.7.0"
+pontos = ">=22.8.0"
+rich = "^12.5.1"
 
 [tool.poetry.dev-dependencies]
 autohooks-plugin-black = ">=21.12.0"

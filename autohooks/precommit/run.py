@@ -20,12 +20,12 @@ import inspect
 import sys
 from contextlib import contextmanager
 from types import ModuleType
-from typing import Generator
+from typing import Generator, Optional
 
 from autohooks.config import load_config_from_pyproject_toml
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode
-from autohooks.terminal import Terminal, _set_terminal
+from autohooks.terminal import Progress, Terminal, _set_terminal
 from autohooks.utils import get_project_autohooks_plugins_path
 
 
@@ -75,6 +75,38 @@ def check_hook_mode(term: Terminal, config_mode: Mode, hook_mode: Mode) -> None:
         )
 
 
+class ReportProgress:
+    """
+    A class to report progress of a plugin
+    """
+
+    def __init__(self, progress: Progress, task_id: int) -> None:
+        self._progress = progress
+        self._task_id = task_id
+
+    def init(self, total: int) -> None:
+        """
+        Init the progress with the total number to process
+
+        Args:
+            total: Most of the time this should be the number of files to
+                process.
+        """
+        self._progress.update(self._task_id, total=total)
+
+    def update(self, advance: Optional[int] = 1) -> None:
+        """
+        Update the number of already processed steps/items/files.
+
+        This increases the progress indicator.
+
+        Args:
+            advance: Number of steps/items/files the progress advanced. By
+                default 1.
+        """
+        self._progress.advance(self._task_id, advance)
+
+
 def run() -> int:
     term = Terminal()
 
@@ -97,10 +129,11 @@ def run() -> int:
 
     term.bold_info("autohooks => pre-commit")
 
-    with autohooks_module_path(), term.indent():
+    with autohooks_module_path(), term.indent(), Progress(
+        terminal=term
+    ) as progress:
         for name in config.get_pre_commit_script_names():
             term.info(f"Running {name}")
-
             with term.indent():
                 try:
                     plugin = load_plugin(name)
@@ -111,14 +144,23 @@ def run() -> int:
                         )
                         return 1
 
+                    task_id = progress.add_task(
+                        f"Running {name}", total=None, name=name
+                    )
+                    report_progress = ReportProgress(progress, task_id)
                     if has_precommit_parameters(plugin):
-                        retval = plugin.precommit(config=config.get_config())
+                        retval = plugin.precommit(
+                            config=config.get_config(),
+                            report_progress=report_progress,
+                        )
                     else:
                         term.warning(
                             "precommit function without kwargs is deprecated. "
                             f"Please update {name} to a newer version."
                         )
                         retval = plugin.precommit()
+
+                    progress.finish_task(task_id)
 
                     if retval:
                         return retval
