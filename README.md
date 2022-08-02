@@ -52,6 +52,8 @@ autohooks is a pure python library that installs a minimal
 It allows the decision of how to maintain the hook dependencies
 by supporting different modes.
 
+![Autohooks](https://raw.githubusercontent.com/greenbone/autohooks/main/autohooks.gif)
+
 ## Requirements
 
 Python 3.7+ is required for autohooks.
