@@ -42,6 +42,7 @@ Python 3.7+ is required for autohooks.
 ```{toctree}
 :hidden:
 
+quickstart
 installation
 configuration
 modes
