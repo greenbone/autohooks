@@ -74,7 +74,7 @@ html_theme_options = {
     ],
 }
 
-pygments_style = "sphinx"
+pygments_style = "zenburn"
 pygments_dark_style = "monokai"
 
 autodoc_typehints = "description"

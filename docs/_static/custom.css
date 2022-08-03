@@ -1,3 +1,7 @@
 .sidebar-logo {
     max-width: 70%;
 }
+
+.highlight pre {
+    border-radius: 6px;
+}
