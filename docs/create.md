@@ -56,7 +56,7 @@ def precommit(report_progress, **kwargs):
 With autohooks it is possible to write all kinds of [plugins](plugins). Most
 common are plugins for linting and formatting.
 
-### Linting Plugin
+## Linting Plugin
 
 Usually the standard call sequence for a linting plugin is the following:
 
@@ -119,7 +119,7 @@ def precommit(config=None, report_progress=None, **kwargs):
         return 1 if failed else 0
 ```
 
-### Formatting Plugin
+## Formatting Plugin
 
 Usually the standard call sequence for a formatting plugin is the following:
 
