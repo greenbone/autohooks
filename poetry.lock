@@ -58,7 +58,7 @@ isort = ">=5.8.0,<6.0.0"
 
 [[package]]
 name = "autohooks-plugin-pylint"
-version = "21.6.0"
+version = "22.8.0"
 description = "An autohooks plugin for python code linting via pylint"
 category = "dev"
 optional = false
@@ -494,8 +494,8 @@ autohooks-plugin-isort = [
     {file = "autohooks_plugin_isort-22.8.0-py3-none-any.whl", hash = "sha256:711ba763f962245cecf74b8d5014a5d5a13dcc1e55c775c4d00c85de8291fa90"},
 ]
 autohooks-plugin-pylint = [
-    {file = "autohooks-plugin-pylint-21.6.0.tar.gz", hash = "sha256:6f1a486f19c8012618fecd9eaa985f5da3ef5c954b32d823323439547b947302"},
-    {file = "autohooks_plugin_pylint-21.6.0-py3-none-any.whl", hash = "sha256:0d6ab34739d4c494012aa1647c02e6a4fb9474e4050432ee82f378fcd05c70e4"},
+    {file = "autohooks-plugin-pylint-22.8.0.tar.gz", hash = "sha256:6134bfee7f6640eb02a93af9d7efc684e4dc238e9dcf27719d1eaa2b74eb3170"},
+    {file = "autohooks_plugin_pylint-22.8.0-py3-none-any.whl", hash = "sha256:e315d71e3434b849b207dd54e13e44b07c8ad7f371563fea33793f64a734e1e9"},
 ]
 black = [
     {file = "black-22.6.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:f586c26118bc6e714ec58c09df0157fe2d9ee195c764f630eb0d8e7ccce72e69"},
