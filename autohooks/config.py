@@ -83,6 +83,19 @@ class AutohooksConfig:
         return Mode.UNDEFINED
 
     @staticmethod
+    def from_dict(config_dict: Dict[str, Any]) -> "AutohooksConfig":
+        """
+        Create a new AutohooksConfig from a dictionary
+
+        Args:
+            config_data: A dictionary containing the config data
+
+        Returns:
+            A new AutohooksConfig
+        """
+        return AutohooksConfig(config_dict)
+
+    @staticmethod
     def from_toml(toml_file: Path) -> "AutohooksConfig":
         """
         Load an AutohooksConfig from a TOML file
@@ -94,7 +107,7 @@ class AutohooksConfig:
             A new AutohooksConfig
         """
         config_dict = tomlkit.loads(toml_file.read_text())
-        return AutohooksConfig(config_dict)
+        return AutohooksConfig.from_dict(config_dict)
 
 
 def load_config_from_pyproject_toml(
