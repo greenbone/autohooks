@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from pathlib import Path
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import tomlkit
 
@@ -43,6 +43,20 @@ class Config:
 
     def is_empty(self) -> bool:
         return not bool(self._config_dict)
+
+
+def _gather_mode(mode: Optional[str]) -> Mode:
+    """
+    Gather the mode from a mode string
+    """
+    mode = Mode.from_string(mode)
+    is_virtual_env = mode == Mode.PIPENV or mode == Mode.POETRY
+    if is_virtual_env and not is_split_env():
+        if mode == Mode.POETRY:
+            mode = Mode.POETRY_MULTILINE
+        else:
+            mode = Mode.PIPENV_MULTILINE
+    return mode
 
 
 class BaseToolConfig:
@@ -73,18 +87,7 @@ class AutohooksConfig(BaseToolConfig):
     def get_mode(self) -> Mode:
         if self.has_autohooks_config():
             mode = self._autohooks_config.get_value("mode")
-            if not mode:
-                return Mode.UNDEFINED
-
-            mode = Mode.from_string(mode.upper())
-            is_virtual_env = mode == Mode.PIPENV or mode == Mode.POETRY
-            if is_virtual_env and not is_split_env():
-                if mode == Mode.POETRY:
-                    mode = Mode.POETRY_MULTILINE
-                else:
-                    mode = Mode.PIPENV_MULTILINE
-            return mode
-
+            return _gather_mode(mode)
         return Mode.UNDEFINED
 
     @staticmethod
