@@ -20,7 +20,7 @@ from typing import Any, Dict, List, Optional, Union
 
 import tomlkit
 
-from autohooks.settings import Mode
+from autohooks.settings import AutohooksSettings, Mode
 from autohooks.utils import get_pyproject_toml_path, is_split_env
 
 AUTOHOOKS_SECTION = "tool.autohooks"
@@ -60,27 +60,30 @@ def _gather_mode(mode: Optional[str]) -> Mode:
 
 
 class AutohooksConfig:
-    def __init__(self, config_dict: Dict = None) -> None:
-        self._config = Config(config_dict)
-        self._autohooks_config = self._config.get("tool").get("autohooks")
+    def __init__(
+        self,
+        *,
+        settings: Optional[AutohooksSettings] = None,
+        config: Optional[Config] = None,
+    ) -> None:
+        self.config = Config() if config is None else config
+        self.settings = settings
 
     def get_config(self) -> Config:
-        return self._config
+        return self.config
 
     def has_autohooks_config(self) -> bool:
-        return not self._autohooks_config.is_empty()
+        return self.settings is not None
 
     def get_pre_commit_script_names(self) -> List[str]:
-        if self.has_autohooks_config():
-            return self._autohooks_config.get_value("pre-commit", [])
-
-        return []
+        return self.settings.pre_commit if self.has_autohooks_config() else []
 
     def get_mode(self) -> Mode:
-        if self.has_autohooks_config():
-            mode = self._autohooks_config.get_value("mode")
-            return _gather_mode(mode)
-        return Mode.UNDEFINED
+        return (
+            self.settings.mode
+            if self.has_autohooks_config()
+            else Mode.UNDEFINED
+        )
 
     @staticmethod
     def from_dict(config_dict: Dict[str, Any]) -> "AutohooksConfig":
@@ -93,7 +96,16 @@ class AutohooksConfig:
         Returns:
             A new AutohooksConfig
         """
-        return AutohooksConfig(config_dict)
+        config = Config(config_dict)
+        autohooks_dict = config.get("tool", "autohooks")
+        if autohooks_dict.is_empty():
+            settings = None
+        else:
+            settings = AutohooksSettings(
+                mode=_gather_mode(autohooks_dict.get_value("mode")),
+                pre_commit=autohooks_dict.get_value("pre-commit", []),
+            )
+        return AutohooksConfig(settings=settings, config=config)
 
     @staticmethod
     def from_toml(toml_file: Path) -> "AutohooksConfig":

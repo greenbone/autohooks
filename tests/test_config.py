@@ -63,7 +63,7 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_empty_config_dict(self):
-        config = AutohooksConfig({"foo": "bar"})
+        config = AutohooksConfig.from_dict({"foo": "bar"})
 
         self.assertFalse(config.has_autohooks_config())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
@@ -71,7 +71,9 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_missing_pre_commit(self):
-        config = AutohooksConfig({"tool": {"autohooks": {"foo": "bar"}}})
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"foo": "bar"}}}
+        )
 
         self.assertTrue(config.has_autohooks_config())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
@@ -79,7 +81,9 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_pipenv(self):
-        config = AutohooksConfig({"tool": {"autohooks": {"mode": "pipenv"}}})
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"mode": "pipenv"}}}
+        )
 
         self.assertTrue(config.has_autohooks_config())
         self.assertEqual(config.get_mode(), Mode.PIPENV)
@@ -87,7 +91,7 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_pipenv_multiline(self):
-        config = AutohooksConfig(
+        config = AutohooksConfig.from_dict(
             {"tool": {"autohooks": {"mode": "pipenv_multiline"}}}
         )
 
@@ -97,7 +101,9 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_poetry(self):
-        config = AutohooksConfig({"tool": {"autohooks": {"mode": "poetry"}}})
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"mode": "poetry"}}}
+        )
 
         self.assertTrue(config.has_autohooks_config())
         self.assertEqual(config.get_mode(), Mode.POETRY)
@@ -105,7 +111,7 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_poetry_multiline(self):
-        config = AutohooksConfig(
+        config = AutohooksConfig.from_dict(
             {"tool": {"autohooks": {"mode": "poetry_multiline"}}}
         )
 
@@ -115,7 +121,7 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_pythonpath(self):
-        config = AutohooksConfig(
+        config = AutohooksConfig.from_dict(
             {"tool": {"autohooks": {"mode": "pythonpath"}}}
         )
 
@@ -125,7 +131,9 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_unknown(self):
-        config = AutohooksConfig({"tool": {"autohooks": {"mode": "foo"}}})
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"mode": "foo"}}}
+        )
 
         self.assertTrue(config.has_autohooks_config())
         self.assertEqual(config.get_mode(), Mode.UNKNOWN)
@@ -133,7 +141,9 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_undefined(self):
-        config = AutohooksConfig({"tool": {"autohooks": {"mode": None}}})
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"mode": None}}}
+        )
 
         self.assertTrue(config.has_autohooks_config())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
@@ -142,7 +152,7 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
     def test_get_config_dict(self):
         config_in = {"tool": {"autohooks": {"lorem": "ipsum"}}, "foo": "bar"}
-        config = AutohooksConfig(config_in)
+        config = AutohooksConfig.from_dict(config_in)
 
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
