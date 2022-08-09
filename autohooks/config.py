@@ -88,18 +88,39 @@ class AutohooksConfig(BaseToolConfig):
         return Mode.UNDEFINED
 
     @staticmethod
-    def from_pyproject_toml(pyproject_toml: Path = None) -> "AutohooksConfig":
-        if pyproject_toml is None:
-            pyproject_toml = get_pyproject_toml_path()
+    def from_toml(toml_file: Path) -> "AutohooksConfig":
+        """
+        Load an AutohooksConfig from a TOML file
 
-        if not pyproject_toml.exists():
-            return AutohooksConfig()
+        Args:
+            toml_file: Path for the toml file to load
 
-        config_dict = tomlkit.loads(pyproject_toml.read_text())
+        Returns:
+            A new AutohooksConfig
+        """
+        config_dict = tomlkit.loads(toml_file.read_text())
         return AutohooksConfig(config_dict)
 
 
 def load_config_from_pyproject_toml(
     pyproject_toml: Path = None,
 ) -> AutohooksConfig:
-    return AutohooksConfig.from_pyproject_toml(pyproject_toml)
+    """
+    Load an AutohooksConfig from a pyproject.toml file
+
+    If no path to the pyproject.toml file is passed the path will be determined
+    from the current working directory and the project.
+
+    Args:
+        pyproject_toml: Path to the pyproject.toml file.
+
+    Returns:
+        A new AutohooksConfig
+    """
+    if pyproject_toml is None:
+        pyproject_toml = get_pyproject_toml_path()
+
+    if not pyproject_toml.exists():
+        return AutohooksConfig()
+
+    return AutohooksConfig.from_toml(pyproject_toml)
