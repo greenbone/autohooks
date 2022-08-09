@@ -15,7 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
+from typing import Iterable
+
+import tomlkit
 
 
 class Mode(Enum):
@@ -51,3 +56,35 @@ class Mode(Enum):
 
     def __str__(self) -> str:
         return self.name.lower()  # pylint: disable=no-member
+
+
+@dataclass
+class AutohooksSettings:
+    mode: Mode = Mode.UNDEFINED
+    pre_commit: Iterable[str] = field(default_factory=list)
+
+    def write(self, filename: Path) -> None:
+        """
+        Write the current AutohooksSettings to a TOML file
+
+        If the TOML file already exists only the [tool.autohooks] section is
+        overridden.
+        """
+        if filename.exists():
+            toml_doc = tomlkit.loads(filename.read_text())
+        else:
+            toml_doc = tomlkit.document()
+
+        if "tool" not in toml_doc:
+            toml_doc["tool"] = tomlkit.table(is_super_table=True)
+        if "autohooks" not in toml_doc["tool"]:
+            toml_doc["tool"]["autohooks"] = tomlkit.table()
+
+        config_dict = {
+            "mode": str(self.mode.get_effective_mode()),
+            "pre-commit": self.pre_commit,
+        }
+
+        toml_doc["tool"]["autohooks"].update(config_dict)
+
+        filename.write_text(tomlkit.dumps(toml_doc), encoding="utf8")
