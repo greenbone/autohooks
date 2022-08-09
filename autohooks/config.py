@@ -59,21 +59,13 @@ def _gather_mode(mode: Optional[str]) -> Mode:
     return mode
 
 
-class BaseToolConfig:
+class AutohooksConfig:
     def __init__(self, config_dict: Dict = None) -> None:
         self._config = Config(config_dict)
-
-    def has_config(self) -> bool:
-        return not self._config.is_empty()
+        self._autohooks_config = self._config.get("tool").get("autohooks")
 
     def get_config(self) -> Config:
         return self._config
-
-
-class AutohooksConfig(BaseToolConfig):
-    def __init__(self, config_dict: Dict = None) -> None:
-        super().__init__(config_dict)
-        self._autohooks_config = self._config.get("tool").get("autohooks")
 
     def has_autohooks_config(self) -> bool:
         return not self._autohooks_config.is_empty()
