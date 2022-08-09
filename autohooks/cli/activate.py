@@ -32,9 +32,9 @@ def install_hooks(term: Terminal, args: Namespace) -> None:
     config = load_config_from_pyproject_toml(pyproject_toml)
 
     if pre_commit_hook.exists() and not args.force:
-        term.ok(
+        term.warning(
             "autohooks pre-commit hook is already"
-            f" installed at {str(pre_commit_hook)}."
+            f" installed at {pre_commit_hook}."
         )
         with term.indent():
             term.print()
