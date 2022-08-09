@@ -47,7 +47,7 @@ def install_hooks(term: Terminal, args: Namespace) -> None:
                 "the installed pre-commit hook."
             )
     else:
-        if not config.is_autohooks_enabled():
+        if not config.has_autohooks_config():
             term.warning(
                 f"autohooks is not enabled in your {str(pyproject_toml)} "
                 "file. Run 'autohooks check' for more details."

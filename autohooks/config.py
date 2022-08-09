@@ -64,9 +64,6 @@ class AutohooksConfig(BaseToolConfig):
     def has_autohooks_config(self) -> bool:
         return not self._autohooks_config.is_empty()
 
-    def is_autohooks_enabled(self) -> bool:
-        return self.has_autohooks_config()
-
     def get_pre_commit_script_names(self) -> List[str]:
         if self.has_autohooks_config():
             return self._autohooks_config.get_value("pre-commit", [])

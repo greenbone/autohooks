@@ -39,7 +39,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
 
         self.assertListEqual(
             config.get_pre_commit_script_names(), ["foo", "bar"]
@@ -53,7 +52,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertFalse(config.has_config())
         self.assertFalse(config.has_autohooks_config())
-        self.assertFalse(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -63,7 +61,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertFalse(config.has_config())
         self.assertFalse(config.has_autohooks_config())
-        self.assertFalse(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -73,7 +70,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertTrue(config.has_config())
         self.assertFalse(config.has_autohooks_config())
-        self.assertFalse(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -83,7 +79,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -93,7 +88,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.PIPENV)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -105,7 +99,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.PIPENV_MULTILINE)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -115,7 +108,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.POETRY)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -127,7 +119,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.POETRY_MULTILINE)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -139,7 +130,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.PYTHONPATH)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -149,7 +139,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNKNOWN)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -159,7 +148,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -169,7 +157,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
         config = AutohooksConfig(config_in)
 
         self.assertTrue(config.has_config())
-        self.assertTrue(config.has_autohooks_config())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         config_out = config.get_config()
