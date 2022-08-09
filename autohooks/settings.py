@@ -18,7 +18,7 @@
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Optional
 
 import tomlkit
 
@@ -45,7 +45,7 @@ class Mode(Enum):
         return Mode.PYTHONPATH
 
     @staticmethod
-    def from_string(modestring: str) -> "Mode":
+    def from_string(modestring: Optional[str]) -> "Mode":
         if not modestring:
             return Mode.UNDEFINED
 
