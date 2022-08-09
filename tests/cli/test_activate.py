@@ -85,27 +85,39 @@ class ActivateCliTestCase(unittest.TestCase):
 
             term = MagicMock()
             args = Namespace(force=True, mode=None)
+
             install_hooks(term, args)
 
             term.warning.assert_not_called()
-            term.ok.assert_called_once_with(
-                f"autohooks pre-commit hook installed at {tmpdir}/"
-                ".git/hooks/pre-commit using poetry mode."
+            term.ok.assert_has_calls(
+                (
+                    call(f"autohooks settings written to {pyproject_toml}."),
+                    call(
+                        f"autohooks pre-commit hook installed at {pre_commit}"
+                        " using poetry mode."
+                    ),
+                )
             )
 
     def test_install_no_config(self):
         with tempgitdir() as tmpdir:
             term = MagicMock()
             args = Namespace(force=False, mode=None)
+
             install_hooks(term, args)
 
-            term.warning.assert_called_once_with(
-                f"autohooks is not enabled in your {tmpdir}/pyproject.toml "
-                "file. Run 'autohooks check' for more details."
-            )
-            term.ok.assert_called_once_with(
-                f"autohooks pre-commit hook installed at {tmpdir}/"
-                ".git/hooks/pre-commit using pythonpath mode."
+            term.warning.assert_not_called()
+            term.ok.assert_has_calls(
+                (
+                    call(
+                        "autohooks settings written to "
+                        f"{tmpdir}/pyproject.toml."
+                    ),
+                    call(
+                        f"autohooks pre-commit hook installed at {tmpdir}/"
+                        ".git/hooks/pre-commit using pythonpath mode."
+                    ),
+                )
             )
 
     def test_install_hooks_with_mode(self):
