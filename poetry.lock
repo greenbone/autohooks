@@ -32,7 +32,7 @@ wrapt = ">=1.11,<2"
 
 [[package]]
 name = "autohooks-plugin-black"
-version = "22.8.0"
+version = "22.8.1"
 description = "An autohooks plugin for python code formatting via black"
 category = "dev"
 optional = false
@@ -58,7 +58,7 @@ isort = ">=5.8.0,<6.0.0"
 
 [[package]]
 name = "autohooks-plugin-pylint"
-version = "22.8.0"
+version = "22.8.1"
 description = "An autohooks plugin for python code linting via pylint"
 category = "dev"
 optional = false
@@ -486,16 +486,16 @@ astroid = [
     {file = "astroid-2.11.7.tar.gz", hash = "sha256:bb24615c77f4837c707669d16907331374ae8a964650a66999da3f5ca68dc946"},
 ]
 autohooks-plugin-black = [
-    {file = "autohooks-plugin-black-22.8.0.tar.gz", hash = "sha256:631ff2bb4943dfcb6f738481552e55e5b288a4955a7acbefb158d8a98ec3a93b"},
-    {file = "autohooks_plugin_black-22.8.0-py3-none-any.whl", hash = "sha256:e0fd0cae8803eef5652da05f55939cdb27eb53e5980b873abeab61dd87841861"},
+    {file = "autohooks-plugin-black-22.8.1.tar.gz", hash = "sha256:cf48a1951b12f8eac9e697fb18edb05ab3519da8f29e7b31135bfc1cdb74b3f5"},
+    {file = "autohooks_plugin_black-22.8.1-py3-none-any.whl", hash = "sha256:f4b6b083be62fc13740705b1a1a897801c4f8222654f3f7d8c7e6635b7640444"},
 ]
 autohooks-plugin-isort = [
     {file = "autohooks-plugin-isort-22.8.0.tar.gz", hash = "sha256:ed798f3ff9a2046ca7943cc25cbdd13afde2ddf82935cead3d61da4e210d070b"},
     {file = "autohooks_plugin_isort-22.8.0-py3-none-any.whl", hash = "sha256:711ba763f962245cecf74b8d5014a5d5a13dcc1e55c775c4d00c85de8291fa90"},
 ]
 autohooks-plugin-pylint = [
-    {file = "autohooks-plugin-pylint-22.8.0.tar.gz", hash = "sha256:6134bfee7f6640eb02a93af9d7efc684e4dc238e9dcf27719d1eaa2b74eb3170"},
-    {file = "autohooks_plugin_pylint-22.8.0-py3-none-any.whl", hash = "sha256:e315d71e3434b849b207dd54e13e44b07c8ad7f371563fea33793f64a734e1e9"},
+    {file = "autohooks-plugin-pylint-22.8.1.tar.gz", hash = "sha256:d348a61b2b027ad51275dace830ec3643cf14416519eb68167a4bdadfe44ac7e"},
+    {file = "autohooks_plugin_pylint-22.8.1-py3-none-any.whl", hash = "sha256:a7195e0f6a568cd8e0e4a964ebcecf2eb4e457a17a8b3dbc6283dfc546a474c2"},
 ]
 black = [
     {file = "black-22.6.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:f586c26118bc6e714ec58c09df0157fe2d9ee195c764f630eb0d8e7ccce72e69"},
