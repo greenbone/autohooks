@@ -56,8 +56,12 @@ def main():
         help="Mode for loading autohooks during hook execution. Either load "
         "autohooks from the PYTHON_PATH, via pipenv or via poetry.",
     )
+    activate_parser.set_defaults(func=install_hooks)
 
-    subparsers.add_parser("check", help="Check installed pre-commit hook")
+    check_parser = subparsers.add_parser(
+        "check", help="Check installed pre-commit hook"
+    )
+    check_parser.set_defaults(func=check_hooks)
 
     args = parser.parse_args()
 
@@ -65,10 +69,7 @@ def main():
         parser.print_usage()
 
     term = Terminal()
-    if args.command == "activate":
-        install_hooks(term, args)
-    elif args.command == "check":
-        check_hooks(term)
+    args.func(term, args)
 
 
 if __name__ == "__main__":

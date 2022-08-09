@@ -17,6 +17,7 @@
 
 import sys
 import unittest
+from argparse import Namespace
 from unittest.mock import MagicMock, call
 
 from autohooks.cli.check import check_config, check_hooks, check_pre_commit_hook
@@ -31,9 +32,10 @@ from tests import tempgitdir
 class CheckCliTestCase(unittest.TestCase):
     def test_no_pre_commit_hooks_no_pyproject_toml(self):
         term = MagicMock()
+        args = Namespace()
 
         with tempgitdir() as tmpdir:
-            check_hooks(term)
+            check_hooks(term, args)
 
         term.ok.assert_not_called()
         term.warning.assert_not_called()
@@ -55,12 +57,13 @@ class CheckCliTestCase(unittest.TestCase):
 
     def test_no_pre_commit_hooks_no_autohooks_settings(self):
         term = MagicMock()
+        args = Namespace()
 
         with tempgitdir() as tmpdir:
             pyproject_toml = tmpdir / "pyproject.toml"
             pyproject_toml.touch()
 
-            check_hooks(term)
+            check_hooks(term, args)
 
         term.ok.assert_not_called()
         term.warning.assert_not_called()
@@ -81,6 +84,7 @@ class CheckCliTestCase(unittest.TestCase):
 
     def test_all_checks_success(self):
         term = MagicMock()
+        args = Namespace()
 
         with tempgitdir() as tmpdir:
             pyproject_toml = tmpdir / "pyproject.toml"
@@ -104,7 +108,7 @@ def precommit(*args):
                 encoding="utf8",
             )
 
-            check_hooks(term)
+            check_hooks(term, args)
 
         self.assertEqual(term.ok.call_count, 3)
         term.ok.assert_has_calls(

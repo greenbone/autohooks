@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from argparse import Namespace
 from pathlib import Path
 
 from autohooks.config import (
@@ -33,7 +34,8 @@ from autohooks.settings import Mode
 from autohooks.terminal import Terminal
 
 
-def check_hooks(term: Terminal) -> None:
+# pylint: disable=unused-argument
+def check_hooks(term: Terminal, args: Namespace) -> None:
     pre_commit_hook = PreCommitHook()
     check_pre_commit_hook(term, pre_commit_hook)
 
