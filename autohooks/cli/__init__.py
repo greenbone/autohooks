@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
+import sys
 
 from autohooks.__version__ import __version__ as version
 from autohooks.cli.activate import install_hooks
@@ -67,6 +68,7 @@ def main():
 
     if not args.command:
         parser.print_usage()
+        sys.exit(1)
 
     term = Terminal()
     args.func(term, args)
