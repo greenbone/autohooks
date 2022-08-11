@@ -125,5 +125,21 @@ def testfile(
 
 
 def unload_module(name: str) -> None:
+    """
+    Unload a Python module
+    """
     if name in sys.modules:
         del sys.modules[name]
+
+
+@contextmanager
+def ensure_unload_module(name: str) -> Generator[None, None, None]:
+    """
+    Ensure that a module gets removed even if an error occurs
+
+    Example:
+        with ensure_unload_module("foo.bar"):
+            do_something()
+    """
+    yield
+    unload_module(name)
