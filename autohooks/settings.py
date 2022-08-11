@@ -82,7 +82,7 @@ class AutohooksSettings:
 
         config_dict = {
             "mode": str(self.mode.get_effective_mode()),
-            "pre-commit": self.pre_commit,
+            "pre-commit": sorted(self.pre_commit),
         }
 
         toml_doc["tool"]["autohooks"].update(config_dict)
