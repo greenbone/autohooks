@@ -33,7 +33,6 @@ class Mode(Enum):
     UNKNOWN = -2
 
     def get_effective_mode(self):
-        # pylint: disable=comparison-with-callable
         if self.value == Mode.PIPENV.value:
             return Mode.PIPENV
         if self.value == Mode.PIPENV_MULTILINE.value:
