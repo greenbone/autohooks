@@ -58,8 +58,8 @@ class ActivateCliTestCase(unittest.TestCase):
 
             install_hooks(term, args)
 
-            term.warning.assert_not_called()
-            term.ok.assert_called_once_with(
+            term.ok.assert_not_called()
+            term.warning.assert_called_once_with(
                 f"autohooks pre-commit hook is already installed at {tmpdir}/"
                 ".git/hooks/pre-commit."
             )
