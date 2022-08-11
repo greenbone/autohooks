@@ -16,11 +16,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from pathlib import Path
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import tomlkit
 
-from autohooks.settings import Mode
+from autohooks.settings import AutohooksSettings, Mode
 from autohooks.utils import get_pyproject_toml_path, is_split_env
 
 AUTOHOOKS_SECTION = "tool.autohooks"
@@ -45,64 +45,102 @@ class Config:
         return not bool(self._config_dict)
 
 
-class BaseToolConfig:
-    def __init__(self, config_dict: Dict = None) -> None:
-        self._config = Config(config_dict)
+def _gather_mode(mode: Optional[str]) -> Mode:
+    """
+    Gather the mode from a mode string
+    """
+    mode = Mode.from_string(mode)
+    is_virtual_env = mode == Mode.PIPENV or mode == Mode.POETRY
+    if is_virtual_env and not is_split_env():
+        if mode == Mode.POETRY:
+            mode = Mode.POETRY_MULTILINE
+        else:
+            mode = Mode.PIPENV_MULTILINE
+    return mode
 
-    def has_config(self) -> bool:
-        return not self._config.is_empty()
+
+class AutohooksConfig:
+    def __init__(
+        self,
+        *,
+        settings: Optional[AutohooksSettings] = None,
+        config: Optional[Config] = None,
+    ) -> None:
+        self.config = Config() if config is None else config
+        self.settings = settings
 
     def get_config(self) -> Config:
-        return self._config
-
-
-class AutohooksConfig(BaseToolConfig):
-    def __init__(self, config_dict: Dict = None) -> None:
-        super().__init__(config_dict)
-        self._autohooks_config = self._config.get("tool").get("autohooks")
+        return self.config
 
     def has_autohooks_config(self) -> bool:
-        return not self._autohooks_config.is_empty()
-
-    def is_autohooks_enabled(self) -> bool:
-        return self.has_autohooks_config()
+        return self.settings is not None
 
     def get_pre_commit_script_names(self) -> List[str]:
-        if self.has_autohooks_config():
-            return self._autohooks_config.get_value("pre-commit", [])
-
-        return []
+        return self.settings.pre_commit if self.has_autohooks_config() else []
 
     def get_mode(self) -> Mode:
-        if self.has_autohooks_config():
-            mode = self._autohooks_config.get_value("mode")
-            if not mode:
-                return Mode.UNDEFINED
-
-            mode = Mode.from_string(mode.upper())
-            is_virtual_env = mode == Mode.PIPENV or mode == Mode.POETRY
-            if is_virtual_env and not is_split_env():
-                if mode == Mode.POETRY:
-                    mode = Mode.POETRY_MULTILINE
-                else:
-                    mode = Mode.PIPENV_MULTILINE
-            return mode
-
-        return Mode.UNDEFINED
+        return (
+            self.settings.mode
+            if self.has_autohooks_config()
+            else Mode.UNDEFINED
+        )
 
     @staticmethod
-    def from_pyproject_toml(pyproject_toml: Path = None) -> "AutohooksConfig":
-        if pyproject_toml is None:
-            pyproject_toml = get_pyproject_toml_path()
+    def from_dict(config_dict: Dict[str, Any]) -> "AutohooksConfig":
+        """
+        Create a new AutohooksConfig from a dictionary
 
-        if not pyproject_toml.exists():
-            return AutohooksConfig()
+        Args:
+            config_data: A dictionary containing the config data
 
-        config_dict = tomlkit.loads(pyproject_toml.read_text())
-        return AutohooksConfig(config_dict)
+        Returns:
+            A new AutohooksConfig
+        """
+        config = Config(config_dict)
+        autohooks_dict = config.get("tool", "autohooks")
+        if autohooks_dict.is_empty():
+            settings = None
+        else:
+            settings = AutohooksSettings(
+                mode=_gather_mode(autohooks_dict.get_value("mode")),
+                pre_commit=autohooks_dict.get_value("pre-commit", []),
+            )
+        return AutohooksConfig(settings=settings, config=config)
+
+    @staticmethod
+    def from_toml(toml_file: Path) -> "AutohooksConfig":
+        """
+        Load an AutohooksConfig from a TOML file
+
+        Args:
+            toml_file: Path for the toml file to load
+
+        Returns:
+            A new AutohooksConfig
+        """
+        config_dict = tomlkit.loads(toml_file.read_text())
+        return AutohooksConfig.from_dict(config_dict)
 
 
 def load_config_from_pyproject_toml(
     pyproject_toml: Path = None,
 ) -> AutohooksConfig:
-    return AutohooksConfig.from_pyproject_toml(pyproject_toml)
+    """
+    Load an AutohooksConfig from a pyproject.toml file
+
+    If no path to the pyproject.toml file is passed the path will be determined
+    from the current working directory and the project.
+
+    Args:
+        pyproject_toml: Path to the pyproject.toml file.
+
+    Returns:
+        A new AutohooksConfig
+    """
+    if pyproject_toml is None:
+        pyproject_toml = get_pyproject_toml_path()
+
+    if not pyproject_toml.exists():
+        return AutohooksConfig()
+
+    return AutohooksConfig.from_toml(pyproject_toml)

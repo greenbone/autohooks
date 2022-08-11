@@ -37,9 +37,7 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         config = load_config_from_pyproject_toml(config_path)
 
-        self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
 
         self.assertListEqual(
             config.get_pre_commit_script_names(), ["foo", "bar"]
@@ -51,9 +49,7 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         config = load_config_from_pyproject_toml(config_path)
 
-        self.assertFalse(config.has_config())
         self.assertFalse(config.has_autohooks_config())
-        self.assertFalse(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
@@ -61,115 +57,103 @@ class AutohooksConfigTestCase(unittest.TestCase):
     def test_empty_config(self):
         config = AutohooksConfig()
 
-        self.assertFalse(config.has_config())
         self.assertFalse(config.has_autohooks_config())
-        self.assertFalse(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_empty_config_dict(self):
-        config = AutohooksConfig({"foo": "bar"})
+        config = AutohooksConfig.from_dict({"foo": "bar"})
 
-        self.assertTrue(config.has_config())
         self.assertFalse(config.has_autohooks_config())
-        self.assertFalse(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_missing_pre_commit(self):
-        config = AutohooksConfig({"tool": {"autohooks": {"foo": "bar"}}})
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"foo": "bar"}}}
+        )
 
-        self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_pipenv(self):
-        config = AutohooksConfig({"tool": {"autohooks": {"mode": "pipenv"}}})
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"mode": "pipenv"}}}
+        )
 
-        self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.PIPENV)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_pipenv_multiline(self):
-        config = AutohooksConfig(
+        config = AutohooksConfig.from_dict(
             {"tool": {"autohooks": {"mode": "pipenv_multiline"}}}
         )
 
-        self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.PIPENV_MULTILINE)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_poetry(self):
-        config = AutohooksConfig({"tool": {"autohooks": {"mode": "poetry"}}})
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"mode": "poetry"}}}
+        )
 
-        self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.POETRY)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_poetry_multiline(self):
-        config = AutohooksConfig(
+        config = AutohooksConfig.from_dict(
             {"tool": {"autohooks": {"mode": "poetry_multiline"}}}
         )
 
-        self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.POETRY_MULTILINE)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_pythonpath(self):
-        config = AutohooksConfig(
+        config = AutohooksConfig.from_dict(
             {"tool": {"autohooks": {"mode": "pythonpath"}}}
         )
 
-        self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.PYTHONPATH)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_unknown(self):
-        config = AutohooksConfig({"tool": {"autohooks": {"mode": "foo"}}})
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"mode": "foo"}}}
+        )
 
-        self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNKNOWN)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_mode_undefined(self):
-        config = AutohooksConfig({"tool": {"autohooks": {"mode": None}}})
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"mode": None}}}
+        )
 
-        self.assertTrue(config.has_config())
         self.assertTrue(config.has_autohooks_config())
-        self.assertTrue(config.is_autohooks_enabled())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_get_config_dict(self):
         config_in = {"tool": {"autohooks": {"lorem": "ipsum"}}, "foo": "bar"}
-        config = AutohooksConfig(config_in)
+        config = AutohooksConfig.from_dict(config_in)
 
-        self.assertTrue(config.has_config())
-        self.assertTrue(config.has_autohooks_config())
         self.assertEqual(config.get_mode(), Mode.UNDEFINED)
 
         config_out = config.get_config()
@@ -181,7 +165,6 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertTrue(config_path.is_file())
 
         autohooksconfig = load_config_from_pyproject_toml(config_path)
-        self.assertTrue(autohooksconfig.has_config())
         self.assertTrue(autohooksconfig.has_autohooks_config())
 
         config = autohooksconfig.get_config()

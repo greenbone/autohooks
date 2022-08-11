@@ -90,7 +90,7 @@ def check_config(
         )
     else:
         config = load_config_from_pyproject_toml(pyproject_toml)
-        if not config.is_autohooks_enabled():
+        if not config.has_autohooks_config():
             term.error(
                 f"autohooks is not enabled in your {str(pyproject_toml)} file."
                 f' Please add a "{AUTOHOOKS_SECTION}" section.'

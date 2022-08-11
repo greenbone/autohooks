@@ -22,7 +22,7 @@ from autohooks.config import (
     load_config_from_pyproject_toml,
 )
 from autohooks.hooks import PreCommitHook
-from autohooks.settings import Mode
+from autohooks.settings import AutohooksSettings, Mode
 from autohooks.terminal import Terminal
 
 
@@ -47,20 +47,27 @@ def install_hooks(term: Terminal, args: Namespace) -> None:
                 "the installed pre-commit hook."
             )
     else:
-        if not config.is_autohooks_enabled():
-            term.warning(
-                f"autohooks is not enabled in your {str(pyproject_toml)} "
-                "file. Run 'autohooks check' for more details."
-            )
-
         if args.mode:
             mode = Mode.from_string(args.mode)
         else:
-            mode = config.get_mode()
+            mode = config.get_mode().get_effective_mode()
+
+        if not config.has_autohooks_config():
+            settings = AutohooksSettings(mode=mode)
+            config.settings = settings
+            settings.write(pyproject_toml)
+
+            term.ok(f"autohooks settings written to {pyproject_toml}.")
+        elif args.force:
+            settings = config.settings
+            settings.mode = mode
+            settings.write(pyproject_toml)
+
+            term.ok(f"autohooks settings written to {pyproject_toml}.")
 
         pre_commit_hook.write(mode=mode)
 
         term.ok(
-            f"autohooks pre-commit hook installed at {str(pre_commit_hook)}"
-            f" using {str(mode.get_effective_mode())} mode."
+            f"autohooks pre-commit hook installed at {pre_commit_hook}"
+            f" using {mode} mode."
         )
