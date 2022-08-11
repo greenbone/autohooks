@@ -20,7 +20,7 @@
 import unittest
 
 from autohooks.settings import AutohooksSettings, Mode
-from tests import tempdir, testfile
+from tests import temp_file, tempdir
 
 
 class ModeTestCase(unittest.TestCase):
@@ -130,7 +130,7 @@ plugins.foo.lorem = 'dolor'
 [tool.autohooks.plugins.bar]
 foo = 'bar'
 """
-        with testfile(pyproject_toml_1) as toml:
+        with temp_file(pyproject_toml_1) as toml:
             settings.write(toml)
 
             self.assertEqual(settings.mode, Mode.UNDEFINED)
@@ -150,7 +150,7 @@ plugins.foo.lorem = 'dolor'
 [tool.autohooks.plugins.bar]
 foo = 'bar'
 """
-        with testfile(pyproject_toml_1) as toml:
+        with temp_file(pyproject_toml_1) as toml:
             settings.write(toml)
 
             self.assertEqual(settings.mode, Mode.POETRY)

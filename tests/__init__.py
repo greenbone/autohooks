@@ -101,7 +101,7 @@ def tempgitdir() -> Generator[Path, None, None]:
 
 
 @contextmanager
-def testfile(
+def temp_file(
     content: str,
     *,
     name: Optional[str] = "test.toml",
