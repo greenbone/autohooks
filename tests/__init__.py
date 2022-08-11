@@ -54,8 +54,13 @@ def tempgitdir() -> Generator[Path, None, None]:
 
 
 @contextmanager
-def testfile(content: str, *, name: Optional[str] = "test.toml") -> Path:
-    with tempdir() as tmp_dir:
+def testfile(
+    content: str,
+    *,
+    name: Optional[str] = "test.toml",
+    change_into: bool = False,
+) -> Path:
+    with tempdir(change_into=change_into) as tmp_dir:
         test_file = tmp_dir / name
         test_file.write_text(content, encoding="utf8")
         yield test_file
