@@ -19,21 +19,67 @@
 import os
 import sys
 import tempfile
-from contextlib import contextmanager
+from contextlib import AbstractContextManager, contextmanager
 from pathlib import Path
 from typing import Generator, Optional
 
 from autohooks.utils import exec_git
 
 
+class AddSysPath(AbstractContextManager):
+    """
+    Context Manager to add a directory path to the module search path aka.
+    sys.path. The directory path
+
+    Example:
+        with AddSysPath("")
+    """
+
+    def __init__(self, directory: Path):
+        self.directory = str(directory.resolve())
+
+        if sys.path[0] != self.directory:
+            sys.path.insert(0, self.directory)
+
+    def cleanup(self):
+        try:
+            sys.path.remove(self.directory)
+        except ValueError:
+            # self.directory was not in the path
+            pass
+
+    def __exit__(self, __exc_type, __exc_value, __traceback) -> None:
+        self.cleanup()
+
+
 @contextmanager
-def tempdir(change_into=False) -> Generator[Path, None, None]:
+def tempdir(
+    change_into: bool = False, add_to_sys_path: bool = False
+) -> Generator[Path, None, None]:
+    """
+    Context Manager to create a temporary directory
+
+    Args:
+        change_into: Set the created temporary as the current working directory
+        add_to_sys_path: Add the created temporary directory to the directories
+            for searching for Python modules
+
+    Returns:
+        A path to the created temporary directory
+    """
     temp_dir = tempfile.TemporaryDirectory()
+    dir_path = Path(temp_dir.name)
 
     if change_into:
-        os.chdir(temp_dir.name)
+        os.chdir(dir_path)
 
-    yield Path(temp_dir.name)
+    if add_to_sys_path:
+        sys_path = AddSysPath(dir_path)
+
+    yield Path(dir_path)
+
+    if add_to_sys_path:
+        sys_path.cleanup()
 
     temp_dir.cleanup()
 
