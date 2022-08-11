@@ -106,7 +106,18 @@ def testfile(
     *,
     name: Optional[str] = "test.toml",
     change_into: bool = False,
-) -> Path:
+) -> Generator[Path, None, None]:
+    """
+    A Context Manager to create a temporary file within a new temporary
+    directory. The temporary file and directory are removed when the context is
+    exited.
+
+    Args:
+        content: Content to write into the temporary file.
+        name: Name of the temporary file. "test.toml" by default.
+        change_into: Adjust the current working directory to the temporary
+            directory.
+    """
     with tempdir(change_into=change_into) as tmp_dir:
         test_file = tmp_dir / name
         test_file.write_text(content, encoding="utf8")
