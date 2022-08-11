@@ -124,6 +124,31 @@ def testfile(
         yield test_file
 
 
+@contextmanager
+def temp_python_module(
+    content: str, *, name="foo"
+) -> Generator[Path, None, None]:
+    """
+    A Context Manager to create a new Python module in a temporary directory.
+    The temporary directory will be added to the module search path and removed
+    from the search path when the context is exited. Also it is ensured that
+    the module is unloaded if the context is exited.
+
+    Args:
+        content: Python code to write into the temporary module.
+        name: Name of the new Python module. By default: "foo".
+
+    Example:
+        with temp_python_module("print()", name="bar") as python_module_path
+    """
+    with tempdir(
+        add_to_sys_path=True,
+    ) as tmp_dir, ensure_unload_module(name):
+        test_file = tmp_dir / f"{name}.py"
+        test_file.write_text(content, encoding="utf8")
+        yield test_file
+
+
 def unload_module(name: str) -> None:
     """
     Unload a Python module
