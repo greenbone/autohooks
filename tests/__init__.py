@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import sys
 import tempfile
 from contextlib import contextmanager
 from pathlib import Path
@@ -64,3 +65,8 @@ def testfile(
         test_file = tmp_dir / name
         test_file.write_text(content, encoding="utf8")
         yield test_file
+
+
+def unload_module(name: str) -> None:
+    if name in sys.modules:
+        del sys.modules[name]
