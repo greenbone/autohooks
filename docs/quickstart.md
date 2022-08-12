@@ -8,13 +8,8 @@ Quick installation of [pylint] and [black] plugins using [poetry]:
 ```shell
 poetry add --dev autohooks autohooks-plugin-black autohooks-plugin-pylint
 
-cat << EOF >> pyproject.toml
-[tool.autohooks]
-mode = "poetry"
-pre-commit = ["autohooks.plugins.pylint", "autohooks.plugins.black"]
-EOF
-
-poetry run autohooks activate
+poetry run autohooks activate --mode poetry
+poetry run autohooks plugins add autohooks.plugins.black autohooks.plugins.pylint
 ```
 
 [PyPI]: https://pypi.org
