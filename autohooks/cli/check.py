@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from argparse import Namespace
 from pathlib import Path
 
 from autohooks.config import (
@@ -24,16 +25,17 @@ from autohooks.config import (
 )
 from autohooks.hooks import PreCommitHook
 from autohooks.precommit.run import (
+    CheckPluginError,
+    CheckPluginWarning,
     autohooks_module_path,
-    has_precommit_function,
-    has_precommit_parameters,
-    load_plugin,
+    check_plugin,
 )
 from autohooks.settings import Mode
 from autohooks.terminal import Terminal
 
 
-def check_hooks(term: Terminal) -> None:
+# pylint: disable=unused-argument
+def check_hooks(term: Terminal, args: Namespace) -> None:
     pre_commit_hook = PreCommitHook()
     check_pre_commit_hook(term, pre_commit_hook)
 
@@ -132,24 +134,13 @@ def check_config(
             else:
                 with autohooks_module_path():
                     for name in plugins:
-                        try:
-                            plugin = load_plugin(name)
-                            if not has_precommit_function(plugin):
-                                term.error(
-                                    f'Plugin "{name}" has no precommit '
-                                    "function. The function is required to run"
-                                    " the plugin as git pre commit hook."
-                                )
-                            elif not has_precommit_parameters(plugin):
-                                term.warning(
-                                    f'Plugin "{name}" uses a deprecated '
-                                    "signature for its precommit function. It "
-                                    "is missing the **kwargs parameter."
-                                )
+                        result = check_plugin(name)
+                        if result:
+                            if isinstance(result, CheckPluginError):
+                                term.error(str(result))
+                            elif isinstance(result, CheckPluginWarning):
+                                term.warning(str(result))
                             else:
-                                term.ok(f'Plugin "{name}" active and loadable.')
-                        except ImportError as e:
-                            term.error(
-                                f'"{name}" is not a valid autohooks '
-                                f"plugin. {e}"
-                            )
+                                term.info(str(result))
+                        else:
+                            term.ok(f'Plugin "{name}" active and loadable.')

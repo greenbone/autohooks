@@ -33,7 +33,6 @@ class Mode(Enum):
     UNKNOWN = -2
 
     def get_effective_mode(self):
-        # pylint: disable=comparison-with-callable
         if self.value == Mode.PIPENV.value:
             return Mode.PIPENV
         if self.value == Mode.PIPENV_MULTILINE.value:
@@ -82,7 +81,7 @@ class AutohooksSettings:
 
         config_dict = {
             "mode": str(self.mode.get_effective_mode()),
-            "pre-commit": self.pre_commit,
+            "pre-commit": sorted(self.pre_commit),
         }
 
         toml_doc["tool"]["autohooks"].update(config_dict)

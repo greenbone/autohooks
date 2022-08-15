@@ -16,10 +16,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
+import sys
 
 from autohooks.__version__ import __version__ as version
 from autohooks.cli.activate import install_hooks
 from autohooks.cli.check import check_hooks
+from autohooks.cli.plugins import (
+    add_plugins,
+    list_plugins,
+    plugins,
+    remove_plugins,
+)
 from autohooks.settings import Mode
 from autohooks.terminal import Terminal
 
@@ -56,19 +63,49 @@ def main():
         help="Mode for loading autohooks during hook execution. Either load "
         "autohooks from the PYTHON_PATH, via pipenv or via poetry.",
     )
+    activate_parser.set_defaults(func=install_hooks)
 
-    subparsers.add_parser("check", help="Check installed pre-commit hook")
+    check_parser = subparsers.add_parser(
+        "check", help="Check installed pre-commit hook"
+    )
+    check_parser.set_defaults(func=check_hooks)
+
+    plugins_parser = subparsers.add_parser(
+        "plugins", help="Manage autohooks plugins"
+    )
+    plugins_parser.set_defaults(func=plugins)
+
+    plugins_subparsers = plugins_parser.add_subparsers(
+        dest="subcommand", required=True
+    )
+
+    add_plugins_parser = plugins_subparsers.add_parser(
+        "add", help="Add plugins."
+    )
+    add_plugins_parser.set_defaults(plugins_func=add_plugins)
+    add_plugins_parser.add_argument("name", nargs="+", help="Plugin(s) to add")
+
+    remove_plugins_parser = plugins_subparsers.add_parser(
+        "remove", help="Remove plugins."
+    )
+    remove_plugins_parser.set_defaults(plugins_func=remove_plugins)
+    remove_plugins_parser.add_argument(
+        "name", nargs="+", help="Plugin(s) to remove"
+    )
+
+    list_plugins_parser = plugins_subparsers.add_parser(
+        "list", help="List current used plugins."
+    )
+    list_plugins_parser.set_defaults(plugins_func=list_plugins)
 
     args = parser.parse_args()
 
     if not args.command:
         parser.print_usage()
+        sys.exit(1)
 
     term = Terminal()
-    if args.command == "activate":
-        install_hooks(term, args)
-    elif args.command == "check":
-        check_hooks(term)
+    args.func(term, args)
 
 
 if __name__ == "__main__":

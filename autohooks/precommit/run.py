@@ -75,6 +75,53 @@ def check_hook_mode(term: Terminal, config_mode: Mode, hook_mode: Mode) -> None:
         )
 
 
+class CheckPluginResult:
+    def __init__(self, message: str) -> None:
+        self.message = message
+
+    def __str__(self) -> str:
+        return self.message
+
+
+class CheckPluginError(CheckPluginResult):
+    """
+    Raised if a plugin check failed
+    """
+
+
+class CheckPluginWarning(CheckPluginResult):
+    """
+    Used if a plugin check raises a warning
+    """
+
+
+def check_plugin(plugin_name: str) -> Optional[CheckPluginResult]:
+    """
+    Check if a plugin (Python module) is valid and can be used
+
+    Returns:
+        A CheckPluginResult in case of an issue with the plugin
+    """
+    try:
+        plugin = load_plugin(plugin_name)
+        if not has_precommit_function(plugin):
+            return CheckPluginError(
+                f'Plugin "{plugin_name}" has no precommit '
+                "function. The function is required to run"
+                " the plugin as git pre commit hook."
+            )
+        elif not has_precommit_parameters(plugin):
+            return CheckPluginWarning(
+                f'Plugin "{plugin_name}" uses a deprecated '
+                "signature for its precommit function. It "
+                "is missing the **kwargs parameter."
+            )
+    except ImportError as e:
+        return CheckPluginError(
+            f'"{plugin_name}" is not a valid autohooks plugin. {e}'
+        )
+
+
 class ReportProgress:
     """
     A class to report progress of a plugin
