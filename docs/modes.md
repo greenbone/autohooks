@@ -10,7 +10,7 @@ These modes handle how autohooks, the plugins and their dependencies are loaded
 during git hook execution.
 
 If no mode is specified in the [`pyproject.toml` config file](./configuration)
-and no mode is set during [activation](#activating-the-git-hooks), autohooks
+and no mode is set during [activation](./installation.md), autohooks
 will use the [pythonpath mode](#pythonpath-mode) by default.
 
 ```{note}
@@ -33,19 +33,18 @@ In the `pythonpath` mode, the user has to install autohooks, the desired
 [plugins](./plugins) and their dependencies into the [PYTHONPATH](https://docs.python.org/3/library/sys.html#sys.path)
 manually.
 
-This can be achieved by running somthing like `python3 -m pip install --user autohooks-plugin-1 ...`
+This can be achieved by running something like `python3 -m pip install --user autohooks autohooks-plugin-xyz ...`
 to put them into the installation directory of the [current user](https://docs.python.org/3/library/site.html#site.USER_SITE)
-or with `python3 -m pip install autohooks ...` for a system wide installation.
+or with `sudo python3 -m pip install autohooks autohooks-plugin-xyz ...` for a system wide installation.
 
 Alternatively, a [virtual environment](https://packaging.python.org/tutorials/installing-packages/#creating-and-using-virtual-environments)
-could be used separating the installation from the global and user wide
-Python packages.
+could be used to separate the installation from the global and user wide
+Python packages in conjunction with the `pythonpath` mode. A downside of using
+this mode with a virtual environment is that [activating the environment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#activating-a-virtual-environment)
+has to be done manually.
 
-It is also possible to use [poetry] or [pipenv] for managing the virtual
-environment but activating the environment has to be done manually.
-
-Therefore it is even possible to run different versions of autohooks by
-using the `pythonpath` mode and switching to a virtual environment.
+To benefit from the advantages of a virtual environment a much better choice is
+to use [poetry] or [pipenv] for managing the virtual environment automatically.
 
 ## Poetry Mode
 
@@ -55,7 +54,9 @@ virtual environment will be activated automatically in the background when
 executing the autohooks based git commit hook. All dependencies are managed
 by poetry using the `pyproject.toml` and `poetry.lock` files.
 
+```{hint}
 Using the `poetry` mode is highly recommended.
+```
 
 ## Pipenv Mode
 

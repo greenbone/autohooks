@@ -44,6 +44,7 @@ when running a plugin.
 
 ```python3
 def precommit(report_progress, **kwargs):
+    files = get_changed_files()
     report_progress.init(len(files))
 
     for file in files:
@@ -91,13 +92,12 @@ def get_include(config)
 
 
 def precommit(config=None, report_progress=None, **kwargs):
-    config = kwargs.get('config')
     include = get_include(config)
 
     files = [f for f in get_staged_status() if match(f.path, include)]
 
     if not files:
-      # not files to lint
+      # no files to lint
       return 0
 
     if report_progress: # to support autohooks < 22.8.0
@@ -157,13 +157,12 @@ def get_include(config)
 
 
 def precommit(config=None, report_progress=None, **kwargs):
-    config = kwargs.get('config')
     include = get_include(config)
 
     files = [f for f in get_staged_status() if match(f.path, include)]
 
     if not files:
-      # not files to format
+      # no files to format
       return 0
 
     if report_progress: # to support autohooks < 22.8.0

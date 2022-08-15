@@ -2,17 +2,34 @@
 
 Three steps are necessary for installing autohooks:
 
-1. Installing the autohooks python package into the current environment
-2. Activating the [git hooks](https://git-scm.com/docs/githooks)
-3. Configuring plugins to be run
+  1. Installing autohooks into the current environment
+  2. Activating the [git hook](https://git-scm.com/docs/githooks)
+  3. Installing and configuring the plugins to be run
 
-## 1. Installing the autohooks Python Package into the Current Environment
+For fulfilling these steps different tooling can be used. Most prominent tools are:
+
+* [poetry]
+* [pipenv]
+* [pip]
 
 ```{note}
-
-Using [poetry] is highly recommended for installing the autohooks python package.
-
+Using [poetry] is recommended for installing and maintaining autohooks.
 ```
+
+## 1. Installing autohooks into the Current Environment
+
+Fist of all autohooks needs to be installed to provide the
+[CLI](https://en.wikipedia.org/wiki/Command-line_interface).
+
+````{hint}
+When using [pip] it might be necessary to adjust your `PATH` to allow executing
+the autohooks CLI without having to reference the full installation path later
+on.
+
+```bash
+export PATH=$PATH:~/.local/bin
+```
+````
 
 ``````{tabs}
 
@@ -32,14 +49,6 @@ pipenv install --dev autohooks
 `````
 
 `````{group-tab} pip
-````{hint}
-It may be necessary to adjust your `PATH` to allow executing the autohooks
-command without having to reference the full installation path.
-
-```bash
-export PATH=$PATH:~/.local/bin
-```
-````
 
 To install autohooks globally for the current user run
 
@@ -49,9 +58,10 @@ python3 -m pip install --user autohooks
 `````
 ``````
 
-### 2. Activating the Git Hook
+## 2. Activating the Git Hook
 
-To activate the git hook run
+To actually do something when a git commit is created, it is required to
+activate the git hook in every git clone. This can be done by running
 
 `````{tabs}
 
@@ -74,10 +84,11 @@ autohooks activate --mode pythonpath
 ````
 `````
 
-## 3. Configuring Plugins to Be Run
+## 3. Installing and Configuring the Plugins to Be Run
 
-To actually run an action on git hooks, [autohooks plugins](./plugins) have to be
-installed and configured, e.g., to install python linting via pylint run
+To finally run an action on git commits, [autohooks plugins](./plugins) have to
+be installed and configured. For example to install the Python linting via
+pylint plugin run
 
 `````{tabs}
 ````{group-tab} poetry
@@ -101,6 +112,6 @@ autohooks plugins add autohooks.plugins.pylint
 ```
 ````
 `````
-
 [pipenv]: https://pipenv.readthedocs.io/en/latest/
 [poetry]: https://python-poetry.org/
+[pip]: https://pip.pypa.io/en/stable/

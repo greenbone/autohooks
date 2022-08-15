@@ -4,6 +4,8 @@
 ```{image} _static/greenbone.png
 :alt: Greenbone Logo
 :width: 300px
+:target: ""
+:class: greenbone-logo
 ````
 
 Library for managing and writing [git hooks](https://git-scm.com/docs/githooks)
@@ -22,22 +24,23 @@ To name a few: [husky](https://github.com/typicode/husky),
 [pre-commit](https://github.com/pre-commit/pre-commit).
 
 However, they either need another interpreter besides python (like husky) or are
-too ambiguous (like pre-commit). pre-commit is written in python but has support
+too ambiguous (like pre-commit). pre-commit is written in Python but has support
 hooks written in all kind of languages. Additionally, it maintains the dependencies by
 itself and does not install them in the current environment.
 
 ## Solution
 
-autohooks is a pure python library that installs a minimal
+autohooks is a pure Python library that installs a minimal
 [executable git hook](https://github.com/greenbone/autohooks/blob/main/autohooks/precommit/template).
 It allows the decision of how to maintain the hook dependencies
-by supporting different modes.
+by supporting different [modes](./modes.md).
 
 ![Autohooks](https://raw.githubusercontent.com/greenbone/autohooks/main/autohooks.gif)
 
 ## Requirements
 
-Python 3.7+ is required for autohooks.
+Python 3.7+ is required for autohooks. It depends on [tomlkit](https://github.com/sdispater/tomlkit/),
+[pontos](https://github.com/greenbone/pontos) and [rich](https://github.com/Textualize/rich/).
 
 ```{toctree}
 :hidden:
