@@ -97,7 +97,7 @@ class CheckPluginWarning(CheckPluginResult):
 
 def check_plugin(plugin_name: str) -> Optional[CheckPluginResult]:
     """
-    Check if a plugin (Python module) is a valid and can be used
+    Check if a plugin (Python module) is valid and can be used
 
     Returns:
         A CheckPluginResult in case of an issue with the plugin
