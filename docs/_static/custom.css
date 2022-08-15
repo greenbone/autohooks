@@ -28,13 +28,13 @@ div.body h6 {
 	font-family: Helvetica, Verdana;
 }
 
-a {
+a:not(.image-reference) {
     color: var(--color-content-foreground);
     text-decoration: none;
     border-bottom: 1px dotted var(--color-content-foreground);
 }
 
-a:hover {
+a:hover:not(.image-reference, .sidebar-brand) {
 	color: #11AB51;
 	border-bottom: 1px solid var(--color-content-foreground);
 }
