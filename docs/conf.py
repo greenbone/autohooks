@@ -105,9 +105,10 @@ html_theme_options = {
 pygments_style = "zenburn"
 pygments_dark_style = "monokai"
 
-autodoc_typehints = "description"
-autodoc_typehints_description_target = "documented"
-
+# Don't show class signature with the class' name.
 autodoc_class_signature = "separated"
+
+# Show only types that are already documented by a docstring.
+autodoc_typehints_description_target = "documented"
 
 myst_heading_anchors = 2
