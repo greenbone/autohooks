@@ -27,6 +27,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    "sphinx.ext.intersphinx",
     "myst_parser",
     "sphinx_tabs.tabs",
 ]
@@ -44,6 +45,10 @@ exclude_patterns = [
 source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
+}
+
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
 }
 
 html_title = "Autohooks Documentation"
