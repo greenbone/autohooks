@@ -94,7 +94,7 @@ and no mode is set during [activation](#activating-the-git-hooks), autohooks
 will use the [pythonpath mode](#pythonpath-mode) by default.
 
 For more details on using [pip], [poetry] or [pipenv] in conjunction with these
-modes see the documentation.
+modes see the [documentation](https://greenbone.github.io/autohooks).
 
 ## Maintainer
 
