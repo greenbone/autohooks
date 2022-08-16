@@ -67,17 +67,11 @@ Quick installation of [pylint] and [black] plugins using [poetry]:
 
 ```shell
 poetry add --dev autohooks autohooks-plugin-black autohooks-plugin-pylint
-
-cat << EOF >> pyproject.toml
-[tool.autohooks]
-mode = "poetry"
-pre-commit = ["autohooks.plugins.pylint", "autohooks.plugins.black"]
-EOF
-
-poetry run autohooks activate
+poetry run autohooks activate --mode poetry
+poetry run autohooks plugins add autohooks.plugins.black autohooks.plugins.pylint
 ```
 
-The output should be similar to
+The output of `autohooks activate` should be similar to
 ```
  ✓ autohooks pre-commit hook installed at /autohooks-test/.git/hooks/pre-commit using poetry mode.
 ```
