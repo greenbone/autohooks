@@ -14,34 +14,47 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
+Plugin API for path checking
+"""
 
 import fnmatch
 import os
 from os import PathLike
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Optional
 
 
-def is_python_path(path: Path) -> bool:
+def is_python_path(path: Optional[Path]) -> bool:
+    """
+    Function to check if path is a Python file.
+
+    Args:
+        path: A path to a file.
+
+    Returns:
+        True if path is a Python file.
+    """
     if not path:
         return False
     return path.match("*.py")
 
 
-def match(path: PathLike, pattern_list: Iterable) -> bool:
+def match(path: PathLike, pattern_list: Iterable[str]) -> bool:
     """
-    Check if a Path matches to one of the patterns
+    Check if a path like object matches to one of the patterns.
 
     Internally fnmatch is used.
     See https://docs.python.org/3/library/fnmatch.html for details.
 
     Arguments:
-        path (Path): Path to check if it matches to one of the patterns
-        pattern_list (iterable): Iterable (e.g tuple or list) of patterns to
-            match against the path
+        path: :py:class:`os.PathLike` to check if it matches to one of the
+            patterns.
+        pattern_list: Iterable (e.g tuple or list) of patterns to
+            match against the path..
 
     Returns:
-        Boolean: True if path matches a pattern of the list
+        True if path matches a pattern of the list.
     """
     for pattern in pattern_list:
         if fnmatch.fnmatch(os.fspath(path), pattern):

@@ -1,0 +1,252 @@
+div.document {
+	width: 1200px;
+}
+
+body {
+	font-family: Helvetica, Verdana;
+}
+
+div.body {
+	max-width: 1200px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+font-weight:500;
+}
+
+div.body h1,
+div.body h2,
+div.body h3,
+div.body h4,
+div.body h5,
+div.body h6 {
+    font-family: Helvetica, Verdana;
+ }
+
+.sphinx-tabs-tab {
+	color:var(--color-content-foreground);
+	font-family: Helvetica, Verdana;
+}
+
+a:not(.image-reference) {
+    color: var(--color-content-foreground);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--color-content-foreground);
+}
+
+a:hover:not(.image-reference, .sidebar-brand) {
+	color: #11AB51;
+	border-bottom: 1px solid var(--color-content-foreground);
+}
+
+.related-pages a .page-info .title, .bottom-of-page a {
+	color: var(--color-foreground-secondary);
+    text-decoration: none;
+	border-bottom: 1px dotted var(--color-foreground-secondary);
+}
+
+.related-pages a:hover .page-info .title, .bottom-of-page a:hover {
+    text-decoration: none;
+	color: #11AB51;
+	border-bottom: 1px solid var(--color-foreground-secondary);
+}
+
+a.muted-link  {
+	border-bottom:0;
+}
+
+a.muted-link:hover {
+	border-bottom:0;
+	color:#11AB51;
+}
+
+a.sidebar-brand, .toctree-l1 > a.reference, .toc-tree a.reference {
+	border-bottom: 0;
+}
+
+.toctree-l1 > a.reference:hover, .toc-tree a.reference:hover {
+	border-bottom: 0;
+	color: #11AB51;
+}
+
+.related-pages a {
+	border-bottom:0;
+}
+
+.related-pages a:hover {
+	border-bottom:0;
+}
+
+.toctree-wrapper .caption-text, .sidebar-tree .caption-text {
+	font-size:2em;
+	font-weight:500;
+	color: var(--color-content-foreground);
+}
+
+.sidebar-brand-text {
+	text-align:left;
+}
+
+.sidebar-search {
+	color:var(--color-content-foreground);
+}
+
+.sidebar-tree .toctree-l1 > .reference {
+	color: var(--color-content-foreground);
+}
+
+.toc-tree li.scroll-current > .reference {
+	color: var(--color-content-foreground);
+}
+
+.toc-tree .reference {
+	color: var(--color-content-foreground);
+	font-size:1.1em;
+}
+
+.toc-title {
+	color: var(--color-content-foreground);
+	font-size:1.2em;
+}
+
+div.admonition {
+	background-color:var(--color-background-secondary);
+    padding: 20px 20px;
+    border-radius: 4px;
+}
+
+.admonition.note > .admonition-title, .admonition.warning > .admonition-title, .admonition.tip > .admonition-title, .admonition.important > .admonition-title, .admonition.hint > .admonition-title {
+	background-color:var(--color-background-secondary);
+    font-family: Helvetica, Verdana;
+    font-weight: bold;
+    font-size:1em;
+}
+
+div.body p.caption {
+	font-size: 240%;
+	margin-bottom: 0px;
+}
+
+div.sphinxsidebar h3 {
+    font-family: Helvetica, Verdana;
+}
+
+div.sphinxsidebar a {
+    border: 0px;
+}
+
+div.sphinxsidebarwrapper p.description {
+  font-size: 15px;
+}
+
+div.sphinxsidebarwrapper h1.logo {
+  font-size: 25px;
+}
+
+div.sphinxsidebarwrapper h1.logo-name {
+	margin-top:50px;
+}
+
+div.sphinxsidebarwrapper p.description {
+	margin-bottom: 50px;
+}
+
+
+div.sphinxsidebarwrapper img {
+  max-width: 70%;
+}
+
+.highlight-shell-session .go::before {
+  content: ">";
+  padding-right: 1em;
+}
+
+.highlight pre {
+  border-radius: 6px;
+  font-family: Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
+  font-size: 0.9em;
+  line-height: 1.2;
+  padding: 1.25rem 1.5rem;
+}
+
+.code-block-caption {
+	font-size:0.7em;
+	background-color: var(--color-background-secondary);
+	color: var(--color-foreground-primary);
+}
+
+
+.code-block-caption a {
+	color:var(--color-foreground-primary);
+}
+
+.code-block-caption a:hover {
+	color:#11AB51;
+}
+
+
+div.edit-this-page > a.muted-link, svg.icon-tabler-shadow, svg.theme-icon-when-dark, svg.theme-icon-when-light {
+	color:var(--color-content-foreground);
+}
+
+
+div.edit-this-page > a.muted-link:hover, svg.icon.icon-tabler.icon-tabler-copy:hover, svg.icon-tabler-shadow:hover, svg.theme-icon-when-dark:hover, svg.theme-icon-when-light:hover {
+	color:#11AB51;
+}
+
+.highlight {
+	background-color: var(--color-code-background);
+	color:var(--color-code-foreground);
+}
+
+.highlight button.copybtn {
+	background-color:transparent;
+}
+
+.highlight button.copybtn:hover {
+	background-color:transparent;
+}
+
+
+svg.icon.icon-tabler.icon-tabler-copy {
+	color: var(--color-code-foreground);
+
+}
+
+.highlight .go {
+	color: var(--color-code-foreground);
+	font-weight: normal;
+}
+
+.highlight .l {
+	color: var(--color-code-foreground);
+}
+
+#contents.toc {
+    background-color: #ffffff;
+    border: none;
+}
+
+.back-to-top {
+	background-color:var(--color-background-secondary);
+}
+
+div.topic {
+	border-radius: 4px;
+}
+
+div.topic a.reference.internal {
+	border: 0px;
+}
+
+div.toctree-wrapper.compound a.reference.internal {
+	border: 0px;
+}
+
+#indices-and-tables a.reference.internal {
+	border: 0px;
+}
+
+.sidebar-logo {
+  max-width: 70%;
+}
