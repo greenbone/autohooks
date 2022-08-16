@@ -14,10 +14,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
+Main Plugin API
+"""
 
+from typing import Callable, Optional
+
+from autohooks.config import Config
+from autohooks.precommit.run import ReportProgress
 from autohooks.terminal import bold_info, error, fail, info, ok, out, warning
 
 __all__ = [
+    "Config",
+    "ReportProgress",
     "error",
     "fail",
     "info",

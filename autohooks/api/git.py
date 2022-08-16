@@ -14,6 +14,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"""
+Plugin API for handling git related tasks
+"""
+
 import os
 import subprocess
 from enum import Enum
@@ -27,14 +32,15 @@ from autohooks.utils import GitError, exec_git, get_project_root_path
 
 __all__ = [
     "exec_git",
+    "GitError",
     "get_staged_status",
     "get_status",
     "is_partially_staged_status",
     "is_staged_status",
     "stage_files",
     "stash_unstaged_changes",
-    "Status",
     "StatusEntry",
+    "Status",
 ]
 
 
@@ -48,6 +54,10 @@ def _get_git_toplevel_path():
 
 
 class Status(Enum):
+    """
+    Status of a file in git
+    """
+
     UNMODIFIED = " "
     MODIFIED = "M"
     ADDED = "A"
@@ -60,11 +70,26 @@ class Status(Enum):
 
 
 class StatusEntry:
+    """
+    Status of a file in the git index and working tree.
+
+    Implements the :py:class:`os.PathLike` protocol.
+
+    Attributes:
+        index: Status in the index
+        working_tree: Status in the working tree
+        path: Path to the file
+        root_path: An optional path to a root directory
+        old_path: Set for renamed files
+    """
+
     def __init__(self, status_string: str, root_path: Path = None) -> None:
         status = status_string[:2]
         filename = status_string[3:]
 
+        # Status in the index
         self.index = Status(status[0])
+        # Status in the working directory
         self.working_tree = Status(status[1])
         self.root_path = root_path
 
@@ -73,6 +98,7 @@ class StatusEntry:
             self.path = Path(new_filename)
             self.old_path = Path(old_filename)
         else:
+            # path of the file in git
             self.path = Path(filename)
 
     def __str__(self) -> str:
@@ -82,6 +108,9 @@ class StatusEntry:
         return f"<StatusEntry {str(self)}>"
 
     def absolute_path(self) -> Path:
+        """
+        Returns the absolute path of the file of this StatusEntry
+        """
         if self.root_path:
             return (self.root_path / self.path).resolve()
         return self.path.resolve()
@@ -105,14 +134,15 @@ def _parse_status(output: str) -> Iterator[str]:
 
 
 def is_staged_status(status: StatusEntry) -> bool:
-    """Returns true, if the status of the given StatusEntry is staged
+    """Returns true, if the status of the given :py:class:`StatusEntry` is
+    staged.
 
     Arguments:
-        status: A StatusEntry object that contains the filename,
-                path and the git status
+        status: A :py:class:`StatusEntry` object that contains the filename,
+            path and the git status.
 
     Returns:
-        True if file is staged, False else
+        True if file is staged, False else.
     """
     return (
         status.index != Status.UNMODIFIED
@@ -123,15 +153,15 @@ def is_staged_status(status: StatusEntry) -> bool:
 
 
 def is_partially_staged_status(status: StatusEntry) -> bool:
-    """Returns true, if the status of the given StatusEntry
-    is partially staged
+    """Returns true, if the status of the given :py:class:`StatusEntry`
+    is partially staged.
 
     Arguments:
-        status: A StatusEntry object that contains the filename,
-                path and the git status
+        status: A :py:class:`StatusEntry` object that contains the filename,
+            path and the git status.
 
     Returns:
-        True if file is partially staged, False else
+        True if file is partially staged, False else.
     """
     return (
         status.index != Status.UNMODIFIED
@@ -145,14 +175,15 @@ def is_partially_staged_status(status: StatusEntry) -> bool:
 
 
 def get_status(files: Optional[Iterable[PathLike]] = None) -> List[StatusEntry]:
-    """Get information about the current git status
+    """Get information about the current git status.
 
     Arguments:
-        files: (optional) specify a list of files and exclude all other pathes
-               for the status
+        files: (optional) specify an iterable of :py:class:`os.PathLike` and
+            exclude all other paths for the status.
 
     Returns:
-        A list of StatusEntries that contains the status of the specific files
+        A list of :py:class:`StatusEntry` instances that contain the status of
+        the specific files.
     """
     args = [
         "status",
@@ -173,14 +204,15 @@ def get_status(files: Optional[Iterable[PathLike]] = None) -> List[StatusEntry]:
 def get_staged_status(
     files: Optional[Iterable[PathLike]] = None,
 ) -> List[StatusEntry]:
-    """Get a list of StatusEntries containing only staged files
+    """Get a list of :py:class:`StatusEntry` instances containing only staged
+    files.
 
     Arguments:
-        files: (optional) specify a list of files and exclude all other pathes
-               for the status
+        files: (optional) specify an iterable of files and exclude all other
+            paths for the status.
 
     Returns:
-        A list of StatusEntries with files that are staged
+        A list of :py:class:`StatusEntry` instances with files that are staged.
     """
     status = get_status(files)
     return [s for s in status if is_staged_status(s)]
@@ -192,16 +224,16 @@ def stage_files_from_status_list(status_list: Iterable[StatusEntry]) -> None:
     Deprecated. Please use stage_files instead.
 
     Arguments:
-        status_list: A List of StatusEntries that should be added
+        status_list: A List of StatusEntry instances that should be added
     """
     stage_files(status_list)
 
 
 def stage_files(files: Iterable[PathLike]) -> None:
-    """Add the passed files to git staging index
+    """Add the passed :py:class:`os.PathLike` to git staging index
 
     Arguments:
-        files: A List of files to add to the index
+        files: An iterable of :py:class:`os.PathLike` to add to the index
     """
     filenames = [os.fspath(f) for f in files]
     exec_git("add", *filenames)
@@ -211,7 +243,7 @@ def get_diff(files: Optional[Iterable[StatusEntry]] = None) -> str:
     """Get the diff of the passed files
 
     Arguments:
-        status_list: A List of StatusEntries that should be diffed
+        status_list: A List of StatusEntry instances that should be diffed
 
     Returns:
         string containing the diff of the given files
@@ -315,17 +347,24 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
     to the index. The stashed changes are restored when the context manager
     exits.
 
-    with stash_unstaged_changes():
-        do_something()
+    Example: ::
+
+        with stash_unstaged_changes():
+            do_something()
     """
 
     def __init__(self, files: Optional[Iterable[PathLike]] = None) -> None:
+        """
+        Args:
+            files: Optional iterable of path like objects to consider for being
+                staged. By default all files in the git status are considered.
+        """
         status_list = get_status(files)
         self.partially_staged = [
             s for s in status_list if is_partially_staged_status(s)
         ]
 
-    def stash_changes(self) -> None:
+    def _stash_changes(self) -> None:
         # save current staging area aka. index
         self.index = _write_tree()
         # add ref to be able to restore index manually
@@ -343,7 +382,7 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
         _read_tree(self.index)
         _checkout_from_index(self.partially_staged)
 
-    def restore_working_tree(self) -> None:
+    def _restore_working_tree(self) -> None:
         # restore working tree
         _read_tree(self.working_tree)
         # checkout working tree
@@ -351,7 +390,7 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
 
     def __enter__(self) -> None:
         if self.partially_staged:
-            self.stash_changes()
+            self._stash_changes()
 
     def __exit__(
         self,
@@ -365,13 +404,13 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
         if exc_type is not None:
             # an error has occurred
             # restore working tree and index as it was before formatting
-            self.restore_working_tree()
+            self._restore_working_tree()
             _read_tree(self.index)
         else:
             # save possible changes made to the index
             changed_tree = _write_tree()
 
-            self.restore_working_tree()
+            self._restore_working_tree()
 
             # restore index
             _read_tree(changed_tree)

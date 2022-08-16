@@ -21,6 +21,10 @@ from pathlib import Path
 
 
 class GitError(subprocess.CalledProcessError):
+    """
+    Error raised if a git command fails.
+    """
+
     def __str__(self) -> str:
         return (
             f"Git command '{self.cmd}' returned "
@@ -29,6 +33,21 @@ class GitError(subprocess.CalledProcessError):
 
 
 def exec_git(*args: str, ignore_errors: bool = False) -> str:
+    """
+    Execute git command.
+
+    Raises:
+        GitError: A GitError is raised if the git commit fails and ignore_errors
+            is False.
+
+    Args:
+        *args: Variable length argument list passed to git.
+        ignore_errors: Ignore errors if git command fails. Default: False.
+
+    Example: ::
+
+        exec_git("commit", "-m", "A new commit")
+    """
     try:
         cmd_args = ["git"]
         cmd_args.extend(args)

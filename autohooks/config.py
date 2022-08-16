@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 import tomlkit
 
@@ -27,10 +27,33 @@ AUTOHOOKS_SECTION = "tool.autohooks"
 
 
 class Config:
-    def __init__(self, config_dict: Dict = None) -> None:
+    """
+    Config helper class for easier access to a tree of settings.
+    """
+
+    def __init__(self, config_dict: Dict[str, Any] = None) -> None:
+        """
+        Create a new Config from a dictionary.
+
+        Args:
+            config_dict: Dictionary to be used for the Config.
+        """
         self._config_dict = config_dict or {}
 
     def get(self, *keys: str) -> "Config":
+        """
+        Get a sub-config. If a sub-config with the passed keys does not exists
+        an empty Config is returned.
+
+        Args:
+            *keys: Variable length of keys to resolve.
+
+        Example: ::
+
+            config = Config({"foo": {"bar": {"baz": 1}}})
+            baz = config.get("foo", "bar")
+            empty_config = config.get("lorem", "ipsum")
+        """
         config_dict = self._config_dict
 
         for key in keys:
@@ -38,10 +61,26 @@ class Config:
 
         return Config(config_dict)
 
-    def get_value(self, key: str, default: Any = None) -> Union[str, List[str]]:
+    def get_value(self, key: str, default: Any = None) -> Any:
+        """
+        Get a config value.
+
+        Args:
+            key: Key to lookup in the config.
+            default: Value to return if key is not in the config. By default
+                None is returned.
+
+        Example: ::
+
+            config = Config({"foo": {"bar": {"baz": 1}}})
+            value = config.get("foo", "bar").get_value("baz")
+        """
         return self._config_dict.get(key, default)
 
     def is_empty(self) -> bool:
+        """
+        Returns True if the config has no data.
+        """
         return not bool(self._config_dict)
 
 

@@ -40,30 +40,72 @@ __term = None  # pylint: disable=invalid-name
 
 
 def ok(message: str) -> None:
+    """
+    Highlight message as a success/ok in the terminal
+
+    Args:
+        message: Message to print
+    """
     __term.ok(message)
 
 
 def fail(message: str) -> None:
+    """
+    Highlight message as a failure in the terminal
+
+    Args:
+        message: Message to print
+    """
     __term.fail(message)
 
 
 def error(message: str) -> None:
+    """
+    Highlight message as an error in the terminal
+
+    Args:
+        message: Message to print
+    """
     __term.error(message)
 
 
 def warning(message: str) -> None:
+    """
+    Highlight message as a warning in the terminal
+
+    Args:
+        message: Message to print
+    """
     __term.warning(message)
 
 
 def info(message: str) -> None:
+    """
+    Highlight message as an information in the terminal
+
+    Args:
+        message: Message to print
+    """
     __term.info(message)
 
 
 def bold_info(message: str) -> None:
+    """
+    Highlight message as an strong information in the terminal
+
+    Args:
+        message: Message to print
+    """
     __term.bold_info(message)
 
 
 def out(message: str):
+    """
+    Print message to the terminal without highlighting
+
+    Args:
+        message: Message to print
+    """
     __term.print(message)
 
 
