@@ -6,7 +6,7 @@ Three steps are necessary for installing autohooks:
   2. Activating the [git hook](https://git-scm.com/docs/githooks)
   3. Installing and configuring the plugins to be run
 
-For fulfilling these steps different tooling can be used. Most prominent tools are:
+For fulfilling these steps different tooling can be used. Most prominent and currently supported tools are:
 
 * [poetry]
 * [pipenv]
@@ -60,8 +60,8 @@ python3 -m pip install --user autohooks
 
 ## 2. Activating the Git Hook
 
-To actually do something when a git commit is created, it is required to
-activate the git hook in every git clone. This can be done by running
+To actually use `autohooks` when a git commit is created, it is required to
+activate the git hook in every cloned git repository. This can be done by running
 
 `````{tabs}
 
@@ -86,9 +86,9 @@ autohooks activate --mode pythonpath
 
 ## 3. Installing and Configuring the Plugins to Be Run
 
-To finally run an action on git commits, [autohooks plugins](./plugins) have to
-be installed and configured. For example to install the Python linting via
-pylint plugin run
+To finally execute a hook on your git commits, [autohooks plugins](./plugins) have to
+be installed and configured. E.g. set up the Python linting via
+pylint plugin by executing
 
 `````{tabs}
 ````{group-tab} poetry
