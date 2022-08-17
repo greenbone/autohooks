@@ -9,8 +9,9 @@ description = "Library for managing git hooks"
 authors = ["Greenbone Networks GmbH <info@greenbone.net>"]
 license = "GPL-3.0-or-later"
 readme = "README.md"
-homepage = "https://github.com/greenbone/autohooks"
-repository = "https://github.com/greenbone/autohooks"
+homepage = "https://github.com/greenbone/autohooks/"
+repository = "https://github.com/greenbone/autohooks/"
+documentation = "https://greenbone.github.io/autohooks/"
 # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
 classifiers=[
   "Development Status :: 5 - Production/Stable",
