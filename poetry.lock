@@ -375,19 +375,19 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "mdit-py-plugins"
-version = "0.3.0"
+version = "0.3.1"
 description = "Collection of plugins for markdown-it-py"
 category = "dev"
 optional = false
-python-versions = "~=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 markdown-it-py = ">=1.0.0,<3.0.0"
 
 [package.extras]
-code_style = ["pre-commit (==2.6)"]
-rtd = ["myst-parser (>=0.14.0,<0.15.0)", "sphinx-book-theme (>=0.1.0,<0.2.0)"]
-testing = ["coverage", "pytest (>=3.6,<4)", "pytest-cov", "pytest-regressions"]
+code_style = ["pre-commit"]
+rtd = ["attrs", "myst-parser (>=0.16.1,<0.17.0)", "sphinx-book-theme (>=0.1.0,<0.2.0)"]
+testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 
 [[package]]
 name = "mdurl"
@@ -1072,8 +1072,8 @@ mccabe = [
     {file = "mccabe-0.7.0.tar.gz", hash = "sha256:348e0240c33b60bbdf4e523192ef919f28cb2c3d7d5c7794f74009290f236325"},
 ]
 mdit-py-plugins = [
-    {file = "mdit-py-plugins-0.3.0.tar.gz", hash = "sha256:ecc24f51eeec6ab7eecc2f9724e8272c2fb191c2e93cf98109120c2cace69750"},
-    {file = "mdit_py_plugins-0.3.0-py3-none-any.whl", hash = "sha256:b1279701cee2dbf50e188d3da5f51fee8d78d038cdf99be57c6b9d1aa93b4073"},
+    {file = "mdit-py-plugins-0.3.1.tar.gz", hash = "sha256:3fc13298497d6e04fe96efdd41281bfe7622152f9caa1815ea99b5c893de9441"},
+    {file = "mdit_py_plugins-0.3.1-py3-none-any.whl", hash = "sha256:606a7f29cf56dbdfaf914acb21709b8f8ee29d857e8f29dcc33d8cb84c57bfa1"},
 ]
 mdurl = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
