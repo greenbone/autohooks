@@ -654,7 +654,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "Sphinx"
-version = "5.2.1"
+version = "5.2.3"
 description = "Python documentation generator"
 category = "dev"
 optional = false
@@ -681,7 +681,7 @@ sphinxcontrib-serializinghtml = ">=1.1.5"
 
 [package.extras]
 docs = ["sphinxcontrib-websupport"]
-lint = ["docutils-stubs", "flake8 (>=3.5.0)", "flake8-bugbear", "flake8-comprehensions", "flake8-simplify", "isort", "mypy (>=0.971)", "sphinx-lint", "types-requests", "types-typed-ast"]
+lint = ["docutils-stubs", "flake8 (>=3.5.0)", "flake8-bugbear", "flake8-comprehensions", "flake8-simplify", "isort", "mypy (>=0.981)", "sphinx-lint", "types-requests", "types-typed-ast"]
 test = ["cython", "html5lib", "pytest (>=4.6)", "typed_ast"]
 
 [[package]]
@@ -854,7 +854,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "24bf2de2bcc8f29bc5e1da96a54f8253cc3b0900ab2d5d8a0d11c0a68bc7fe3e"
+content-hash = "8a0aa0fb24e5006616e882a4c6cfccf0fd3cb2e5daf59dd38b607c202937fe31"
 
 [metadata.files]
 alabaster = [
@@ -1198,8 +1198,8 @@ soupsieve = [
     {file = "soupsieve-2.3.2.post1.tar.gz", hash = "sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d"},
 ]
 Sphinx = [
-    {file = "Sphinx-5.2.1.tar.gz", hash = "sha256:c009bb2e9ac5db487bcf53f015504005a330ff7c631bb6ab2604e0d65bae8b54"},
-    {file = "sphinx-5.2.1-py3-none-any.whl", hash = "sha256:3dcf00fcf82cf91118db9b7177edea4fc01998976f893928d0ab0c58c54be2ca"},
+    {file = "Sphinx-5.2.3.tar.gz", hash = "sha256:5b10cb1022dac8c035f75767799c39217a05fc0fe2d6fe5597560d38e44f0363"},
+    {file = "sphinx-5.2.3-py3-none-any.whl", hash = "sha256:7abf6fabd7b58d0727b7317d5e2650ef68765bbe0ccb63c8795fa8683477eaa2"},
 ]
 sphinx-basic-ng = [
     {file = "sphinx_basic_ng-1.0.0b1-py3-none-any.whl", hash = "sha256:ade597a3029c7865b24ad0eda88318766bcc2f9f4cef60df7e28126fde94db2a"},
