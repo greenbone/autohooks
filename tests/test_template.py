@@ -69,7 +69,7 @@ class PreCommitTemplateTestCase(unittest.TestCase):
         template = PreCommitTemplate(path)
         self.assertEqual(
             template.render(mode=Mode.POETRY),
-            "/usr/bin/env -S poetry run python3",
+            "/usr/bin/env -S poetry run python",
         )
 
     def test_should_render_mode_pipenv_multiline(self):
@@ -94,7 +94,7 @@ class PreCommitTemplateTestCase(unittest.TestCase):
             (
                 "/bin/sh\n"
                 "\"true\" ''':'\n"
-                'poetry run python3 "$0" "$@"\n'
+                'poetry run python "$0" "$@"\n'
                 'exit "$?"\n'
                 "'''"
             ),
