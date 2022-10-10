@@ -129,7 +129,7 @@ def is_split_env():
             check=True,
         )
         is_split = True
-    except subprocess.CalledProcessError:
+    except (subprocess.CalledProcessError, FileNotFoundError):
         is_split = False
 
     return is_split
