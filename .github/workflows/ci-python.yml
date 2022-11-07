@@ -2,43 +2,45 @@ name: Build and test Python package
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   linting:
     name: Linting
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     strategy:
-        matrix:
-          python-version:
-            - 3.7
-            - 3.8
-            - 3.9
-            - "3.10"
+      matrix:
+        python-version:
+          - 3.7
+          - 3.8
+          - 3.9
+          - "3.10"
+          - "3.11"
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: greenbone/actions/lint-python@v1
+        uses: greenbone/actions/lint-python@v2
         with:
           packages: autohooks tests
           version: ${{ matrix.python-version }}
 
   test:
     name: Run all tests
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     strategy:
-        matrix:
-          python-version:
-            - 3.7
-            - 3.8
-            - 3.9
-            - "3.10"
+      matrix:
+        python-version:
+          - 3.7
+          - 3.8
+          - 3.9
+          - "3.10"
+          - "3.11"
     steps:
       - uses: actions/checkout@v3
       - name: Install poetry and dependencies
-        uses: greenbone/actions/poetry@v1
+        uses: greenbone/actions/poetry@v2
         with:
           version: ${{ matrix.python-version }}
       - name: Run unit tests
@@ -47,10 +49,10 @@ jobs:
   codecov:
     name: Upload coverage to codecov.io
     needs: test
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
       - name: Calculate and upload coverage to codecov.io
-        uses: greenbone/actions/coverage-python@v1
+        uses: greenbone/actions/coverage-python@v2
         with:
-          version: 3.9
+          version: "3.10"
