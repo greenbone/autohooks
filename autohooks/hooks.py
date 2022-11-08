@@ -72,7 +72,7 @@ class PreCommitHook:
 
         if shebang == PYTHON3_SHEBANG:
             return Mode.PYTHONPATH
-        if shebang == POETRY_SHEBANG:
+        if shebang.startswith(POETRY_SHEBANG):
             return Mode.POETRY
         if shebang == PIPENV_SHEBANG:
             return Mode.PIPENV

@@ -173,6 +173,12 @@ class ReadModeTestCase(unittest.TestCase):
 
         self.assertEqual(pre_commit_hook.read_mode(), Mode.POETRY)
 
+    def test_poetry_mode_with_python3(self):
+        path = FakeReadPath(f"#!{POETRY_SHEBANG}3")
+        pre_commit_hook = PreCommitHook(path)
+
+        self.assertEqual(pre_commit_hook.read_mode(), Mode.POETRY)
+
     def test_pipenv_multiline_mode(self):
         path = FakeReadPath(f"#!{PIPENV_MULTILINE_SHEBANG}")
         pre_commit_hook = PreCommitHook(path)
