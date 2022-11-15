@@ -106,7 +106,7 @@ def out(message: str):
     Args:
         message: Message to print
     """
-    __term.print(message)
+    __term.out(message)
 
 
 def overwrite(message: str, new_line: bool = False):
