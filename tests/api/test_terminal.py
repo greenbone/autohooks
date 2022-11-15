@@ -45,7 +45,7 @@ class TerminalOutputApiTestCase(unittest.TestCase):
 
     def test_out(self):
         out("foo bar")
-        self.term.print.assert_called_with("foo bar")
+        self.term.out.assert_called_with("foo bar")
 
     def test_warning(self):
         warning("foo bar")
