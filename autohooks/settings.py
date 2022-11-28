@@ -18,7 +18,7 @@
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Union
 
 import tomlkit
 
@@ -70,7 +70,7 @@ class AutohooksSettings:
         overridden.
         """
         if filename.exists():
-            toml_doc = tomlkit.loads(filename.read_text())
+            toml_doc : Union[tomlkit.toml_document.TOMLDocument, tomlkit.items.Table]  = tomlkit.loads(filename.read_text())
         else:
             toml_doc = tomlkit.document()
 

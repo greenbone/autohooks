@@ -120,6 +120,7 @@ def check_plugin(plugin_name: str) -> Optional[CheckPluginResult]:
         return CheckPluginError(
             f'"{plugin_name}" is not a valid autohooks plugin. {e}'
         )
+    return None
 
 
 class ReportProgress:

@@ -36,7 +36,7 @@ __all__ = (
     "warning",
 )
 
-__term = None  # pylint: disable=invalid-name
+__term = Terminal()
 
 
 def ok(message: str) -> None:

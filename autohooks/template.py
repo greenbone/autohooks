@@ -17,6 +17,7 @@
 
 from pathlib import Path
 from string import Template
+from typing import Optional, Union
 
 from autohooks.settings import Mode
 from autohooks.utils import get_autohooks_directory_path
@@ -49,7 +50,7 @@ def get_pre_commit_hook_template_path() -> Path:
 
 
 class PreCommitTemplate:
-    def __init__(self, template_path: Path = None) -> None:
+    def __init__(self, template_path: Optional[Path] = None) -> None:
         if template_path is None:
             template_path = get_pre_commit_hook_template_path()
         self._load(template_path)
@@ -60,7 +61,7 @@ class PreCommitTemplate:
     def render(self, *, mode: Mode) -> str:
         mode = mode.get_effective_mode()
 
-        params = dict(VERSION=TEMPLATE_VERSION)
+        params : dict[str, Union[str,int]]  = dict(VERSION=TEMPLATE_VERSION)
 
         if mode == Mode.PIPENV:
             params["SHEBANG"] = PIPENV_SHEBANG
