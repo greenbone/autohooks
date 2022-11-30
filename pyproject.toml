@@ -97,3 +97,7 @@ version-module-file = "autohooks/__version__.py"
 [tool.isort]
 profile = "black"
 line_length = 80
+
+[tool.mypy]
+ignore_missing_imports = true
+explicit_package_bases = true

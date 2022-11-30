@@ -24,6 +24,23 @@ jobs:
         with:
           packages: autohooks tests
           version: ${{ matrix.python-version }}
+  type-check:
+    name: Type-check
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        python-version:
+          - 3.7
+          - 3.8
+          - 3.9
+          - "3.10"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: greenbone/actions/mypy-python@v2
+        with:
+          packages: autohooks
+          version: ${{ matrix.python-version }}
 
   test:
     name: Run all tests
