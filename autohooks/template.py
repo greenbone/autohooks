@@ -61,7 +61,7 @@ class PreCommitTemplate:
     def render(self, *, mode: Mode) -> str:
         mode = mode.get_effective_mode()
 
-        params : dict[str, Union[str,int]]  = dict(VERSION=TEMPLATE_VERSION)
+        params: dict[str, Union[str, int]] = dict(VERSION=TEMPLATE_VERSION)
 
         if mode == Mode.PIPENV:
             params["SHEBANG"] = PIPENV_SHEBANG

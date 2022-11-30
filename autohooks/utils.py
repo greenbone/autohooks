@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from os import PathLike
 import shlex
 import subprocess
+from os import PathLike
 from pathlib import Path
-from typing import Union, List, Optional
+from typing import List, Optional, Union
 
 
 class GitError(subprocess.CalledProcessError):
@@ -51,7 +51,7 @@ def exec_git(*args: Union[PathLike, str], ignore_errors: bool = False) -> str:
         exec_git("commit", "-m", "A new commit")
     """
     try:
-        cmd_args: List[Union[PathLike, str]]  = ["git"]
+        cmd_args: List[Union[PathLike, str]] = ["git"]
         cmd_args.extend(args)
         process = subprocess.run(
             cmd_args, check=True, capture_output=True, text=True

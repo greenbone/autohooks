@@ -51,7 +51,7 @@ class PreCommitHook:
         if self._pre_commit_hook is None:
             self._pre_commit_hook = self.pre_commit_hook_path.read_text()
 
-        return self._pre_commit_hook
+        return self._pre_commit_hook  # type: ignore
 
     def exists(self) -> bool:
         return self.pre_commit_hook_path.exists()

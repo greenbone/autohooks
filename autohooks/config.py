@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 import tomlkit
 
@@ -115,11 +115,11 @@ class AutohooksConfig:
         return self.settings is not None
 
     def get_pre_commit_script_names(self) -> List[str]:
-        return self.settings.pre_commit if self.has_autohooks_config() else [] # type: ignore
+        return self.settings.pre_commit if self.has_autohooks_config() else []  # type: ignore # pylint:disable
 
     def get_mode(self) -> Mode:
         return (
-            self.settings.mode # type: ignore
+            self.settings.mode  # type: ignore
             if self.has_autohooks_config()
             else Mode.UNDEFINED
         )

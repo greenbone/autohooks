@@ -70,7 +70,9 @@ class AutohooksSettings:
         overridden.
         """
         if filename.exists():
-            toml_doc : Union[tomlkit.toml_document.TOMLDocument, tomlkit.items.Table]  = tomlkit.loads(filename.read_text())
+            toml_doc: Union[
+                tomlkit.toml_document.TOMLDocument, tomlkit.items.Table
+            ] = tomlkit.loads(filename.read_text())
         else:
             toml_doc = tomlkit.document()
 
