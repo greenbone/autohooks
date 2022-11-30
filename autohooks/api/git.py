@@ -83,7 +83,7 @@ class StatusEntry:
         old_path: Set for renamed files
     """
 
-    def __init__(self, status_string: str, root_path: Path = None) -> None:
+    def __init__(self, status_string: str, root_path: Optional[Path] = None) -> None:
         status = status_string[:2]
         filename = status_string[3:]
 

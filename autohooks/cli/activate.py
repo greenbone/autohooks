@@ -59,7 +59,7 @@ def install_hooks(term: Terminal, args: Namespace) -> None:
 
             term.ok(f"autohooks settings written to {pyproject_toml}.")
         elif args.force:
-            settings = config.settings
+            settings = config.settings # type: ignore
             settings.mode = mode
             settings.write(pyproject_toml)
 
