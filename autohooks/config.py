@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import tomlkit
 
@@ -84,11 +84,11 @@ class Config:
         return not bool(self._config_dict)
 
 
-def _gather_mode(mode: Optional[str]) -> Mode:
+def _gather_mode(mode_string: Optional[str]) -> Mode:
     """
     Gather the mode from a mode string
     """
-    mode = Mode.from_string(mode)
+    mode = Mode.from_string(mode_string)
     is_virtual_env = mode == Mode.PIPENV or mode == Mode.POETRY
     if is_virtual_env and not is_split_env():
         if mode == Mode.POETRY:
