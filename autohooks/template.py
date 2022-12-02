@@ -17,7 +17,7 @@
 
 from pathlib import Path
 from string import Template
-from typing import Optional, Union
+from typing import Dict, Optional, Union
 
 from autohooks.settings import Mode
 from autohooks.utils import get_autohooks_directory_path
@@ -61,7 +61,7 @@ class PreCommitTemplate:
     def render(self, *, mode: Mode) -> str:
         mode = mode.get_effective_mode()
 
-        params: dict[str, Union[str, int]] = dict(VERSION=TEMPLATE_VERSION)
+        params: Dict[str, Union[str, int]] = dict(VERSION=TEMPLATE_VERSION)
 
         if mode == Mode.PIPENV:
             params["SHEBANG"] = PIPENV_SHEBANG
