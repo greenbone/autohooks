@@ -22,6 +22,8 @@ from contextlib import contextmanager
 from types import ModuleType
 from typing import Generator, Optional
 
+from rich.progress import TaskID
+
 from autohooks.config import load_config_from_pyproject_toml
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode
@@ -130,7 +132,7 @@ class ReportProgress:
 
     def __init__(self, progress: Progress, task_id: int) -> None:
         self._progress = progress
-        self._task_id = task_id
+        self._task_id = TaskID(task_id)
 
     def init(self, total: int) -> None:
         """
@@ -142,7 +144,7 @@ class ReportProgress:
         """
         self._progress.update(self._task_id, total=total)
 
-    def update(self, advance: Optional[int] = 1) -> None:
+    def update(self, advance: int = 1) -> None:
         """
         Update the number of already processed steps/items/files.
 
