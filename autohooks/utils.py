@@ -17,9 +17,8 @@
 
 import shlex
 import subprocess
-from os import PathLike
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional
 
 
 class GitError(subprocess.CalledProcessError):
@@ -34,7 +33,7 @@ class GitError(subprocess.CalledProcessError):
         )
 
 
-def exec_git(*args: Union[PathLike, str], ignore_errors: bool = False) -> str:
+def exec_git(*args: str, ignore_errors: bool = False) -> str:
     """
     Execute git command.
 
@@ -51,7 +50,7 @@ def exec_git(*args: Union[PathLike, str], ignore_errors: bool = False) -> str:
         exec_git("commit", "-m", "A new commit")
     """
     try:
-        cmd_args: List[Union[PathLike, str]] = ["git"]
+        cmd_args: List[str] = ["git"]
         cmd_args.extend(args)
         process = subprocess.run(
             cmd_args, check=True, capture_output=True, text=True
@@ -66,7 +65,7 @@ def exec_git(*args: Union[PathLike, str], ignore_errors: bool = False) -> str:
 def get_git_directory_path() -> Path:
     pwd = Path.cwd()
 
-    git_dir = exec_git("-C", pwd, "rev-parse", "--git-dir").rstrip()
+    git_dir = exec_git("-C", str(pwd), "rev-parse", "--git-dir").rstrip()
 
     if pwd and str(pwd) not in git_dir:
         git_dir_path = Path(pwd) / git_dir
