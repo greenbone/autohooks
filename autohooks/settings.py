@@ -70,7 +70,7 @@ class AutohooksSettings:
         overridden.
         """
         if filename.exists():
-            toml_doc: tomlkit.toml_document.TOMLDocument = tomlkit.loads(
+            toml_doc: tomlkit.TOMLDocument = tomlkit.loads(
                 filename.read_text()
             )
         else:
