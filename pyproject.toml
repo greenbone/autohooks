@@ -101,3 +101,4 @@ line_length = 80
 
 [tool.mypy]
 ignore_missing_imports = true
+explicit_package_bases = true
