@@ -17,6 +17,7 @@
 
 import re
 from pathlib import Path
+from typing import Optional
 
 from autohooks.settings import Mode
 from autohooks.template import (
@@ -37,7 +38,7 @@ def get_pre_commit_hook_path():
 
 
 class PreCommitHook:
-    def __init__(self, pre_commit_hook_path: Path = None) -> None:
+    def __init__(self, pre_commit_hook_path: Optional[Path] = None) -> None:
         self._pre_commit_hook = None
 
         if pre_commit_hook_path is None:
@@ -50,7 +51,7 @@ class PreCommitHook:
         if self._pre_commit_hook is None:
             self._pre_commit_hook = self.pre_commit_hook_path.read_text()
 
-        return self._pre_commit_hook
+        return self._pre_commit_hook  # type: ignore
 
     def exists(self) -> bool:
         return self.pre_commit_hook_path.exists()

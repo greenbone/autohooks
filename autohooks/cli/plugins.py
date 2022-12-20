@@ -58,7 +58,7 @@ def list_plugins(term: Terminal, args: Namespace) -> None:
     config = load_config_from_pyproject_toml(pyproject_toml)
 
     current_plugins = (
-        config.settings.pre_commit if config.has_autohooks_config() else []
+        config.settings.pre_commit if config.has_autohooks_config() else []  # type: ignore # pylint:disable = C0301
     )
     print_current_plugins(term, current_plugins)
 
@@ -73,11 +73,11 @@ def add_plugins(term: Terminal, args: Namespace) -> None:
 
     if config.has_autohooks_config():
         settings = config.settings
-        existing_plugins = set(settings.pre_commit)
+        existing_plugins = set(settings.pre_commit)  # type: ignore
         all_plugins = plugins_to_add | existing_plugins
         duplicate_plugins = plugins_to_add & existing_plugins
         new_plugins = plugins_to_add - existing_plugins
-        settings.pre_commit = all_plugins
+        settings.pre_commit = all_plugins  # type: ignore
 
         if duplicate_plugins:
             term.info("Skipped already used plugins:")
@@ -90,7 +90,7 @@ def add_plugins(term: Terminal, args: Namespace) -> None:
         settings = AutohooksSettings(pre_commit=all_plugins)
         config.settings = settings
 
-    settings.write(pyproject_toml)
+    settings.write(pyproject_toml)  # type: ignore
 
     if new_plugins:
         term.info("Added plugins:")
@@ -111,11 +111,11 @@ def remove_plugins(term: Terminal, args: Namespace) -> None:
 
     if config.has_autohooks_config():
         settings = config.settings
-        existing_plugins = set(settings.pre_commit)
+        existing_plugins = set(settings.pre_commit)  # type: ignore
         removed_plugins = existing_plugins & plugins_to_remove
         all_plugins = existing_plugins - plugins_to_remove
         skipped_plugins = plugins_to_remove - existing_plugins
-        settings.pre_commit = all_plugins
+        settings.pre_commit = all_plugins  # type: ignore
 
         if skipped_plugins:
             term.info("Skipped not used plugins:")
@@ -129,7 +129,7 @@ def remove_plugins(term: Terminal, args: Namespace) -> None:
                 for plugin in sorted(removed_plugins):
                     term.ok(f'"{plugin}"')
 
-        settings.write(pyproject_toml)
+        settings.write(pyproject_toml)  # type: ignore
 
         print_current_plugins(term, all_plugins)
     else:
