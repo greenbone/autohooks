@@ -210,7 +210,7 @@ def run() -> int:
                         )
                         retval = plugin.precommit()
 
-                    progress.finish_task(task_id)
+                    progress.update(task_id, total=1, advance=1)
 
                     if retval:
                         return retval

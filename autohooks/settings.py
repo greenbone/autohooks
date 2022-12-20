@@ -78,14 +78,14 @@ class AutohooksSettings:
 
         if "tool" not in toml_doc:
             toml_doc["tool"] = tomlkit.table(is_super_table=True)
-        if "autohooks" not in toml_doc["tool"]:
-            toml_doc["tool"]["autohooks"] = tomlkit.table()
+        if "autohooks" not in toml_doc["tool"]:  # type: ignore
+            toml_doc["tool"]["autohooks"] = tomlkit.table()  # type: ignore
 
         config_dict = {
             "mode": str(self.mode.get_effective_mode()),
             "pre-commit": sorted(self.pre_commit),
         }
 
-        toml_doc["tool"]["autohooks"].update(config_dict)
+        toml_doc["tool"]["autohooks"].update(config_dict)  # type: ignore
 
         filename.write_text(tomlkit.dumps(toml_doc), encoding="utf8")
