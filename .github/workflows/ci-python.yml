@@ -24,6 +24,7 @@ jobs:
         with:
           packages: autohooks tests
           version: ${{ matrix.python-version }}
+  
   type-check:
     name: Type-check
     runs-on: "ubuntu-latest"
