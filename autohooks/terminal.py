@@ -17,6 +17,7 @@
 
 from typing import Optional
 
+from pontos.helper import deprecated
 from pontos.terminal.rich import RichTerminal as Terminal
 from pontos.terminal.terminal import Signs
 from rich.progress import BarColumn
@@ -36,7 +37,7 @@ __all__ = (
     "warning",
 )
 
-__term = None  # pylint: disable=invalid-name
+__term = Terminal()
 
 
 def ok(message: str) -> None:
@@ -109,8 +110,11 @@ def out(message: str):
     __term.out(message)
 
 
-def overwrite(message: str, new_line: bool = False):
-    __term.print_overwrite(message, new_line=new_line)
+@deprecated
+def overwrite(
+    message: str, new_line: bool = False
+):  # pylint: disable=unused-argument
+    pass
 
 
 def _set_terminal(term: Optional[Terminal] = None) -> Terminal:
@@ -135,3 +139,8 @@ class Progress(RichProgress):
 
     def finish_task(self, task_id):
         self.update(task_id, total=1, advance=1)
+
+    def __enter__(  # pylint: disable=useless-super-delegation
+        self,
+    ) -> "Progress":
+        return super().__enter__()  # type: ignore

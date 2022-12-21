@@ -22,6 +22,8 @@ from contextlib import contextmanager
 from types import ModuleType
 from typing import Generator, Optional
 
+from rich.progress import TaskID
+
 from autohooks.config import load_config_from_pyproject_toml
 from autohooks.hooks import PreCommitHook
 from autohooks.settings import Mode
@@ -120,6 +122,7 @@ def check_plugin(plugin_name: str) -> Optional[CheckPluginResult]:
         return CheckPluginError(
             f'"{plugin_name}" is not a valid autohooks plugin. {e}'
         )
+    return None
 
 
 class ReportProgress:
@@ -129,7 +132,7 @@ class ReportProgress:
 
     def __init__(self, progress: Progress, task_id: int) -> None:
         self._progress = progress
-        self._task_id = task_id
+        self._task_id = TaskID(task_id)
 
     def init(self, total: int) -> None:
         """
@@ -141,7 +144,7 @@ class ReportProgress:
         """
         self._progress.update(self._task_id, total=total)
 
-    def update(self, advance: Optional[int] = 1) -> None:
+    def update(self, advance: int = 1) -> None:
         """
         Update the number of already processed steps/items/files.
 
@@ -207,7 +210,7 @@ def run() -> int:
                         )
                         retval = plugin.precommit()
 
-                    progress.finish_task(task_id)
+                    progress.update(task_id, total=1, advance=1)
 
                     if retval:
                         return retval

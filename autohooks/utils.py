@@ -18,6 +18,7 @@
 import shlex
 import subprocess
 from pathlib import Path
+from typing import List, Optional
 
 
 class GitError(subprocess.CalledProcessError):
@@ -49,7 +50,7 @@ def exec_git(*args: str, ignore_errors: bool = False) -> str:
         exec_git("commit", "-m", "A new commit")
     """
     try:
-        cmd_args = ["git"]
+        cmd_args: List[str] = ["git"]
         cmd_args.extend(args)
         process = subprocess.run(
             cmd_args, check=True, capture_output=True, text=True
@@ -64,7 +65,7 @@ def exec_git(*args: str, ignore_errors: bool = False) -> str:
 def get_git_directory_path() -> Path:
     pwd = Path.cwd()
 
-    git_dir = exec_git("-C", pwd, "rev-parse", "--git-dir").rstrip()
+    git_dir = exec_git("-C", str(pwd), "rev-parse", "--git-dir").rstrip()
 
     if pwd and str(pwd) not in git_dir:
         git_dir_path = Path(pwd) / git_dir
@@ -78,7 +79,7 @@ def get_autohooks_directory_path() -> Path:
     return Path(__file__).resolve().parent
 
 
-def get_git_hook_directory_path(git_dir_path: Path = None) -> Path:
+def get_git_hook_directory_path(git_dir_path: Optional[Path] = None) -> Path:
     if git_dir_path is None:
         git_dir_path = get_git_directory_path()
     return git_dir_path / "hooks"
@@ -93,7 +94,7 @@ def is_project_root(path: Path) -> bool:
     )
 
 
-def get_project_root_path(path: Path = None) -> Path:
+def get_project_root_path(path: Optional[Path] = None) -> Path:
     if path is None:
         path = Path.cwd()
 
@@ -109,12 +110,12 @@ def get_project_root_path(path: Path = None) -> Path:
     return path
 
 
-def get_project_autohooks_plugins_path(path: Path = None) -> Path:
+def get_project_autohooks_plugins_path(path: Optional[Path] = None) -> Path:
     root = get_project_root_path(path)
     return root / ".autohooks"
 
 
-def get_pyproject_toml_path(path: Path = None) -> Path:
+def get_pyproject_toml_path(path: Optional[Path] = None) -> Path:
     root = get_project_root_path(path)
     return root / "pyproject.toml"
 

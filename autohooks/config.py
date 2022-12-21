@@ -31,7 +31,7 @@ class Config:
     Config helper class for easier access to a tree of settings.
     """
 
-    def __init__(self, config_dict: Dict[str, Any] = None) -> None:
+    def __init__(self, config_dict: Optional[Dict[str, Any]] = None) -> None:
         """
         Create a new Config from a dictionary.
 
@@ -84,11 +84,11 @@ class Config:
         return not bool(self._config_dict)
 
 
-def _gather_mode(mode: Optional[str]) -> Mode:
+def _gather_mode(mode_string: Optional[str]) -> Mode:
     """
     Gather the mode from a mode string
     """
-    mode = Mode.from_string(mode)
+    mode = Mode.from_string(mode_string)
     is_virtual_env = mode == Mode.PIPENV or mode == Mode.POETRY
     if is_virtual_env and not is_split_env():
         if mode == Mode.POETRY:
@@ -115,11 +115,11 @@ class AutohooksConfig:
         return self.settings is not None
 
     def get_pre_commit_script_names(self) -> List[str]:
-        return self.settings.pre_commit if self.has_autohooks_config() else []
+        return self.settings.pre_commit if self.has_autohooks_config() else []  # type: ignore # pylint:disable
 
     def get_mode(self) -> Mode:
         return (
-            self.settings.mode
+            self.settings.mode  # type: ignore
             if self.has_autohooks_config()
             else Mode.UNDEFINED
         )
@@ -162,7 +162,7 @@ class AutohooksConfig:
 
 
 def load_config_from_pyproject_toml(
-    pyproject_toml: Path = None,
+    pyproject_toml: Optional[Path] = None,
 ) -> AutohooksConfig:
     """
     Load an AutohooksConfig from a pyproject.toml file
