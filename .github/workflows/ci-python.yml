@@ -24,7 +24,7 @@ jobs:
         with:
           packages: autohooks tests
           version: ${{ matrix.python-version }}
-  
+
   type-check:
     name: Type-check
     runs-on: "ubuntu-latest"
@@ -74,3 +74,10 @@ jobs:
         uses: greenbone/actions/coverage-python@v2
         with:
           version: "3.10"
+
+  check-version:
+    name: Check versioning for consistency
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: greenbone/actions/check-version@v2
