@@ -16,8 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from autohooks.version import get_version
 
 project = "autohooks"
-copyright = "2018 - 2022, Greenbone Networks GmbH"
-author = "Greenbone Networks GmbH"
+copyright = "2018 - 2022, Greenbone AG"
+author = "Greenbone AG"
 release = get_version()
 
 # -- General configuration ---------------------------------------------------
