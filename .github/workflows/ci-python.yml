@@ -13,9 +13,9 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - 3.7
-          - 3.8
-          - 3.9
+          - "3.7"
+          - "3.8"
+          - "3.9"
           - "3.10"
     steps:
       - uses: actions/checkout@v3
@@ -24,6 +24,8 @@ jobs:
         with:
           packages: autohooks tests
           version: ${{ matrix.python-version }}
+          poetry-version: "1.4.0"
+          cache: "true"
 
   type-check:
     name: Type-check
@@ -31,9 +33,9 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - 3.7
-          - 3.8
-          - 3.9
+          - "3.7"
+          - "3.8"
+          - "3.9"
           - "3.10"
           - "3.11"
     steps:
@@ -43,6 +45,8 @@ jobs:
         with:
           packages: autohooks
           version: ${{ matrix.python-version }}
+          poetry-version: "1.4.0"
+          cache: "true"
 
   test:
     name: Run all tests
@@ -50,9 +54,9 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - 3.7
-          - 3.8
-          - 3.9
+          - "3.7"
+          - "3.8"
+          - "3.9"
           - "3.10"
           - "3.11"
     steps:
@@ -61,6 +65,8 @@ jobs:
         uses: greenbone/actions/poetry@v2
         with:
           version: ${{ matrix.python-version }}
+          poetry-version: "1.4.0"
+          cache: "true"
       - name: Run unit tests
         run: poetry run python -m unittest -v
 
@@ -74,6 +80,8 @@ jobs:
         uses: greenbone/actions/coverage-python@v2
         with:
           version: "3.10"
+          poetry-version: "1.4.0"
+          cache: "true"
 
   check-version:
     name: Check versioning for consistency
