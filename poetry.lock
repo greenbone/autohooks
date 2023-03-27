@@ -359,14 +359,14 @@ files = [
 
 [[package]]
 name = "furo"
-version = "2022.12.7"
+version = "2023.3.27"
 description = "A clean customisable Sphinx documentation theme."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "furo-2022.12.7-py3-none-any.whl", hash = "sha256:7cb76c12a25ef65db85ab0743df907573d03027a33631f17d267e598ebb191f7"},
-    {file = "furo-2022.12.7.tar.gz", hash = "sha256:d8008f8efbe7587a97ba533c8b2df1f9c21ee9b3e5cad0d27f61193d38b1a986"},
+    {file = "furo-2023.3.27-py3-none-any.whl", hash = "sha256:4ab2be254a2d5e52792d0ca793a12c35582dd09897228a6dd47885dabd5c9521"},
+    {file = "furo-2023.3.27.tar.gz", hash = "sha256:b99e7867a5cc833b2b34d7230631dd6558c7a29f93071fdbb5709634bb33c5a5"},
 ]
 
 [package.dependencies]
@@ -1533,4 +1533,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7.2"
-content-hash = "28f9ef52988b749b3b1ec8a3b4f7a8f0ed17265cba45f2b7cc3eddb894ed14e3"
+content-hash = "bdfb018d2885b6164dea69f5d6d3cb9dc644ce6df389ed31ad46178b97aec541"
