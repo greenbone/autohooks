@@ -6,10 +6,12 @@
 [![codecov](https://codecov.io/gh/greenbone/autohooks/branch/main/graph/badge.svg?token=9IX7ucaFwj)](https://codecov.io/gh/greenbone/autohooks)
 
 Library for managing and writing [git hooks](https://git-scm.com/docs/githooks)
-in Python.
+in Python using `pyproject.toml` for its settings.
 
-Looking for automatic formatting or linting, e.g., with [black] and [pylint],
-while creating a git commit using a pure Python implementation?
+Looking for automatic formatting and linting, e.g., with [black] and [pylint],
+while creating a git commit using a pure Python implementation? Do you just want
+to have your git hook settings in the `pyproject.toml` file too?
+
 Welcome to **autohooks**!
 
 - [Why?](#why)
@@ -29,17 +31,19 @@ To name a few: [husky](https://github.com/typicode/husky),
 [precise-commits](https://github.com/nrwl/precise-commits) or
 [pre-commit](https://github.com/pre-commit/pre-commit).
 
-However, they either need another interpreter besides python (like husky) or are
-too ambiguous (like pre-commit). pre-commit is written in python but has support
-hooks written in all kind of languages. Additionally, it maintains the dependencies by
-itself and does not install them in the current environment.
+However, they need another interpreter besides python (like husky), require a
+different config file besides `pyproject.toml` or are too ambiguous (like
+pre-commit). pre-commit is written in python but has support hooks written in
+all kind of languages. Additionally, it maintains the dependencies by itself and
+does not install them in the current environment.
 
 ## Solution
 
 autohooks is a pure python library that installs a minimal
 [executable git hook](https://github.com/greenbone/autohooks/blob/main/autohooks/precommit/template).
 It allows the decision of how to maintain the hook dependencies
-by supporting different modes.
+by supporting different modes and stores its settings in the well known
+`pyproject.toml` file.
 
 ![Autohooks](https://raw.githubusercontent.com/greenbone/autohooks/main/autohooks.gif)
 
