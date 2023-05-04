@@ -24,8 +24,7 @@ jobs:
         uses: greenbone/actions/lint-python@v2
         with:
           packages: autohooks tests
-          version: ${{ matrix.python-version }}
-          poetry-version: "1.4.0"
+          python-version: ${{ matrix.python-version }}
           cache: "true"
 
   type-check:
@@ -46,8 +45,7 @@ jobs:
         uses: greenbone/actions/mypy-python@v2
         with:
           packages: autohooks
-          version: ${{ matrix.python-version }}
-          poetry-version: "1.4.0"
+          python-version: ${{ matrix.python-version }}
           cache: "true"
 
   test:
@@ -66,8 +64,7 @@ jobs:
       - name: Install poetry and dependencies
         uses: greenbone/actions/poetry@v2
         with:
-          version: ${{ matrix.python-version }}
-          poetry-version: "1.4.0"
+          python-version: ${{ matrix.python-version }}
           cache: "true"
       - name: Run unit tests
         run: poetry run python -m unittest -v
@@ -81,8 +78,7 @@ jobs:
       - name: Calculate and upload coverage to codecov.io
         uses: greenbone/actions/coverage-python@v2
         with:
-          version: "3.10"
-          poetry-version: "1.4.0"
+          python-version: "3.10"
           cache: "true"
 
   check-version:
