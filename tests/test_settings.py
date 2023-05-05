@@ -123,9 +123,9 @@ pre-commit = []
         expected = """
 [tool.autohooks]
 pre-commit = []
-mode = "pythonpath"
 plugins.foo.bar = 'ipsum'
 plugins.foo.lorem = 'dolor'
+mode = "pythonpath"
 
 [tool.autohooks.plugins.bar]
 foo = 'bar'
@@ -143,9 +143,9 @@ foo = 'bar'
         expected = """
 [tool.autohooks]
 pre-commit = ["a", "b"]
-mode = "poetry"
 plugins.foo.bar = 'ipsum'
 plugins.foo.lorem = 'dolor'
+mode = "poetry"
 
 [tool.autohooks.plugins.bar]
 foo = 'bar'
