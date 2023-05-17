@@ -6,9 +6,5 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build and publish to PyPI
-        uses: greenbone/actions/pypi-upload@v2
-        with:
-          pypi-token: ${{ secrets.PYPI_TOKEN }}
+    uses: greenbone/workflows/.github/workflows/deploy-pypi.yml@main
+    secrets: inherit

@@ -21,25 +21,4 @@ concurrency:
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install poetry and dependencies
-        uses: greenbone/actions/poetry@v2
-        with:
-          python-version: "3.10"
-          cache: "true"
-      - name: Build Documentation
-        run: |
-          cd docs && poetry run make html
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: "docs/build/html"
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+    uses: greenbone/workflows/.github/workflows/docs-python.yml@main
