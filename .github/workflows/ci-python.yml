@@ -1,15 +1,14 @@
-name: Build and test Python package
+name: Check and test Python project
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
 
 jobs:
-  linting:
-    name: Linting
-    runs-on: "ubuntu-latest"
+  check-and-test:
+    name: Check and test
     strategy:
       matrix:
         python-version:
@@ -18,60 +17,13 @@ jobs:
           - "3.9"
           - "3.10"
           - "3.11"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: greenbone/actions/lint-python@v2
-        with:
-          packages: autohooks tests
-          python-version: ${{ matrix.python-version }}
-          cache: "true"
-
-  type-check:
-    name: Type-check
-    runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        python-version:
-          - "3.7"
-          - "3.8"
-          - "3.9"
-          - "3.10"
-          - "3.11"
-          - "3.11"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: greenbone/actions/mypy-python@v2
-        with:
-          packages: autohooks
-          python-version: ${{ matrix.python-version }}
-          cache: "true"
-
-  test:
-    name: Run all tests
-    runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        python-version:
-          - "3.7"
-          - "3.8"
-          - "3.9"
-          - "3.10"
-          - "3.11"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install poetry and dependencies
-        uses: greenbone/actions/poetry@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: "true"
-      - name: Run unit tests
-        run: poetry run python -m unittest -v
+    uses: greenbone/workflows/.github/workflows/ci-python.yml@main
+    with:
+      lint-packages: autohooks tests
+      python-version: ${{ matrix.python-version }}
 
   codecov:
     name: Upload coverage to codecov.io
-    needs: test
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
@@ -80,10 +32,8 @@ jobs:
         with:
           python-version: "3.10"
           cache: "true"
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   check-version:
     name: Check versioning for consistency
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v3
-      - uses: greenbone/actions/check-version@v2
+    uses: greenbone/workflows/.github/workflows/check-version.yml@main
