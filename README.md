@@ -61,6 +61,8 @@ Python 3.7+ is required for autohooks.
 
 * Python code linting via [flake8](https://github.com/greenbone/autohooks-plugin-flake8)
 
+* Python code linting via [ruff](https://github.com/greenbone/autohooks-plugin-ruff)
+
 * Python code linting via [mypy](https://github.com/greenbone/autohooks-plugin-mypy)
 
 * Python import sorting via [isort](https://github.com/greenbone/autohooks-plugin-isort)
