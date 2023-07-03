@@ -1130,21 +1130,22 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "rope"
-version = "1.8.0"
+version = "1.9.0"
 description = "a python refactoring library..."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "rope-1.8.0-py3-none-any.whl", hash = "sha256:0767424ed40ce237dcf1c1f5088054fef960e5b19f4a0850783a259a3600d7bd"},
-    {file = "rope-1.8.0.tar.gz", hash = "sha256:3de1d1f1cf2412540c6a150067fe25298175e7c2b72455b6ca8395f61678da82"},
+    {file = "rope-1.9.0-py3-none-any.whl", hash = "sha256:2ed32d72cd2c4395bb1d569e38fd4f15d6080cfadd61b6e5c565fd39e3f677aa"},
+    {file = "rope-1.9.0.tar.gz", hash = "sha256:f48d708132c0e062b411308732ca13933b976486b4b53d1e804f94ed08d69503"},
 ]
 
 [package.dependencies]
 pytoolconfig = {version = ">=1.2.2", extras = ["global"]}
 
 [package.extras]
-dev = ["build (>=0.7.0)", "pip-tools (>=6.12.1)", "pre-commit (>=2.20.0)", "pytest (>=7.0.1)", "pytest-timeout (>=2.1.0)", "toml (>=0.10.2)"]
+dev = ["build (>=0.7.0)", "pre-commit (>=2.20.0)", "pytest (>=7.0.1)", "pytest-timeout (>=2.1.0)"]
 doc = ["pytoolconfig[doc]", "sphinx (>=4.5.0)", "sphinx-autodoc-typehints (>=1.18.1)", "sphinx-rtd-theme (>=1.0.0)"]
+release = ["pip-tools (>=6.12.1)", "toml (>=0.10.2)", "twine (>=4.0.2)"]
 
 [[package]]
 name = "semver"
@@ -1547,4 +1548,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7.2"
-content-hash = "fcef9230a5bf2bab6cfa78e1e6592d5638a2b0920d85e7513e3770055ed5edab"
+content-hash = "9a66f621c8ea800768d389eb373e65abdb768decae3144bb056c718f0a58895f"
