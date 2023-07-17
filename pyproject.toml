@@ -51,7 +51,7 @@ rich = ">=12.5.1"
 
 [tool.poetry.dev-dependencies]
 autohooks-plugin-black = ">=21.12.0"
-autohooks-plugin-pylint = ">=21.6.0"
+autohooks-plugin-ruff = ">=23.6.0"
 autohooks-plugin-isort = ">=22.3.0"
 autohooks-plugin-mypy = ">=23.3.0"
 coverage = ">=7.2.7"
@@ -87,7 +87,7 @@ exclude = '''
 pre-commit = [
   'autohooks.plugins.isort',
   'autohooks.plugins.black',
-  'autohooks.plugins.pylint',
+  'autohooks.plugins.ruff',
   'autohooks.plugins.mypy',
 ]
 mode = "poetry"
@@ -103,3 +103,7 @@ line_length = 80
 files = "autohooks"
 ignore_missing_imports = true
 explicit_package_bases = true
+
+[tool.ruff]
+line-length = 80
+target-version = "py38"

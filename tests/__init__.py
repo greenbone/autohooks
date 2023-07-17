@@ -21,7 +21,7 @@ import sys
 import tempfile
 from contextlib import AbstractContextManager, contextmanager
 from pathlib import Path
-from typing import Generator, Optional
+from typing import Generator
 
 from autohooks.utils import exec_git
 
@@ -104,7 +104,7 @@ def tempgitdir() -> Generator[Path, None, None]:
 def temp_file(
     content: str,
     *,
-    name: Optional[str] = "test.toml",
+    name: str = "test.toml",
     change_into: bool = False,
 ) -> Generator[Path, None, None]:
     """

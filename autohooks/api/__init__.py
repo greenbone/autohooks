@@ -18,8 +18,6 @@
 Main Plugin API
 """
 
-from typing import Callable, Optional
-
 from autohooks.config import Config
 from autohooks.precommit.run import ReportProgress
 from autohooks.terminal import bold_info, error, fail, info, ok, out, warning

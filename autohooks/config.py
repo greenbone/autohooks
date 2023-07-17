@@ -115,7 +115,7 @@ class AutohooksConfig:
         return self.settings is not None
 
     def get_pre_commit_script_names(self) -> List[str]:
-        return self.settings.pre_commit if self.has_autohooks_config() else []  # type: ignore # pylint:disable
+        return self.settings.pre_commit if self.has_autohooks_config() else []  # type: ignore # pylint:disable # noqa: E501
 
     def get_mode(self) -> Mode:
         return (
