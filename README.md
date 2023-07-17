@@ -49,7 +49,7 @@ by supporting different modes and stores its settings in the well known
 
 ## Requirements
 
-Python 3.7+ is required for autohooks.
+Python 3.8+ is required for autohooks.
 
 ## Plugins
 
