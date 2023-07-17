@@ -39,7 +39,6 @@ packages = [
   { include = "autohooks"},
   { include = "tests", format = "sdist" },
   { include = "poetry.lock", format = "sdist"},
-  { include = "poetry.toml", format = "sdist"},
 ]
 include = [
   "autohooks/precommit/template",
