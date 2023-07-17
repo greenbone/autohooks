@@ -82,6 +82,21 @@ autohooks = ">=21.6.0"
 isort = ">=5.8.0,<6.0.0"
 
 [[package]]
+name = "autohooks-plugin-mypy"
+version = "23.3.0"
+description = "An autohooks plugin for python code static typing check with mypy"
+optional = false
+python-versions = ">=3.7.2,<4.0.0"
+files = [
+    {file = "autohooks_plugin_mypy-23.3.0-py3-none-any.whl", hash = "sha256:3cd38cf53c2307ff396beb448d098f6631c3af74ab289bb45fc4f0f53f72a18b"},
+    {file = "autohooks_plugin_mypy-23.3.0.tar.gz", hash = "sha256:eb768b1114c1cb54c8cbfe7f520641b70001d3c90ea9337067ce42567ec44f88"},
+]
+
+[package.dependencies]
+autohooks = ">=21.7.0"
+mypy = ">=0.910"
+
+[[package]]
 name = "autohooks-plugin-pylint"
 version = "23.4.0"
 description = "An autohooks plugin for python code linting via pylint"
@@ -1496,4 +1511,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "d76a5412dc22efa368fdb1d232bc22a613bf7ff15b677d4c787dc4cfa8863c44"
+content-hash = "df1839712600f99f2272c705b4a3d77f1104b6c8baecd72112ffa64c781b74d2"
