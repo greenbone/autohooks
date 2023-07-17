@@ -58,7 +58,7 @@ def list_plugins(term: Terminal, args: Namespace) -> None:
     config = load_config_from_pyproject_toml(pyproject_toml)
 
     current_plugins = (
-        config.settings.pre_commit if config.has_autohooks_config() else []  # type: ignore # pylint:disable = C0301
+        config.settings.pre_commit if config.has_autohooks_config() else []  # type: ignore # pylint:disable = C0301 # noqa:E501
     )
     print_current_plugins(term, current_plugins)
 

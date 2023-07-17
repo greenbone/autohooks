@@ -15,13 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import random
-import tempfile
 import unittest
-from contextlib import contextmanager
 from pathlib import Path
-from typing import Generator
 
 from autohooks.utils import exec_git
 
@@ -33,15 +29,15 @@ def randbytes(n: int) -> bytes:  # pylint: disable=invalid-name
 
 
 def git_add(*paths: Path) -> None:
-    exec_git("add", *paths)
+    exec_git("add", *paths)  # type: ignore[arg-type]
 
 
 def git_rm(*paths: Path) -> None:
-    exec_git("rm", *paths)
+    exec_git("rm", *paths)  # type: ignore[arg-type]
 
 
 def git_mv(from_path: Path, to_path: Path) -> None:
-    exec_git("mv", from_path, to_path)
+    exec_git("mv", from_path, to_path)  # type: ignore[arg-type]
 
 
 def git_commit(message: str = "Foo Bar"):
