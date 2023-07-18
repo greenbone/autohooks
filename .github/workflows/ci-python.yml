@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Calculate and upload coverage to codecov.io
-        uses: greenbone/actions/coverage-python@v2
+        uses: greenbone/actions/coverage-python@v3
         with:
           python-version: "3.10"
           cache: "true"
