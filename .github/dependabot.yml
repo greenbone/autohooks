@@ -11,6 +11,10 @@ updates:
       - dependency-type: indirect
     commit-message:
       prefix: "Deps"
+    groups:
+       dependencies:
+         patterns:
+           - "*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -18,3 +22,7 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "Deps"
+    groups:
+       dependencies:
+         patterns:
+           - "*"
