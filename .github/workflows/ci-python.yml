@@ -12,21 +12,15 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.8"
           - "3.9"
           - "3.10"
           - "3.11"
+          - "3.12"
     uses: greenbone/workflows/.github/workflows/ci-python.yml@main
     with:
       lint-packages: autohooks tests
       linter: ruff
       python-version: ${{ matrix.python-version }}
-
-  mypy:
-    name: Check type hints
-    uses: greenbone/workflows/.github/workflows/typing-python.yml@main
-    with:
-      python-version: "3.10"
 
   codecov:
     name: Upload coverage to codecov.io

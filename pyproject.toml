@@ -13,9 +13,9 @@ homepage = "https://github.com/greenbone/autohooks/"
 repository = "https://github.com/greenbone/autohooks/"
 documentation = "https://greenbone.github.io/autohooks/"
 # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
-classifiers=[
+classifiers = [
   "Development Status :: 5 - Production/Stable",
-  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",  # pylint: disable=line-too-long
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)", # pylint: disable=line-too-long
   "Environment :: Console",
   "Intended Audience :: Developers",
   "Intended Audience :: System Administrators",
@@ -23,28 +23,22 @@ classifiers=[
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Operating System :: OS Independent",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: Software Development :: Version Control :: Git",
 ]
-keywords = [
-  "git",
-  "formatting",
-  "linting",
-  "hooks",
-]
+keywords = ["git", "formatting", "linting", "hooks"]
 
 packages = [
-  { include = "autohooks"},
+  { include = "autohooks" },
   { include = "tests", format = "sdist" },
-  { include = "poetry.lock", format = "sdist"},
+  { include = "poetry.lock", format = "sdist" },
 ]
-include = [
-  "autohooks/precommit/template",
-]
+include = ["autohooks/precommit/template"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 tomlkit = ">=0.5.11"
 pontos = ">=22.8.0"
 rich = ">=12.5.1"
@@ -67,7 +61,7 @@ autohooks = "autohooks.cli:main"
 
 [tool.black]
 line-length = 80
-target-version = ['py38', 'py39', 'py310', 'py311']
+target-version = ['py39', 'py310', 'py311', 'py312']
 exclude = '''
 /(
     \.git
@@ -106,4 +100,4 @@ explicit_package_bases = true
 
 [tool.ruff]
 line-length = 80
-target-version = "py38"
+target-version = "py39"
