@@ -6,5 +6,12 @@ on:
 
 jobs:
   deploy:
-    uses: greenbone/workflows/.github/workflows/deploy-pypi.yml@main
-    secrets: inherit
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/autohooks/
+    steps:
+      - name: Build and publish to PyPI
+        uses: greenbone/actions/pypi-upload@v3
