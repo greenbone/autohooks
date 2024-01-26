@@ -127,3 +127,4 @@ Licensed under the [GNU General Public License v3.0 or later](LICENSE).
 [pipenv]: https://pipenv.readthedocs.io/en/latest/
 [poetry]: https://python-poetry.org/
 [pylint]: https://pylint.readthedocs.io/en/latest/
+[ruff]: https://docs.astral.sh/ruff/
