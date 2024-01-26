@@ -45,7 +45,6 @@ rich = ">=12.5.1"
 [tool.poetry.dev-dependencies]
 autohooks-plugin-black = ">=21.12.0"
 autohooks-plugin-ruff = ">=23.6.0"
-autohooks-plugin-isort = ">=22.3.0"
 autohooks-plugin-mypy = ">=23.3.0"
 coverage = ">=7.2.7"
 rope = ">=1.9.0"
@@ -78,7 +77,6 @@ exclude = '''
 
 [tool.autohooks]
 pre-commit = [
-  'autohooks.plugins.isort',
   'autohooks.plugins.black',
   'autohooks.plugins.ruff',
   'autohooks.plugins.mypy',
@@ -100,3 +98,4 @@ explicit_package_bases = true
 [tool.ruff]
 line-length = 80
 target-version = "py39"
+extend-select = ["I", "PLE", "PLW"]

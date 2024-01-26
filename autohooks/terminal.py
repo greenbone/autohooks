@@ -20,9 +20,13 @@ from typing import Optional
 from pontos.helper import deprecated
 from pontos.terminal.rich import RichTerminal as Terminal
 from pontos.terminal.terminal import Signs
-from rich.progress import BarColumn
+from rich.progress import (
+    BarColumn,
+    SpinnerColumn,
+    TaskProgressColumn,
+    TextColumn,
+)
 from rich.progress import Progress as RichProgress
-from rich.progress import SpinnerColumn, TaskProgressColumn, TextColumn
 
 __all__ = (
     "Terminal",
@@ -118,7 +122,7 @@ def overwrite(
 
 
 def _set_terminal(term: Optional[Terminal] = None) -> Terminal:
-    global __term  # pylint: disable=global-statement, invalid-name
+    global __term  # pylint: disable=global-statement, invalid-name  # noqa: PLW0603
     if not term:
         __term = Terminal()
     else:
