@@ -179,9 +179,11 @@ def run() -> int:
 
     term.bold_info("autohooks => pre-commit")
 
-    with autohooks_module_path(), term.indent(), Progress(
-        terminal=term
-    ) as progress:
+    with (
+        autohooks_module_path(),
+        term.indent(),
+        Progress(terminal=term) as progress,
+    ):
         for name in config.get_pre_commit_script_names():
             term.info(f"Running {name}")
             with term.indent():

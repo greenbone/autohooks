@@ -38,11 +38,14 @@ from tests import tempdir
 
 class ExecGitTestCase(unittest.TestCase):
     def test_exec_fail(self):
-        with tempdir(change_into=True), self.assertRaisesRegex(
-            GitError,
-            r"Git command '\['git', 'foo'\]' returned non-zero exit "
-            "status 1",
-        ) as err:
+        with (
+            tempdir(change_into=True),
+            self.assertRaisesRegex(
+                GitError,
+                r"Git command '\['git', 'foo'\]' returned non-zero exit "
+                "status 1",
+            ) as err,
+        ):
             exec_git("foo")
 
         exception = err.exception
