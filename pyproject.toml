@@ -95,6 +95,10 @@ files = "autohooks"
 ignore_missing_imports = true
 explicit_package_bases = true
 
+[tool.coverage.run]
+omit = ["tests/*", "*/__init__.py"]
+source = ["autohooks"]
+
 [tool.ruff]
 line-length = 80
 target-version = "py39"
