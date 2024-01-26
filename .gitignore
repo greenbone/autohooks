@@ -103,5 +103,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# ruff
+.ruff_cache/
+
 # vscode settings
 .vscode
