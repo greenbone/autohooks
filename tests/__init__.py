@@ -141,9 +141,12 @@ def temp_python_module(
     Example:
         with temp_python_module("print()", name="bar") as python_module_path
     """
-    with tempdir(
-        add_to_sys_path=True,
-    ) as tmp_dir, ensure_unload_module(name):
+    with (
+        tempdir(
+            add_to_sys_path=True,
+        ) as tmp_dir,
+        ensure_unload_module(name),
+    ):
         test_file = tmp_dir / f"{name}.py"
         test_file.write_text(content, encoding="utf8")
         yield test_file
