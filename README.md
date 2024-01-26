@@ -8,7 +8,7 @@
 Library for managing and writing [git hooks](https://git-scm.com/docs/githooks)
 in Python using `pyproject.toml` for its settings.
 
-Looking for automatic formatting and linting, e.g., with [black] and [pylint],
+Looking for automatic formatting and linting, e.g., with [black] and [ruff],
 while creating a git commit using a pure Python implementation? Do you just want
 to have your git hook settings in the `pyproject.toml` file too?
 
@@ -57,11 +57,11 @@ Python 3.8+ is required for autohooks.
 
 * Python code formatting via [autopep8](https://github.com/LeoIV/autohooks-plugin-autopep8)
 
+* Python code linting via [ruff](https://github.com/greenbone/autohooks-plugin-ruff)
+
 * Python code linting via [pylint](https://github.com/greenbone/autohooks-plugin-pylint)
 
 * Python code linting via [flake8](https://github.com/greenbone/autohooks-plugin-flake8)
-
-* Python code linting via [ruff](https://github.com/greenbone/autohooks-plugin-ruff)
 
 * Python code linting via [mypy](https://github.com/greenbone/autohooks-plugin-mypy)
 
@@ -71,12 +71,12 @@ Python 3.8+ is required for autohooks.
 
 ## Installing autohooks
 
-Quick installation of [pylint] and [black] plugins using [poetry]:
+Quick installation of [ruff] and [black] plugins using [poetry]:
 
 ```shell
-poetry add --dev autohooks autohooks-plugin-black autohooks-plugin-pylint
+poetry add --dev autohooks autohooks-plugin-black autohooks-plugin-ruff
 poetry run autohooks activate --mode poetry
-poetry run autohooks plugins add autohooks.plugins.black autohooks.plugins.pylint
+poetry run autohooks plugins add autohooks.plugins.black autohooks.plugins.ruff
 ```
 
 The output of `autohooks activate` should be similar to
