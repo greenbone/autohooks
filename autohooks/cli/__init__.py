@@ -6,6 +6,8 @@
 import argparse
 import sys
 
+import shtab
+
 from autohooks.__version__ import __version__ as version
 from autohooks.cli.activate import install_hooks
 from autohooks.cli.check import check_hooks
@@ -23,6 +25,7 @@ DESCRIPTION = "autohooks - Manage git hooks"
 
 def main():
     parser = argparse.ArgumentParser(description=DESCRIPTION)
+    shtab.add_argument_to(parser)
     parser.add_argument(
         "--version",
         action="version",

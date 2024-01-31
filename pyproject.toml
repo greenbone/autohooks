@@ -41,6 +41,7 @@ python = "^3.9"
 tomlkit = ">=0.5.11"
 pontos = ">=22.8.0"
 rich = ">=12.5.1"
+shtab = ">=1.6.5"
 
 [tool.poetry.dev-dependencies]
 autohooks-plugin-black = ">=21.12.0"

@@ -19,6 +19,7 @@ Welcome to **autohooks**!
 - [Requirements](#requirements)
 - [Plugins](#plugins)
 - [Installing autohooks](#installing-autohooks)
+- [Command Completion](#command-completion)
 - [Maintainer](#maintainer)
 - [Contributing](#contributing)
 - [License](#license)
@@ -103,6 +104,33 @@ will use the [pythonpath mode](#pythonpath-mode) by default.
 
 For more details on using [pip], [poetry] or [pipenv] in conjunction with these
 modes see the [documentation](https://greenbone.github.io/autohooks).
+
+## Command Completion
+
+`autohooks` comes with support for command line completion in bash
+and zsh.
+
+Setup for bash:
+
+```bash
+echo "source ~/.autohooks-complete.bash" >> ~/.bashrc
+autohooks --print-completion bash > ~/.autohooks-complete.bash
+```
+
+Alternatively, you can use the result of the completion command directly with
+the eval function of your bash shell:
+
+```bash
+eval "$(autohooks --print-completion bash)"
+```
+
+Setup for zsh:
+
+```zsh
+echo 'fpath=("$HOME/.zsh.d" $fpath)' >> ~/.zsh
+mkdir -p ~/.zsh.d/
+autohooks --print-completion zsh > ~/.zsh.d/_greenbone_feed_sync
+```
 
 ## Maintainer
 
