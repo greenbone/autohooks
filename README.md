@@ -20,6 +20,8 @@ Welcome to **autohooks**!
 - [Plugins](#plugins)
 - [Installing autohooks](#installing-autohooks)
 - [Command Completion](#command-completion)
+  - [Setup for bash](#setup-for-bash)
+  - [Setup for zsh](#setup-for-zsh)
 - [Maintainer](#maintainer)
 - [Contributing](#contributing)
 - [License](#license)
@@ -110,7 +112,7 @@ modes see the [documentation](https://greenbone.github.io/autohooks).
 `autohooks` comes with support for command line completion in bash
 and zsh.
 
-Setup for bash:
+### Setup for bash
 
 ```bash
 echo "source ~/.autohooks-complete.bash" >> ~/.bashrc
@@ -124,12 +126,19 @@ the eval function of your bash shell:
 eval "$(autohooks --print-completion bash)"
 ```
 
-Setup for zsh:
+### Setup for zsh
 
 ```zsh
 echo 'fpath=("$HOME/.zsh.d" $fpath)' >> ~/.zsh
 mkdir -p ~/.zsh.d/
-autohooks --print-completion zsh > ~/.zsh.d/_greenbone_feed_sync
+autohooks --print-completion zsh > ~/.zsh.d/_autohooks
+```
+
+Alternatively, you can use the result of the completion command directly with
+the eval function of your zsh shell:
+
+```bash
+eval "$(autohooks --print-completion zsh)"
 ```
 
 ## Maintainer
