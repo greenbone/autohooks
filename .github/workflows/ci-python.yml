@@ -19,7 +19,7 @@ jobs:
     uses: greenbone/workflows/.github/workflows/ci-python.yml@main
     with:
       lint-packages: autohooks tests
-      linter: ruff
+      linter: ruff check
       python-version: ${{ matrix.python-version }}
 
   codecov:
