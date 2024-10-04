@@ -333,9 +333,13 @@ WORKING_REF = "refs/autohooks/working"
 
 class stash_unstaged_changes:  # pylint: disable=invalid-name
     """
-    A context manager that stashes changes on tracked files that are not added
-    to the index. The stashed changes are restored when the context manager
-    exits.
+    A context manager that stashes changes that
+        - are not staged, and
+        - affect files that are partially staged.
+    Changes that are made before the context manager exits, are added to the
+    index.
+
+    The stashed changes are restored when the context manager exits.
 
     Example: ::
 
