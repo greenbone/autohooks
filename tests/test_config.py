@@ -42,6 +42,27 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
+    def test_load_from_string(self):
+        config = AutohooksConfig.from_string(
+            """
+            [tool.autohooks]
+            pre-commit = ["foo", "bar"]
+            """
+        )
+
+        self.assertTrue(config.has_autohooks_config())
+
+        self.assertListEqual(
+            config.get_pre_commit_script_names(), ["foo", "bar"]
+        )
+
+    def test_load_from_empty_string(self):
+        config = AutohooksConfig.from_string("")
+
+        self.assertFalse(config.has_autohooks_config())
+
+        self.assertEqual(config.get_pre_commit_script_names(), [])
+
     def test_empty_config(self):
         config = AutohooksConfig()
 
