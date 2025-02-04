@@ -135,6 +135,20 @@ class AutohooksConfig:
         return AutohooksConfig(settings=settings, config=config)
 
     @staticmethod
+    def from_string(content: str) -> "AutohooksConfig":
+        """
+        Load an AutohooksConfig from a string
+
+        Args:
+            content: The content of the config
+
+        Returns:
+            A new AutohooksConfig
+        """
+        config_dict = tomlkit.loads(content)
+        return AutohooksConfig.from_dict(config_dict)
+
+    @staticmethod
     def from_toml(toml_file: Path) -> "AutohooksConfig":
         """
         Load an AutohooksConfig from a TOML file
@@ -145,8 +159,7 @@ class AutohooksConfig:
         Returns:
             A new AutohooksConfig
         """
-        config_dict = tomlkit.loads(toml_file.read_text())
-        return AutohooksConfig.from_dict(config_dict)
+        return AutohooksConfig.from_string(toml_file.read_text())
 
 
 def load_config_from_pyproject_toml(
