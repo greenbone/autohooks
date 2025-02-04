@@ -246,6 +246,12 @@ class ConfigTestCase(unittest.TestCase):
         self.assertFalse(bar_config.is_empty())
         self.assertEqual(bar_config.get_value("lorem"), "ipsum")
 
+    def test_has_key(self):
+        config = Config()
+        self.assertFalse(config.has_key("foo"))
+        config = Config({"foo": "bar"})
+        self.assertTrue(config.has_key("foo"))
+
 
 if __name__ == "__main__":
     unittest.main()
