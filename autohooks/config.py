@@ -71,6 +71,12 @@ class Config:
         """
         return not bool(self._config_dict)
 
+    def has_key(self, key: str) -> bool:
+        """
+        Returns True if the key is in the config.
+        """
+        return key in self._config_dict
+
 
 def _gather_mode(mode_string: Optional[str]) -> Mode:
     """
