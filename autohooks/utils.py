@@ -51,6 +51,7 @@ def exec_git(*args: str, ignore_errors: bool = False) -> str:
 
 
 def get_git_directory_path() -> Path:
+    """Returns the path to the git directory."""
     pwd = Path.cwd()
 
     git_dir = exec_git("-C", str(pwd), "rev-parse", "--git-dir").rstrip()
@@ -64,16 +65,19 @@ def get_git_directory_path() -> Path:
 
 
 def get_autohooks_directory_path() -> Path:
+    """Returns the absolute path to the package."""
     return Path(__file__).resolve().parent
 
 
 def get_git_hook_directory_path(git_dir_path: Optional[Path] = None) -> Path:
+    """Returns the absolute path of the git hooks dir."""
     if git_dir_path is None:
         git_dir_path = get_git_directory_path()
     return git_dir_path / "hooks"
 
 
 def is_project_root(path: Path) -> bool:
+    """Checks if the current dir is the project root dir."""
     return (
         (path / "pyproject.toml").is_file()
         or (path / ".git").is_dir()
@@ -83,6 +87,7 @@ def is_project_root(path: Path) -> bool:
 
 
 def get_project_root_path(path: Optional[Path] = None) -> Path:
+    """Returns the path to the project root dir."""
     if path is None:
         path = Path.cwd()
 
@@ -99,16 +104,24 @@ def get_project_root_path(path: Optional[Path] = None) -> Path:
 
 
 def get_project_autohooks_plugins_path(path: Optional[Path] = None) -> Path:
+    """Returns the path to the plugins folder"""
     root = get_project_root_path(path)
     return root / ".autohooks"
 
 
 def get_pyproject_toml_path(path: Optional[Path] = None) -> Path:
+    """Returns the path to the pyproject.toml"""
     root = get_project_root_path(path)
     return root / "pyproject.toml"
 
 
 def is_split_env():
+    """Checks that environment supports -S option (separate arguments).
+
+    Returns:
+        True: if OS is modern Linux/BSD
+        False: if OS is older/macOS/Windows
+    """
     try:
         subprocess.run(
             shlex.split("/usr/bin/env -S echo True"),
