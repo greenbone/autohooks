@@ -119,6 +119,7 @@ def is_project_root(path: Path) -> bool:
         or (path / "setup.cfg").is_file()
     )
 
+
 def get_project_root_path(path: Optional[Path] = None) -> Path:
     """
     Returns the path to the project root dir.
