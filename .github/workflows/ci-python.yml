@@ -26,7 +26,7 @@ jobs:
     name: Upload coverage to codecov.io
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Calculate and upload coverage to codecov.io
         uses: greenbone/actions/coverage-python@v3
         with:
