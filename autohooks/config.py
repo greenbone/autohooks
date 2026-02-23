@@ -83,10 +83,12 @@ def _gather_mode(mode_string: Optional[str]) -> Mode:
     Gather the mode from a mode string
     """
     mode = Mode.from_string(mode_string)
-    is_virtual_env = mode == Mode.PIPENV or mode == Mode.POETRY
+    is_virtual_env = mode == Mode.PIPENV or mode == Mode.POETRY or mode == Mode.UV
     if is_virtual_env and not is_split_env():
         if mode == Mode.POETRY:
             mode = Mode.POETRY_MULTILINE
+        elif mode == Mode.UV:
+            mode = Mode.UV_MULTILINE
         else:
             mode = Mode.PIPENV_MULTILINE
     return mode

@@ -14,6 +14,8 @@ from autohooks.template import (
     POETRY_MULTILINE_SHEBANG,
     POETRY_SHEBANG,
     PYTHON3_SHEBANG,
+    UV_SHEBANG,
+    UV_MULTILINE_SHEBANG,
     TEMPLATE_VERSION,
     PreCommitTemplate,
 )
@@ -65,6 +67,8 @@ class PreCommitHook:
             return Mode.POETRY
         if shebang == PIPENV_SHEBANG:
             return Mode.PIPENV
+        if shebang == UV_SHEBANG:
+            return Mode.UV
 
         shebang = f"{lines[0][2:]}\n"
         shebang += "\n".join(lines[1:5])
@@ -73,6 +77,9 @@ class PreCommitHook:
 
         if shebang == PIPENV_MULTILINE_SHEBANG:
             return Mode.PIPENV_MULTILINE
+
+        if shebang == UV_MULTILINE_SHEBANG:
+            return Mode.UV_MULTILINE
 
         return Mode.UNKNOWN
 
