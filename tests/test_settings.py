@@ -62,12 +62,8 @@ class ModeTestCase(unittest.TestCase):
         self.assertEqual(Mode.from_string("UV"), Mode.UV)
 
     def test_get_uv_multiline_mode_from_string(self):
-        self.assertEqual(
-            Mode.from_string("uv_multiline"), Mode.UV_MULTILINE
-        )
-        self.assertEqual(
-            Mode.from_string("UV_MULTILINE"), Mode.UV_MULTILINE
-        )
+        self.assertEqual(Mode.from_string("uv_multiline"), Mode.UV_MULTILINE)
+        self.assertEqual(Mode.from_string("UV_MULTILINE"), Mode.UV_MULTILINE)
 
     def test_get_invalid_mode_from_string(self):
         self.assertEqual(Mode.from_string("foo"), Mode.UNKNOWN)

@@ -50,7 +50,7 @@ def main():
             str(Mode.PYTHONPATH),
             str(Mode.PIPENV),
             str(Mode.POETRY),
-            str(Mode.UV)
+            str(Mode.UV),
         ],
         help="Mode for loading autohooks during hook execution. Either load "
         "autohooks from the PYTHON_PATH, via pipenv, via poetry or via uv.",

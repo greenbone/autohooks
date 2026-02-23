@@ -14,9 +14,9 @@ from autohooks.template import (
     POETRY_MULTILINE_SHEBANG,
     POETRY_SHEBANG,
     PYTHON3_SHEBANG,
-    UV_SHEBANG,
-    UV_MULTILINE_SHEBANG,
     TEMPLATE_VERSION,
+    UV_MULTILINE_SHEBANG,
+    UV_SHEBANG,
     PreCommitTemplate,
 )
 from autohooks.utils import get_git_hook_directory_path
