@@ -129,6 +129,26 @@ class AutohooksConfigTestCase(unittest.TestCase):
 
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
+    def test_get_mode_uv_multiline(self):
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"mode": "uv_multiline"}}}
+        )
+
+        self.assertTrue(config.has_autohooks_config())
+        self.assertEqual(config.get_mode(), Mode.UV_MULTILINE)
+
+        self.assertEqual(len(config.get_pre_commit_script_names()), 0)
+
+    def test_get_mode_uv(self):
+        config = AutohooksConfig.from_dict(
+            {"tool": {"autohooks": {"mode": "uv"}}}
+        )
+
+        self.assertTrue(config.has_autohooks_config())
+        self.assertEqual(config.get_mode(), Mode.UV)
+
+        self.assertEqual(len(config.get_pre_commit_script_names()), 0)
+
     def test_get_mode_pythonpath(self):
         config = AutohooksConfig.from_dict(
             {"tool": {"autohooks": {"mode": "pythonpath"}}}

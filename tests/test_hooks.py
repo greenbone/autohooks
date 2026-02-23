@@ -19,6 +19,8 @@ from autohooks.template import (
     POETRY_SHEBANG,
     PYTHON3_SHEBANG,
     TEMPLATE_VERSION,
+    UV_MULTILINE_SHEBANG,
+    UV_SHEBANG,
     PreCommitTemplate,
 )
 from autohooks.utils import exec_git
@@ -161,6 +163,12 @@ class ReadModeTestCase(unittest.TestCase):
 
         self.assertEqual(pre_commit_hook.read_mode(), Mode.POETRY)
 
+    def test_uv_mode(self):
+        path = FakeReadPath(f"#!{UV_SHEBANG}")
+        pre_commit_hook = PreCommitHook(path)
+
+        self.assertEqual(pre_commit_hook.read_mode(), Mode.UV)
+
     def test_poetry_mode_with_python3(self):
         path = FakeReadPath(f"#!{POETRY_SHEBANG}3")
         pre_commit_hook = PreCommitHook(path)
@@ -178,6 +186,12 @@ class ReadModeTestCase(unittest.TestCase):
         pre_commit_hook = PreCommitHook(path)
 
         self.assertEqual(pre_commit_hook.read_mode(), Mode.POETRY_MULTILINE)
+
+    def test_uv_multiline_mode(self):
+        path = FakeReadPath(f"#!{UV_MULTILINE_SHEBANG}")
+        pre_commit_hook = PreCommitHook(path)
+
+        self.assertEqual(pre_commit_hook.read_mode(), Mode.UV_MULTILINE)
 
     def test_pythonpath_mode(self):
         path = FakeReadPath(f"#!{PYTHON3_SHEBANG}")
@@ -210,6 +224,18 @@ class WriteTestCase(unittest.TestCase):
         args, _kwargs = write_path.write_text.call_args
         text = args[0]
         self.assertRegex(text, f"^#!{POETRY_SHEBANG} *")
+
+    def test_uv_mode(self):
+        write_path = Mock()
+        pre_commit_hook = PreCommitHook(write_path)
+        pre_commit_hook.write(mode=Mode.UV)
+
+        write_path.chmod.assert_called_with(0o775)
+        self.assertTrue(write_path.write_text.called)
+
+        args, _kwargs = write_path.write_text.call_args
+        text = args[0]
+        self.assertRegex(text, f"^#!{UV_SHEBANG} *")
 
     def test_pythonpath_mode(self):
         write_path = Mock()
