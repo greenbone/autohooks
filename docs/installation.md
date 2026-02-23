@@ -11,6 +11,7 @@ For fulfilling these steps different tooling can be used. Most prominent and cur
 * [poetry]
 * [pipenv]
 * [pip]
+* [uv]
 
 ```{note}
 Using [poetry] is recommended for installing and maintaining autohooks.
@@ -56,6 +57,14 @@ To install autohooks globally for the current user run
 python3 -m pip install --user autohooks
 ```
 `````
+
+`````{group-tab} uv
+To install autohooks as a development dependency run
+
+```{code-block}
+uv add --dev autohooks
+```
+`````
 ``````
 
 ## 2. Activating the Git Hook
@@ -80,6 +89,12 @@ pipenv run autohooks activate --mode pipenv
 ````{group-tab} pip
 ```bash
 autohooks activate --mode pythonpath
+```
+````
+
+````{group-tab} uv
+```bash
+uv run autohooks activate --mode uv
 ```
 ````
 `````
@@ -111,7 +126,15 @@ python3 -m pip install --user autohooks-plugin-pylint
 autohooks plugins add autohooks.plugins.pylint
 ```
 ````
+
+````{group-tab} uv
+```bash
+uv add --dev autohooks-plugin-pylint
+uv run autohooks plugins add autohooks.plugins.pylint
+```
+````
 `````
 [pipenv]: https://pipenv.readthedocs.io/en/latest/
 [poetry]: https://python-poetry.org/
 [pip]: https://pip.pypa.io/en/stable/
+[uv]: https://docs.astral.sh/uv/

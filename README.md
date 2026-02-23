@@ -96,6 +96,7 @@ autohooks:
 * `pythonpath` for dependency management via [pip]
 * `poetry` for dependency management via [poetry] (recommended)
 * `pipenv` for dependency management via [pipenv]
+* `uv` for dependency management via [uv]
 
 These modes handle how autohooks, the plugins and their dependencies are loaded
 during git hook execution.
@@ -165,3 +166,4 @@ Licensed under the [GNU General Public License v3.0 or later](LICENSE).
 [poetry]: https://python-poetry.org/
 [pylint]: https://pylint.readthedocs.io/en/latest/
 [ruff]: https://docs.astral.sh/ruff/
+[uv]: https://docs.astral.sh/uv/
