@@ -11,7 +11,7 @@ and to set python modules to be run as [autohooks plugins](./plugins).
 ## Mode Configuration
 
 The mode can be set by adding a `mode =` line to the *pyproject.toml* file.
-Current possible options are `"pythonpath"`, `"pipenv"` and `"poetry"` (see
+Current possible options are `"pythonpath"`, `"pipenv"`, `"poetry"` and `"uv"`(see
 [autohooks mode](./modes)). If the mode setting is missing, the `pythonpath`
 mode is used.
 
@@ -40,6 +40,13 @@ mode = "pythonpath"
 ```
 ````
 
+````{group-tab} uv
+```toml
+[tool.autohooks]
+mode = "uv"
+```
+````
+
 `````
 
 Calling `autohooks activate` also allows for overriding the [mode](./modes)
@@ -63,6 +70,12 @@ pipenv run autohooks activate --mode pipenv --force
 ````{group-tab} pip
 ```bash
 autohooks activate --mode pythonpath --force
+```
+````
+
+````{group-tab} uv
+```bash
+autohooks activate --mode uv --force
 ```
 ````
 
@@ -107,6 +120,12 @@ pipenv run autohooks plugins add autohooks.plugins.pylint
 ````{group-tab} pip
 ```bash
 autohooks plugins add autohooks.plugins.pylint
+```
+````
+
+````{group-tab} uv
+```bash
+uv run autohooks plugins add autohooks.plugins.pylint
 ```
 ````
 
