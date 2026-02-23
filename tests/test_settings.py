@@ -22,6 +22,10 @@ class ModeTestCase(unittest.TestCase):
         self.assertEqual(
             Mode.POETRY_MULTILINE.get_effective_mode(), Mode.POETRY_MULTILINE
         )
+        self.assertEqual(Mode.UV.get_effective_mode(), Mode.UV)
+        self.assertEqual(
+            Mode.UV_MULTILINE.get_effective_mode(), Mode.UV_MULTILINE
+        )
         self.assertEqual(Mode.UNDEFINED.get_effective_mode(), Mode.PYTHONPATH)
         self.assertEqual(Mode.UNKNOWN.get_effective_mode(), Mode.PYTHONPATH)
 
@@ -51,6 +55,18 @@ class ModeTestCase(unittest.TestCase):
         )
         self.assertEqual(
             Mode.from_string("POETRY_MULTILINE"), Mode.POETRY_MULTILINE
+        )
+
+    def test_get_uv_mode_from_string(self):
+        self.assertEqual(Mode.from_string("uv"), Mode.UV)
+        self.assertEqual(Mode.from_string("UV"), Mode.UV)
+
+    def test_get_uv_multiline_mode_from_string(self):
+        self.assertEqual(
+            Mode.from_string("uv_multiline"), Mode.UV_MULTILINE
+        )
+        self.assertEqual(
+            Mode.from_string("UV_MULTILINE"), Mode.UV_MULTILINE
         )
 
     def test_get_invalid_mode_from_string(self):
