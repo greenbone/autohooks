@@ -43,12 +43,10 @@ class AutohooksConfigTestCase(unittest.TestCase):
         self.assertEqual(len(config.get_pre_commit_script_names()), 0)
 
     def test_load_from_string(self):
-        config = AutohooksConfig.from_string(
-            """
+        config = AutohooksConfig.from_string("""
             [tool.autohooks]
             pre-commit = ["foo", "bar"]
-            """
-        )
+            """)
 
         self.assertTrue(config.has_autohooks_config())
 
