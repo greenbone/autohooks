@@ -1259,14 +1259,14 @@ files = [
 
 [[package]]
 name = "pontos"
-version = "26.4.1"
+version = "26.4.3"
 description = "Common utilities and tools maintained by Greenbone Networks"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "pontos-26.4.1-py3-none-any.whl", hash = "sha256:fa80bf6c30add509ffc47e2b739da326c4f76925d051143fc5d5b6c1aebecfe6"},
-    {file = "pontos-26.4.1.tar.gz", hash = "sha256:6f873ee4d209709f2765a509befd7e4f177d383382fa64e507dab6ef39693442"},
+    {file = "pontos-26.4.3-py3-none-any.whl", hash = "sha256:7d82da7b594388979ec56dcb98c6b1eb4540f49bf54e5b08d9cfccf806a901d9"},
+    {file = "pontos-26.4.3.tar.gz", hash = "sha256:259ab9cb1f6b354b76466a943aee18aa83b27fffc609e1f9bfde0cb998aaca15"},
 ]
 
 [package.dependencies]
