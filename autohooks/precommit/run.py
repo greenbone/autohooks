@@ -6,9 +6,9 @@
 import importlib
 import inspect
 import sys
+from collections.abc import Generator
 from contextlib import contextmanager
 from types import ModuleType
-from typing import Generator, Optional
 
 from rich.progress import TaskID
 
@@ -60,8 +60,8 @@ def check_hook_is_current(
 def check_hook_mode(term: Terminal, config_mode: Mode, hook_mode: Mode) -> None:
     if config_mode.get_effective_mode() != hook_mode.get_effective_mode():
         term.warning(
-            f'autohooks mode "{str(hook_mode)}" in pre-commit hook differs '
-            f'from mode "{str(config_mode)}" in pyproject.toml file.'
+            f'autohooks mode "{hook_mode!s}" in pre-commit hook differs '
+            f'from mode "{config_mode!s}" in pyproject.toml file.'
         )
 
 
@@ -85,7 +85,7 @@ class CheckPluginWarning(CheckPluginResult):
     """
 
 
-def check_plugin(plugin_name: str) -> Optional[CheckPluginResult]:
+def check_plugin(plugin_name: str) -> CheckPluginResult | None:
     """
     Check if a plugin (Python module) is valid and can be used
 
@@ -211,7 +211,7 @@ def run() -> int:
                         f"hook {name}. {e}."
                     )
                     return 1
-                except Exception as e:  # pylint: disable=broad-except
+                except Exception as e:  # noqa: BLE001
                     term.error(
                         "An error occurred while running pre-commit "
                         f"hook {name}. {e}."

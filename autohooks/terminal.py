@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from typing import Optional
 
 from pontos.helper import deprecated
 from pontos.terminal.rich import RichTerminal as Terminal
@@ -15,11 +14,12 @@ from rich.progress import (
     TextColumn,
 )
 from rich.progress import Progress as RichProgress
+from typing_extensions import Self
 
 __all__ = (
-    "Terminal",
     "Progress",
     "Signs",
+    "Terminal",
     "bold_info",
     "error",
     "fail",
@@ -103,13 +103,11 @@ def out(message: str):
 
 
 @deprecated
-def overwrite(
-    message: str, new_line: bool = False
-):  # pylint: disable=unused-argument
+def overwrite(message: str, new_line: bool = False):  # pylint: disable=unused-argument
     pass
 
 
-def _set_terminal(term: Optional[Terminal] = None) -> Terminal:
+def _set_terminal(term: Terminal | None = None) -> Terminal:
     global __term  # pylint: disable=global-statement, invalid-name  # noqa: PLW0603
     if not term:
         __term = Terminal()
@@ -132,7 +130,7 @@ class Progress(RichProgress):
     def finish_task(self, task_id):
         self.update(task_id, total=1, advance=1)
 
-    def __enter__(  # pylint: disable=useless-super-delegation
+    def __enter__(
         self,
-    ) -> "Progress":
+    ) -> Self:
         return super().__enter__()  # type: ignore

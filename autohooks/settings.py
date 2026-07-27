@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import Iterable, Optional
 
 import tomlkit
 
@@ -38,7 +38,7 @@ class Mode(Enum):
         return Mode.PYTHONPATH
 
     @staticmethod
-    def from_string(modestring: Optional[str]) -> "Mode":
+    def from_string(modestring: str | None) -> "Mode":
         if not modestring:
             return Mode.UNDEFINED
 

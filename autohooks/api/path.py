@@ -8,12 +8,12 @@ Plugin API for path checking
 
 import fnmatch
 import os
+from collections.abc import Iterable
 from os import PathLike
 from pathlib import Path
-from typing import Iterable, Optional
 
 
-def is_python_path(path: Optional[Path]) -> bool:
+def is_python_path(path: Path | None) -> bool:
     """
     Function to check if path is a Python file.
 

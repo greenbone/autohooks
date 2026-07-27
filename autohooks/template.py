@@ -5,7 +5,6 @@
 
 from pathlib import Path
 from string import Template
-from typing import Dict, Optional, Union
 
 from autohooks.settings import Mode
 from autohooks.utils import get_autohooks_directory_path
@@ -16,25 +15,13 @@ POETRY_SHEBANG = "/usr/bin/env -S poetry run python"
 UV_SHEBANG = "/usr/bin/env -S uv run python"
 # For OS's that don't support '/usr/bin/env -S'.
 PIPENV_MULTILINE_SHEBANG = (
-    "/bin/sh\n"
-    "\"true\" ''':'\n"
-    'pipenv run python3 "$0" "$@"\n'
-    'exit "$?"\n'
-    "'''"
+    '/bin/sh\n"true" \'\'\':\'\npipenv run python3 "$0" "$@"\nexit "$?"\n\'\'\''
 )
 POETRY_MULTILINE_SHEBANG = (
-    "/bin/sh\n"
-    "\"true\" ''':'\n"
-    'poetry run python "$0" "$@"\n'
-    'exit "$?"\n'
-    "'''"
+    '/bin/sh\n"true" \'\'\':\'\npoetry run python "$0" "$@"\nexit "$?"\n\'\'\''
 )
 UV_MULTILINE_SHEBANG = (
-    "/bin/sh\n"
-    "\"true\" ''':'\n"
-    'uv run python "$0" "$@"\n'
-    'exit "$?"\n'
-    "'''"
+    '/bin/sh\n"true" \'\'\':\'\nuv run python "$0" "$@"\nexit "$?"\n\'\'\''
 )
 
 TEMPLATE_VERSION = 1
@@ -46,7 +33,7 @@ def get_pre_commit_hook_template_path() -> Path:
 
 
 class PreCommitTemplate:
-    def __init__(self, template_path: Optional[Path] = None) -> None:
+    def __init__(self, template_path: Path | None = None) -> None:
         if template_path is None:
             template_path = get_pre_commit_hook_template_path()
         self._load(template_path)
@@ -57,7 +44,7 @@ class PreCommitTemplate:
     def render(self, *, mode: Mode) -> str:
         mode = mode.get_effective_mode()
 
-        params: Dict[str, Union[str, int]] = dict(VERSION=TEMPLATE_VERSION)
+        params: dict[str, str | int] = {"VERSION": TEMPLATE_VERSION}
 
         if mode == Mode.PIPENV:
             params["SHEBANG"] = PIPENV_SHEBANG
