@@ -76,15 +76,14 @@ class StashUnstagedChangesTestCase(GitTestCase):
 
             stash = stash_unstaged_changes()
 
-            with self.assertRaises(ValueError):
-                with stash:
-                    self.assertEqual(len(stash.partially_staged), 1)
+            with self.assertRaises(ValueError), stash:
+                self.assertEqual(len(stash.partially_staged), 1)
 
-                    status = get_status()
-                    self.assertEqual(status[0].index, Status.ADDED)
-                    self.assertEqual(status[0].working_tree, Status.UNMODIFIED)
+                status = get_status()
+                self.assertEqual(status[0].index, Status.ADDED)
+                self.assertEqual(status[0].working_tree, Status.UNMODIFIED)
 
-                    raise ValueError("An error ocurred!")
+                raise ValueError("An error ocurred!")
 
             status = get_status()
             self.assertEqual(status[0].index, Status.ADDED)
@@ -108,18 +107,17 @@ class StashUnstagedChangesTestCase(GitTestCase):
 
             stash = stash_unstaged_changes()
 
-            with self.assertRaises(ValueError):
-                with stash:
-                    self.assertEqual(len(stash.partially_staged), 1)
+            with self.assertRaises(ValueError), stash:
+                self.assertEqual(len(stash.partially_staged), 1)
 
-                    status = get_status()
-                    self.assertEqual(status[0].index, Status.ADDED)
-                    self.assertEqual(status[0].working_tree, Status.UNMODIFIED)
+                status = get_status()
+                self.assertEqual(status[0].index, Status.ADDED)
+                self.assertEqual(status[0].working_tree, Status.UNMODIFIED)
 
-                    content2 = randbytes(20)
-                    file1.write_bytes(content2)
+                content2 = randbytes(20)
+                file1.write_bytes(content2)
 
-                    raise ValueError("An error ocurred!")
+                raise ValueError("An error ocurred!")
 
             status = get_status()
             self.assertEqual(status[0].index, Status.ADDED)

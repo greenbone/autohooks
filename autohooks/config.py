@@ -4,7 +4,7 @@
 #
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import tomlkit
 
@@ -19,7 +19,7 @@ class Config:
     Config helper class for easier access to a tree of settings.
     """
 
-    def __init__(self, config_dict: Optional[Dict[str, Any]] = None) -> None:
+    def __init__(self, config_dict: dict[str, Any] | None = None) -> None:
         """
         Create a new Config from a dictionary.
 
@@ -78,7 +78,7 @@ class Config:
         return key in self._config_dict
 
 
-def _gather_mode(mode_string: Optional[str]) -> Mode:
+def _gather_mode(mode_string: str | None) -> Mode:
     """
     Gather the mode from a mode string
     """
@@ -100,8 +100,8 @@ class AutohooksConfig:
     def __init__(
         self,
         *,
-        settings: Optional[AutohooksSettings] = None,
-        config: Optional[Config] = None,
+        settings: AutohooksSettings | None = None,
+        config: Config | None = None,
     ) -> None:
         self.config = Config() if config is None else config
         self.settings = settings
@@ -112,8 +112,8 @@ class AutohooksConfig:
     def has_autohooks_config(self) -> bool:
         return self.settings is not None
 
-    def get_pre_commit_script_names(self) -> List[str]:
-        return self.settings.pre_commit if self.has_autohooks_config() else []  # type: ignore # pylint:disable # noqa: E501
+    def get_pre_commit_script_names(self) -> list[str]:
+        return self.settings.pre_commit if self.has_autohooks_config() else []  # type: ignore # pylint:disable
 
     def get_mode(self) -> Mode:
         return (
@@ -123,7 +123,7 @@ class AutohooksConfig:
         )
 
     @staticmethod
-    def from_dict(config_dict: Dict[str, Any]) -> "AutohooksConfig":
+    def from_dict(config_dict: dict[str, Any]) -> "AutohooksConfig":
         """
         Create a new AutohooksConfig from a dictionary
 
@@ -173,7 +173,7 @@ class AutohooksConfig:
 
 
 def load_config_from_pyproject_toml(
-    pyproject_toml: Optional[Path] = None,
+    pyproject_toml: Path | None = None,
 ) -> AutohooksConfig:
     """
     Load an AutohooksConfig from a pyproject.toml file

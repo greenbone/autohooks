@@ -5,7 +5,6 @@
 
 import re
 from pathlib import Path
-from typing import Optional
 
 from autohooks.settings import Mode
 from autohooks.template import (
@@ -28,7 +27,7 @@ def get_pre_commit_hook_path():
 
 
 class PreCommitHook:
-    def __init__(self, pre_commit_hook_path: Optional[Path] = None) -> None:
+    def __init__(self, pre_commit_hook_path: Path | None = None) -> None:
         self._pre_commit_hook = None
 
         if pre_commit_hook_path is None:

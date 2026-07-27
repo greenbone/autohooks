@@ -9,26 +9,27 @@ Plugin API for handling git related tasks
 
 import os
 import subprocess
+from collections.abc import Iterable, Iterator
 from enum import Enum
 from os import PathLike
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from types import TracebackType
-from typing import Any, Iterable, Iterator, List, Optional, Type
+from typing import Any
 
 from autohooks.utils import GitError, exec_git, get_project_root_path
 
 __all__ = [
-    "exec_git",
     "GitError",
+    "Status",
+    "StatusEntry",
+    "exec_git",
     "get_staged_status",
     "get_status",
     "is_partially_staged_status",
     "is_staged_status",
     "stage_files",
     "stash_unstaged_changes",
-    "StatusEntry",
-    "Status",
 ]
 
 
@@ -72,7 +73,7 @@ class StatusEntry:
     """
 
     def __init__(
-        self, status_string: str, root_path: Optional[Path] = None
+        self, status_string: str, root_path: Path | None = None
     ) -> None:
         status = status_string[:2]
         filename = status_string[3:]
@@ -92,10 +93,10 @@ class StatusEntry:
             self.path = Path(filename)
 
     def __str__(self) -> str:
-        return f"{self.index.value}{self.working_tree.value} {str(self.path)}"
+        return f"{self.index.value}{self.working_tree.value} {self.path!s}"
 
     def __repr__(self) -> str:
-        return f"<StatusEntry {str(self)}>"
+        return f"<StatusEntry {self!s}>"
 
     def absolute_path(self) -> Path:
         """
@@ -164,7 +165,7 @@ def is_partially_staged_status(status: StatusEntry) -> bool:
     )
 
 
-def get_status(files: Optional[Iterable[PathLike]] = None) -> List[StatusEntry]:
+def get_status(files: Iterable[PathLike] | None = None) -> list[StatusEntry]:
     """Get information about the current git status.
 
     Arguments:
@@ -192,8 +193,8 @@ def get_status(files: Optional[Iterable[PathLike]] = None) -> List[StatusEntry]:
 
 
 def get_staged_status(
-    files: Optional[Iterable[PathLike]] = None,
-) -> List[StatusEntry]:
+    files: Iterable[PathLike] | None = None,
+) -> list[StatusEntry]:
     """Get a list of :py:class:`StatusEntry` instances containing only staged
     files.
 
@@ -229,7 +230,7 @@ def stage_files(files: Iterable[PathLike]) -> None:
     exec_git("add", *filenames)
 
 
-def get_diff(files: Optional[Iterable[StatusEntry]] = None) -> str:
+def get_diff(files: Iterable[StatusEntry] | None = None) -> str:
     """Get the diff of the passed files
 
     Arguments:
@@ -347,7 +348,7 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
             do_something()
     """
 
-    def __init__(self, files: Optional[Iterable[PathLike]] = None) -> None:
+    def __init__(self, files: Iterable[PathLike] | None = None) -> None:
         """
         Args:
             files: Optional iterable of path like objects to consider for being
@@ -388,9 +389,9 @@ class stash_unstaged_changes:  # pylint: disable=invalid-name
 
     def __exit__(
         self,
-        exc_type: Optional[Type[BaseException]],
-        exc_value: Optional[BaseException],
-        traceback: Optional[TracebackType],
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
     ) -> Any:
         if not self.partially_staged:
             return

@@ -13,10 +13,10 @@ from autohooks.terminal import bold_info, error, fail, info, ok, out, warning
 __all__ = [
     "Config",
     "ReportProgress",
+    "bold_info",
     "error",
     "fail",
     "info",
-    "bold_info",
     "ok",
     "out",
     "warning",

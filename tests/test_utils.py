@@ -250,7 +250,7 @@ class IsSplitEnvTestCase(unittest.TestCase):
             ["/usr/bin/env", "-S", "echo", "True"],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            universal_newlines=True,
+            text=True,
             check=True,
         )
 
@@ -263,7 +263,7 @@ class IsSplitEnvTestCase(unittest.TestCase):
             ["/usr/bin/env", "-S", "echo", "True"],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            universal_newlines=True,
+            text=True,
             check=True,
         )
 

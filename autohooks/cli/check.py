@@ -51,14 +51,14 @@ def check_pre_commit_hook(
             hook_mode = pre_commit_hook.read_mode()
             if hook_mode == Mode.UNKNOWN:
                 term.warning(
-                    f"Unknown autohooks mode in {str(pre_commit_hook)}. "
-                    f'Falling back to "{str(hook_mode.get_effective_mode())}" '
+                    f"Unknown autohooks mode in {pre_commit_hook!s}. "
+                    f'Falling back to "{hook_mode.get_effective_mode()!s}" '
                     "mode."
                 )
         else:
             term.error(
                 "autohooks pre-commit hook is not active. But a different "
-                f"pre-commit hook has been found at {str(pre_commit_hook)}."
+                f"pre-commit hook has been found at {pre_commit_hook!s}."
             )
 
     else:
@@ -75,14 +75,14 @@ def check_config(
 ) -> None:
     if not pyproject_toml.exists():
         term.error(
-            f"Missing {str(pyproject_toml)} file. Please add a pyproject.toml "
+            f"Missing {pyproject_toml!s} file. Please add a pyproject.toml "
             f'file and include a "{AUTOHOOKS_SECTION}" section.'
         )
     else:
         config = load_config_from_pyproject_toml(pyproject_toml)
         if not config.has_autohooks_config():
             term.error(
-                f"autohooks is not enabled in your {str(pyproject_toml)} file."
+                f"autohooks is not enabled in your {pyproject_toml!s} file."
                 f' Please add a "{AUTOHOOKS_SECTION}" section.'
             )
         elif pre_commit_hook.exists():
@@ -91,32 +91,30 @@ def check_config(
 
             if config_mode == Mode.UNDEFINED:
                 term.warning(
-                    f"autohooks mode is not defined in {str(pyproject_toml)}."
+                    f"autohooks mode is not defined in {pyproject_toml!s}."
                 )
             elif config_mode == Mode.UNKNOWN:
-                term.warning(
-                    f"Unknown autohooks mode in {str(pyproject_toml)}."
-                )
+                term.warning(f"Unknown autohooks mode in {pyproject_toml!s}.")
 
             elif (
                 config_mode.get_effective_mode()
                 != hook_mode.get_effective_mode()
             ):
                 term.warning(
-                    f'autohooks mode "{str(hook_mode)}" in pre-commit '
-                    f"hook {str(pre_commit_hook)} differs from "
-                    f'mode "{str(config_mode)}" in {str(pyproject_toml)}.'
+                    f'autohooks mode "{hook_mode!s}" in pre-commit '
+                    f"hook {pre_commit_hook!s} differs from "
+                    f'mode "{config_mode!s}" in {pyproject_toml!s}.'
                 )
 
             term.info(
-                f'Using autohooks mode "{str(hook_mode.get_effective_mode())}".'
+                f'Using autohooks mode "{hook_mode.get_effective_mode()!s}".'
             )
 
             plugins = config.get_pre_commit_script_names()
             if not plugins:
                 term.error(
                     "No autohooks plugin is activated in "
-                    f"{str(pyproject_toml)} for your pre commit hook. Please "
+                    f"{pyproject_toml!s} for your pre commit hook. Please "
                     'add a "pre-commit = [plugin1, plugin2]" setting.'
                 )
             else:
