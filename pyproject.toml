@@ -43,6 +43,7 @@ tomlkit = ">=0.5.11"
 pontos = ">=22.8.0"
 rich = ">=12.5.1"
 shtab = ">=1.7.0"
+typing-extensions = "^4.16.0"
 
 [tool.poetry.group.dev.dependencies]
 autohooks-plugin-black = ">=21.12.0"
