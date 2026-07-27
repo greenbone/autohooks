@@ -59,36 +59,16 @@ mypy = ">=0.991"
 [tool.poetry.scripts]
 autohooks = "autohooks.cli:main"
 
-[tool.black]
-line-length = 80
-target-version = ["py310", "py311", "py312", "py313", "py314"]
-exclude = '''
-/(
-    \.git
-  | \.venv
-  | \.github
-  | \.vscode
-  | _build
-  | build
-  | dist
-  | docs
-)/
-'''
-
 [tool.autohooks]
 pre-commit = [
-  'autohooks.plugins.black',
-  'autohooks.plugins.ruff',
   'autohooks.plugins.mypy',
+  'autohooks.plugins.ruff.check',
+  'autohooks.plugins.ruff.format',
 ]
 mode = "poetry"
 
 [tool.pontos.version]
 version-module-file = "autohooks/__version__.py"
-
-[tool.isort]
-profile = "black"
-line_length = 80
 
 [tool.mypy]
 files = "autohooks"
