@@ -1,10 +1,17 @@
-name: Auto-merge sqash
-on: pull_request_target
-    
+name: Auto-merge rebase
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
 permissions:
   contents: write
   pull-requests: write
-    
+
 jobs:
   auto-merge:
     uses: greenbone/workflows/.github/workflows/auto-merge.yml@main
