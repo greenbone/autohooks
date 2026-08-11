@@ -10,4 +10,3 @@ jobs:
       - uses: greenbone/actions/detect-hidden-unicode@v3
         with:
           github-token: ${{ secrets.GREENBONE_BOT_TOKEN }}
-          detect-hidden-unicode-args: "--filter '^.*.(?<!png)(?<!jpg)(?<!jpeg)(?<!gif)(?<!tiff)(?<!tif)(?<!bmp)(?<!psd)(?<!heic)(?<!heif)(?<!svg)$'"
