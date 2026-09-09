@@ -118,6 +118,20 @@ class StatusEntryTestCase(unittest.TestCase):
         self.assertEqual(status.working_tree, Status.UNTRACKED)
         self.assertEqual(status.path, Path("foo.txt"))
 
+    def test_parse_typechange(self):
+        status = StatusEntry("T  foo.txt")
+
+        self.assertEqual(status.index, Status.TYPECHANGE)
+        self.assertEqual(status.working_tree, Status.UNMODIFIED)
+        self.assertEqual(status.path, Path("foo.txt"))
+
+    def test_parse_unmodified_typechange(self):
+        status = StatusEntry(" T foo.txt")
+
+        self.assertEqual(status.index, Status.UNMODIFIED)
+        self.assertEqual(status.working_tree, Status.TYPECHANGE)
+        self.assertEqual(status.path, Path("foo.txt"))
+
     def test_pathlike(self):
         status = StatusEntry("MM foo.txt")
         self.assertEqual(os.fspath(status), "foo.txt")
@@ -338,3 +352,45 @@ class IsPartiallyStagedStatusTestCase(unittest.TestCase):
                 is_partially_staged_status(added_modifed_file_status)
             )
             self.assertFalse(is_partially_staged_status(removed_file_status))
+
+
+class TypeChangeTestCase(GitTestCase):
+    def test_get_status_with_typechange(self):
+        with tempgitdir() as tmpdir:
+            typechanged_file = tmpdir / "foo.txt"
+            typechanged_file.write_text("Lorem Ipsum", encoding="utf8")
+            git_add(typechanged_file)
+            git_commit()
+
+            # a tracked regular file becomes a symlink -> git reports "T"
+            target_file = tmpdir / "target.txt"
+            target_file.write_text("link target", encoding="utf8")
+            typechanged_file.unlink()
+            typechanged_file.symlink_to(target_file)
+
+            status = get_status()
+            self.assertEqual(len(status), 1)
+
+            typechanged_status = status[0]
+            self.assertEqual(typechanged_status.index, Status.UNMODIFIED)
+            self.assertEqual(typechanged_status.working_tree, Status.TYPECHANGE)
+            self.assertEqual(typechanged_status.path, Path("foo.txt"))
+            self.assertEqual(
+                typechanged_status.absolute_path(), target_file.resolve()
+            )
+
+            self.assertFalse(is_staged_status(typechanged_status))
+            self.assertFalse(
+                is_partially_staged_status(typechanged_status)
+            )
+
+            # a staged typechange counts as staged for plugins
+            git_add(typechanged_file)
+            status = get_status()
+            self.assertEqual(len(status), 1)
+            self.assertEqual(status[0].index, Status.TYPECHANGE)
+            self.assertTrue(is_staged_status(status[0]))
+
+            staged = get_staged_status()
+            self.assertEqual(len(staged), 1)
+            self.assertEqual(staged[0].index, Status.TYPECHANGE)
