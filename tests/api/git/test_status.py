@@ -380,9 +380,7 @@ class TypeChangeTestCase(GitTestCase):
             )
 
             self.assertFalse(is_staged_status(typechanged_status))
-            self.assertFalse(
-                is_partially_staged_status(typechanged_status)
-            )
+            self.assertFalse(is_partially_staged_status(typechanged_status))
 
             # a staged typechange counts as staged for plugins
             git_add(typechanged_file)
