@@ -57,7 +57,6 @@ class Status(Enum):
     UNTRACKED = "?"
     IGNORED = "!"
     TYPECHANGE = "T"
-    """Type of the file changed, e.g. a regular file became a symlink"""
 
 
 class StatusEntry:
