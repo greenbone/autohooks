@@ -56,6 +56,7 @@ class Status(Enum):
     UPDATED = "U"
     UNTRACKED = "?"
     IGNORED = "!"
+    TYPECHANGE = "T"
 
 
 class StatusEntry:
