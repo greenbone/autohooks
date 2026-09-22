@@ -3,7 +3,8 @@ name: Deploy docs to GitHub Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: [main]
+    branches:
+      - main
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,4 +22,25 @@ concurrency:
 
 jobs:
   deploy:
-    uses: greenbone/workflows/.github/workflows/docs-python.yml@main
+    environment:
+      name: "github-pages"
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install poetry and dependencies
+        uses: greenbone/actions/poetry@v3
+        with:
+          python-version: "3.10"
+      - name: Build Documentation
+        run: |
+          uv run make html
+        working-directory: docs
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: "docs/build/html"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

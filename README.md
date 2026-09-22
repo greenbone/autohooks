@@ -56,11 +56,11 @@ Python 3.10+ is required for autohooks.
 
 ## Plugins
 
+* Python code linting and formatting via [ruff](https://github.com/greenbone/autohooks-plugin-ruff)
+
 * Python code formatting via [black](https://github.com/greenbone/autohooks-plugin-black)
 
 * Python code formatting via [autopep8](https://github.com/LeoIV/autohooks-plugin-autopep8)
-
-* Python code linting via [ruff](https://github.com/greenbone/autohooks-plugin-ruff)
 
 * Python code linting via [pylint](https://github.com/greenbone/autohooks-plugin-pylint)
 
@@ -74,17 +74,18 @@ Python 3.10+ is required for autohooks.
 
 ## Installing autohooks
 
-Quick installation of [ruff] and [black] plugins using [poetry]:
+Quick installation of [ruff] plugin for linting and formatting using [uv]:
 
 ```shell
-poetry add --dev autohooks autohooks-plugin-black autohooks-plugin-ruff
-poetry run autohooks activate --mode poetry
-poetry run autohooks plugins add autohooks.plugins.black autohooks.plugins.ruff
+uv add --dev autohooks autohooks-plugin-ruff
+uv run autohooks activate --mode uv
+uv run autohooks plugins add autohooks.plugins.ruff.check autohooks.plugins.ruff.format
 ```
 
 The output of `autohooks activate` should be similar to
-```
- ✓ autohooks pre-commit hook installed at /autohooks-test/.git/hooks/pre-commit using poetry mode.
+
+```shell
+ ✓ autohooks pre-commit hook installed at /autohooks-test/.git/hooks/pre-commit using uv mode.
 ```
 
 Autohooks has an extensible plugin model. Each plugin provides different
@@ -156,7 +157,7 @@ first.
 
 ## License
 
-Copyright (C) 2019 - 2024 [Greenbone AG](https://www.greenbone.net/)
+Copyright (C) 2019 - 2026 [Greenbone AG](https://www.greenbone.net/)
 
 Licensed under the [GNU General Public License v3.0 or later](LICENSE).
 
@@ -164,6 +165,5 @@ Licensed under the [GNU General Public License v3.0 or later](LICENSE).
 [pip]: https://pip.pypa.io/en/stable/
 [pipenv]: https://pipenv.readthedocs.io/en/latest/
 [poetry]: https://python-poetry.org/
-[pylint]: https://pylint.readthedocs.io/en/latest/
 [ruff]: https://docs.astral.sh/ruff/
 [uv]: https://docs.astral.sh/uv/

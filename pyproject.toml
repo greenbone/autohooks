@@ -1,21 +1,19 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "autohooks"
 version = "26.9.1.dev1"
 description = "Library for managing git hooks"
-authors = ["Greenbone AG <info@greenbone.net>"]
-license = "GPL-3.0-or-later"
+authors = [{ name = "Greenbone AG", email = "info@greenbone.net" }]
+requires-python = ">=3.10,<4"
 readme = "README.md"
-homepage = "https://github.com/greenbone/autohooks/"
-repository = "https://github.com/greenbone/autohooks/"
-documentation = "https://greenbone.github.io/autohooks/"
-# Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
+license = "GPL-3.0-or-later"
+keywords = ["git", "formatting", "linting", "hooks"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
-  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)", # pylint: disable=line-too-long
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
   "Environment :: Console",
   "Intended Audience :: Developers",
   "Intended Audience :: System Administrators",
@@ -27,38 +25,39 @@ classifiers = [
   "Operating System :: OS Independent",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: Software Development :: Version Control :: Git",
+  "Programming Language :: Python :: 3",
 ]
-keywords = ["git", "formatting", "linting", "hooks"]
-
-packages = [
-  { include = "autohooks" },
-  { include = "tests", format = "sdist" },
-  { include = "poetry.lock", format = "sdist" },
+dependencies = [
+  "tomlkit>=0.5.11",
+  "pontos>=22.8.0",
+  "rich>=12.5.1",
+  "shtab>=1.7.0",
+  "typing-extensions>=4.16.0,<5",
 ]
-include = ["autohooks/precommit/template"]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-tomlkit = ">=0.5.11"
-pontos = ">=22.8.0"
-rich = ">=12.5.1"
-shtab = ">=1.7.0"
-typing-extensions = "^4.16.0"
+[project.urls]
+Homepage = "https://github.com/greenbone/autohooks/"
+Repository = "https://github.com/greenbone/autohooks/"
+Documentation = "https://greenbone.github.io/autohooks/"
 
-[tool.poetry.group.dev.dependencies]
-autohooks-plugin-black = ">=21.12.0"
-autohooks-plugin-ruff = ">=23.6.0"
-autohooks-plugin-mypy = ">=23.3.0"
-coverage = ">=7.2.7"
-rope = ">=1.9.0"
-Sphinx = ">=5.3.0"
-furo = ">=2023.3.27"
-myst-parser = ">=1.0.0"
-sphinx-tabs = ">=3.4.0"
-mypy = ">=0.991"
-
-[tool.poetry.scripts]
+[project.scripts]
 autohooks = "autohooks.cli:main"
+
+[dependency-groups]
+dev = [
+  "autohooks-plugin-ruff>=23.6.0",
+  "autohooks-plugin-mypy>=23.3.0",
+  "coverage>=7.2.7",
+  "rope>=1.9.0",
+  "Sphinx>=5.3.0",
+  "furo>=2023.3.27",
+  "myst-parser>=1.0.0",
+  "sphinx-tabs>=3.4.0",
+  "mypy>=0.991",
+]
+
+[tool.uv]
+default-groups = "all"
 
 [tool.autohooks]
 pre-commit = [
@@ -66,7 +65,7 @@ pre-commit = [
   'autohooks.plugins.ruff.check',
   'autohooks.plugins.ruff.format',
 ]
-mode = "poetry"
+mode = "uv"
 
 [tool.pontos.version]
 version-module-file = "autohooks/__version__.py"
@@ -84,3 +83,17 @@ source = ["autohooks"]
 line-length = 80
 target-version = "py310"
 extend-select = ["I", "PLE", "PLW"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["autohooks"]
+include = ["autohooks/precommit/template"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "autohooks",
+  "docs",
+  "tests",
+  "uv.lock",
+  "autohooks/precommit/template",
+  "autohooks.gif",
+]
