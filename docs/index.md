@@ -39,7 +39,7 @@ by supporting different [modes](./modes.md).
 
 ## Requirements
 
-Python 3.7+ is required for autohooks. It depends on [tomlkit](https://github.com/sdispater/tomlkit/),
+Python 3.10+ is required for autohooks. It depends on [tomlkit](https://github.com/sdispater/tomlkit/),
 [pontos](https://github.com/greenbone/pontos) and [rich](https://github.com/Textualize/rich/).
 
 ```{toctree}
