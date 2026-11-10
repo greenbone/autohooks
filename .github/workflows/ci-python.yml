@@ -6,6 +6,9 @@ on:
       - main
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   linting:
     name: Linting
@@ -13,13 +16,15 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
+          - "3.15"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Format and Lint
         uses: greenbone/actions/lint-python@v3
         with:
@@ -35,13 +40,15 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
+          - "3.15"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: greenbone/actions/uv@v3
         with:
           python-version: ${{ matrix.python-version }}
@@ -54,13 +61,15 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
+          - "3.15"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup uv
         uses: greenbone/actions/uv@v3
         with:
@@ -73,13 +82,27 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Calculate and upload coverage to codecov.io
         uses: greenbone/actions/coverage-python@v3
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           package-manager: uv
           token: ${{ secrets.CODECOV_TOKEN }}
 
   check-version:
     name: Check versioning for consistency
     uses: greenbone/workflows/.github/workflows/check-version.yml@main
+
+  all-python-ci-jobs-passed:
+    name: All Python CI jobs passed
+    needs: [linting, test, mypy, codecov, check-version]
+    if: ${{ always() }}
+    permissions: {}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all CI jobs to succeed
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: jq -e 'all(.[]; .result == "success")' <<<"$NEEDS"
