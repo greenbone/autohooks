@@ -4,6 +4,8 @@
 #
 
 
+from typing import Self
+
 from pontos.helper import deprecated
 from pontos.terminal.rich import RichTerminal as Terminal
 from pontos.terminal.terminal import Signs
@@ -14,7 +16,6 @@ from rich.progress import (
     TextColumn,
 )
 from rich.progress import Progress as RichProgress
-from typing_extensions import Self
 
 __all__ = (
     "Progress",
