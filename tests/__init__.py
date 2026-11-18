@@ -6,9 +6,9 @@
 import os
 import sys
 import tempfile
+from collections.abc import Generator
 from contextlib import AbstractContextManager, contextmanager
 from pathlib import Path
-from typing import Generator
 
 from autohooks.utils import exec_git
 
@@ -35,7 +35,7 @@ class AddSysPath(AbstractContextManager):
             # self.directory was not in the path
             pass
 
-    def __exit__(self, __exc_type, __exc_value, __traceback) -> None:
+    def __exit__(self, /, __exc_type, __exc_value, __traceback) -> None:
         self.cleanup()
 
 

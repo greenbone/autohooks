@@ -6,7 +6,6 @@
 import shlex
 import subprocess
 from pathlib import Path
-from typing import List, Optional
 
 
 class GitError(subprocess.CalledProcessError):
@@ -17,7 +16,7 @@ class GitError(subprocess.CalledProcessError):
     def __str__(self) -> str:
         return (
             f"Git command '{self.cmd}' returned "
-            f"non-zero exit status {str(self.returncode)}"
+            f"non-zero exit status {self.returncode!s}"
         )
 
 
@@ -38,7 +37,7 @@ def exec_git(*args: str, ignore_errors: bool = False) -> str:
         exec_git("commit", "-m", "A new commit")
     """
     try:
-        cmd_args: List[str] = ["git"]
+        cmd_args: list[str] = ["git"]
         cmd_args.extend(args)
         process = subprocess.run(
             cmd_args, check=True, capture_output=True, text=True
@@ -80,7 +79,7 @@ def get_autohooks_directory_path() -> Path:
     return Path(__file__).resolve().parent
 
 
-def get_git_hook_directory_path(git_dir_path: Optional[Path] = None) -> Path:
+def get_git_hook_directory_path(git_dir_path: Path | None = None) -> Path:
     """
     Returns the absolute path to git hooks dir.
 
@@ -120,7 +119,7 @@ def is_project_root(path: Path) -> bool:
     )
 
 
-def get_project_root_path(path: Optional[Path] = None) -> Path:
+def get_project_root_path(path: Path | None = None) -> Path:
     """
     Returns the path to the project root dir.
 
@@ -146,7 +145,7 @@ def get_project_root_path(path: Optional[Path] = None) -> Path:
     return path
 
 
-def get_project_autohooks_plugins_path(path: Optional[Path] = None) -> Path:
+def get_project_autohooks_plugins_path(path: Path | None = None) -> Path:
     """
     Returns the path to plugins folder.
 
@@ -161,7 +160,7 @@ def get_project_autohooks_plugins_path(path: Optional[Path] = None) -> Path:
     return root / ".autohooks"
 
 
-def get_pyproject_toml_path(path: Optional[Path] = None) -> Path:
+def get_pyproject_toml_path(path: Path | None = None) -> Path:
     """
     Returns the path to pyproject.toml.
 
@@ -190,7 +189,7 @@ def is_split_env():
             shlex.split("/usr/bin/env -S echo True"),
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            universal_newlines=True,
+            text=True,
             check=True,
         )
         is_split = True

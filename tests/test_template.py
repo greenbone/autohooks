@@ -60,6 +60,14 @@ class PreCommitTemplateTestCase(unittest.TestCase):
             "/usr/bin/env -S poetry run python",
         )
 
+    def test_should_render_mode_uv(self):
+        path = FakeTemplatePath("$SHEBANG")
+        template = PreCommitTemplate(path)
+        self.assertEqual(
+            template.render(mode=Mode.UV),
+            "/usr/bin/env -S uv run python",
+        )
+
     def test_should_render_mode_pipenv_multiline(self):
         path = FakeTemplatePath("$SHEBANG")
         template = PreCommitTemplate(path)
@@ -83,6 +91,20 @@ class PreCommitTemplateTestCase(unittest.TestCase):
                 "/bin/sh\n"
                 "\"true\" ''':'\n"
                 'poetry run python "$0" "$@"\n'
+                'exit "$?"\n'
+                "'''"
+            ),
+        )
+
+    def test_should_render_mode_uv_multiline(self):
+        path = FakeTemplatePath("$SHEBANG")
+        template = PreCommitTemplate(path)
+        self.assertEqual(
+            template.render(mode=Mode.UV_MULTILINE),
+            (
+                "/bin/sh\n"
+                "\"true\" ''':'\n"
+                'uv run python "$0" "$@"\n'
                 'exit "$?"\n'
                 "'''"
             ),

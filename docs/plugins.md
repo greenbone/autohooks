@@ -6,6 +6,8 @@ plugins using the `pre-commit` hook exist:
 
 ## Formatting
 
+* Python code formatting via [ruff](https://github.com/greenbone/autohooks-plugin-ruff)
+
 * Python code formatting via [black](https://github.com/greenbone/autohooks-plugin-black)
 
 * Python import sorting via [isort](https://github.com/greenbone/autohooks-plugin-isort)
@@ -13,6 +15,8 @@ plugins using the `pre-commit` hook exist:
 * Python code formatting via [autopep8](https://github.com/LeoIV/autohooks-plugin-autopep8)
 
 ## Linting
+
+* Python code linting via [ruff](https://github.com/greenbone/autohooks-plugin-ruff)
 
 * Python code linting via [pylint](https://github.com/greenbone/autohooks-plugin-pylint)
 

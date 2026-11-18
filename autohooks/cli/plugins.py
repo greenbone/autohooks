@@ -4,7 +4,7 @@
 #
 
 from argparse import Namespace
-from typing import Iterable
+from collections.abc import Iterable
 
 from autohooks.config import load_config_from_pyproject_toml
 from autohooks.precommit.run import autohooks_module_path, check_plugin
@@ -46,7 +46,7 @@ def list_plugins(term: Terminal, args: Namespace) -> None:
     config = load_config_from_pyproject_toml(pyproject_toml)
 
     current_plugins = (
-        config.settings.pre_commit if config.has_autohooks_config() else []  # type: ignore # pylint:disable = C0301 # noqa:E501
+        config.settings.pre_commit if config.has_autohooks_config() else []  # type: ignore # pylint:disable = C0301
     )
     print_current_plugins(term, current_plugins)
 
