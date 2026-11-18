@@ -52,7 +52,7 @@ by supporting different modes and stores its settings in the well known
 
 ## Requirements
 
-Python 3.11+ is required for autohooks.
+Python 3.12+ is required for autohooks.
 
 ## Plugins
 

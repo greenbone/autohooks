@@ -16,7 +16,6 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
@@ -40,7 +39,6 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
@@ -61,7 +59,6 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
@@ -87,7 +84,7 @@ jobs:
       - name: Calculate and upload coverage to codecov.io
         uses: greenbone/actions/coverage-python@v3
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           package-manager: uv
           token: ${{ secrets.CODECOV_TOKEN }}
 
