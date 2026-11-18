@@ -7,7 +7,7 @@ name = "autohooks"
 version = "26.9.1.dev1"
 description = "Library for managing git hooks"
 authors = [{ name = "Greenbone AG", email = "info@greenbone.net" }]
-requires-python = ">=3.10,<4"
+requires-python = ">=3.11,<4"
 readme = "README.md"
 license = "GPL-3.0-or-later"
 keywords = ["git", "formatting", "linting", "hooks"]
@@ -17,11 +17,11 @@ classifiers = [
   "Environment :: Console",
   "Intended Audience :: Developers",
   "Intended Audience :: System Administrators",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Operating System :: OS Independent",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: Software Development :: Version Control :: Git",
@@ -81,7 +81,7 @@ source = ["autohooks"]
 
 [tool.ruff]
 line-length = 80
-target-version = "py310"
+target-version = "py311"
 extend-select = ["I", "PLE", "PLW"]
 
 [tool.hatch.build.targets.wheel]
